@@ -1,0 +1,34 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/unreal/history
+title: Push-уведомления Unreal Engine История обновлений
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Unreal Engine](/help/sdk/push-notifications/unreal)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 2.0.0​
+
+  * Версия SDK push 2.+.
+
+## Версия 1.4.0​
+
+  * Версия SDK push 1.+.
+  * В репозитрий добавлен исходный код *.aar пакетов плагинов.
+
+## Версия 1.2.0​
+
+  * Версия SDK push 1.2.0.
+  * Добавлен функционал сегментов.
+
+## Версия 1.0.0​
+
+  * Версия SDK push 1.0.0.
+
+]
+

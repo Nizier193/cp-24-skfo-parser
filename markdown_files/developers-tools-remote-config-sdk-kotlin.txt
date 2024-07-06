@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/sdk/kotlin
+title: Инструменты RuStore Remote Config SDK и конфигурация приложения Kotlin
+
+[## [🟦 6.0.0](/help/developers/tools/remote-config/sdk/kotlin/6-0-0)## [🟦
+1.1.1](/help/developers/tools/remote-config/sdk/kotlin/1-1-1)## [🟦
+0.1.0](/help/developers/tools/remote-config/sdk/kotlin/0-1-0), ## [🟦
+6.0.0](/help/developers/tools/remote-config/sdk/kotlin/6-0-0), ## [🟦
+1.1.1](/help/developers/tools/remote-config/sdk/kotlin/1-1-1), ## [🟦
+0.1.0](/help/developers/tools/remote-config/sdk/kotlin/0-1-0)]
+

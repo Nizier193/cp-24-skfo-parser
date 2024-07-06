@@ -1,0 +1,27 @@
+url: https://www.rustore.ru/help/users/authorization
+title: Авторизация в RuStore
+
+[## [🟦 Что можно делать без авторизации](/help/users/authorization/without-
+authorization)## [🟦 Можно ли доверять
+RuStore](/help/users/authorization/trust-rustore)## [🟦 Как войти с аккаунтом
+VK ID](/help/users/authorization/login-vk-id)## [🟦 Что такое VK ID и зачем
+нужен](/help/users/authorization/why-vk-id)## [🟦 Как авторизоваться через Сбер
+ID](/help/users/authorization/login-sber-id)## [🟦 Как авторизоваться через
+Яндекс](/help/users/authorization/login-yandex-id)## [🟦 Как авторизоваться
+через Тинькофф ID](/help/users/authorization/login-tinkoff-id)## [🟦 Как
+авторизоваться через Госуслуги](/help/users/authorization/login-gosuslugi-
+id)## [🟦 Как авторизоваться через Альфа Банк](/help/users/authorization/login-
+alfa-id)## [🟦 Как выйти из аккаунта в RuStore](/help/users/authorization/how-
+to-get-out), ## [🟦 Что можно делать без
+авторизации](/help/users/authorization/without-authorization), ## [🟦 Можно ли
+доверять RuStore](/help/users/authorization/trust-rustore), ## [🟦 Как войти с
+аккаунтом VK ID](/help/users/authorization/login-vk-id), ## [🟦 Что такое VK ID
+и зачем нужен](/help/users/authorization/why-vk-id), ## [🟦 Как авторизоваться
+через Сбер ID](/help/users/authorization/login-sber-id), ## [🟦 Как
+авторизоваться через Яндекс](/help/users/authorization/login-yandex-id), ## [🟦
+Как авторизоваться через Тинькофф ID](/help/users/authorization/login-tinkoff-
+id), ## [🟦 Как авторизоваться через
+Госуслуги](/help/users/authorization/login-gosuslugi-id), ## [🟦 Как
+авторизоваться через Альфа Банк](/help/users/authorization/login-alfa-id), ##
+[🟦 Как выйти из аккаунта в RuStore](/help/users/authorization/how-to-get-out)]
+

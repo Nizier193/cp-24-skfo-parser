@@ -1,0 +1,175 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/map-display-services/interactive-map/events
+title: Карты и геосервисы Сервисы отображения карт Интерактивная карта 7. Events (события)
+
+[
+
+  * [](/help/)
+  * [Карты и геосервисы](/help/sdk/rustore-geo)
+  * [Сервисы отображения карт](/help/sdk/rustore-geo/map-display-services/)
+  * [Интерактивная карта](/help/sdk/rustore-geo/map-display-services/interactive-map)
+  * 7\. Events (события)
+
+Содержание этой страницы
+
+# 7\. `Events` (события)
+
+## Evented​
+
+Методы добавления и удаления слушателей (listeners)
+
+    
+    
+    src/util/eventedsrc/util/evented.js  
+    
+
+**Методы**
+
+Название| Описание  
+---|---  
+`off(type, listener)`| Удаляет ранее зарегистрированный слушатель (listener).
+Параметры:
+
+  * `type:string` — тип событий;
+  * `listener:function` — функция слушатель (listener).
+
+  
+`on(type, listener)`| Регистрирует новый лисенер (listener)  
+`once(type, listener)`| Добавляет слушатель (listener), который будет
+вызываться только один раз для указанного типа события. Параметры:
+
+  * `type:string` — тип событий;
+  * `listener:function` — функция слушатель (listener).
+
+  
+  
+## `MapMouseEvent`​
+
+События, связанные с мышью.
+
+`src/ui/events.js`
+
+См. пример ниже.
+
+    
+    
+    // The click event is an example of a MapMouseEvent.  
+    // Set up an event listener on the map.  
+    map.on( 'click' ,  function (e) {  
+      // The event object (e) contains information like the  
+      // coordinates of the point on the map that was clicked.  
+    console.log( 'A click event has occurred at ' + e.lngLat);  
+    });  
+    
+
+**Свойства**
+
+Название| Описание  
+---|---  
+`lngLat`| Координаты курсора на карте.  
+`originalEvent`| Событие DOM, вызвавшее событие карты.  
+`point`| Пиксельные координаты курсора мыши относительно карты измеряются из
+левого верхнего угла.  
+`preventDefault()`| Предотвращает последующую обработку событий. Вызов этого
+метода предотвратит следующее события:
+
+  * `mousedown`, поведение `DragPanHandler`;
+  * `mousedown` поведение `DragRotateHandler`;
+  * `mousedown`, поведение `BoxZoomHandler`;
+  * `dblclick`, поведение `DoubleClickZoomHandler`.
+
+  
+`target`| Объект карты, который запустил событие.  
+`type`| Тип события (одно из `Map.event:mousedown`, `Map.event:mouseup`,
+`Map.event:click`, `Map.event:dblclick`, `Map.event:mousemove`,
+`Map.event:mouseover`,` Map.event:mouseenter`, `Map.event:mouseleave`,
+`Map.event:mouseout`, `Map.event:contextmenu`).  
+  
+## `MapTouchEvent`​
+
+События связанные с касаниями (touch).
+
+`src/ui/events.js`
+
+**Свойства**
+
+Название| Описание  
+---|---  
+`lngLat`| Координаты касания на карте.  
+`lngLats`| Массив координат, соответствующих касаниям на карте.  
+`originalEvent`| Событие DOM, вызвавшее событие карты.  
+`point`| Пиксельные координаты курсора мыши относительно карты измеряются из
+левого верхнего угла.  
+`points`| Массив координат пикселей, соответствующих касаниям.  
+`preventDefault()`| Предотвращает последующую обработку события картой. Вызов
+этого метода предотвратит следующее события:
+
+  * `touchstart`, поведение `DragPanHandler`;
+  * `touchstart` поведение TouchZoomRotateHandler.
+
+  
+`target`| Объект карты, который запустил событие.  
+`type`| Тип события.  
+  
+## `MapBoxZoomEvent`​
+
+События связанные с `boxzoom`, используемых `BoxZoomHandler`.
+
+`src/ui/events.js`
+
+**Параметры**
+
+  * `originalEvent:MouseEvent`— DOM-событие, вызвавшее событие `boxzoom`. Может быть `MouseEvent` или `KeyboardEvent`.
+  * `type:string` — тип события `boxzoom`. Может быть: `boxzoomstart`, `boxzoomend` или `boxzoomcancel`.
+  * `target:Map` — экземпляр карты, вызвавший событие.
+
+## `MapDataEvent`​
+
+Объект `MapDataEvent` создается вместе с событиями `Map.event:data` и
+`Map.event:dataloading`. Возможные значения для типов данных являются:
+
+  * `source`: данные, не связанные с тайлами, но связанны с любым источником;
+  * `style`: стиль карты.
+
+**Параметры**
+
+  * `type:string` — тип события.
+  * `dataType:string` — тип данных, которые изменились. Может быть: `source`, `style`.
+  * `isSourceLoaded:boolean` — true, если событие имеет тип данных `source` и источник (`source`) не имеет нерешенных сетевых запросов (outstanding network requests).
+  * `source:Object` — объект типа `source`.
+  * `sourceDataType:string` — включается, если событие имеет тип данных `source` и событие сообщает, что внутренние данные были получены или изменены. Возможными значениями являются `metadata`, `content` и `visibility`.
+  * `tile:Object` — загружаемый или изменяемый тайл, если событие имеет тип данных `source` и связано с загрузкой тайла.
+  * `coord:Coordinate` — координата тайла, если событие имеет тип данных `source` и событие связано с загрузкой тайла.
+
+`src/ui/events.js`
+
+См. пример ниже.
+
+    
+    
+    // The sourcedata event is an example of MapDataEvent.  
+    // Set up an event listener on the map.  
+    map.on( 'sourcedata' ,  function (e) {  
+      if (e.isSourceLoaded) {  
+        // Do something when the source has finished loading  
+      }  
+    });  
+    
+
+## `MapWheelEvent`​
+
+События связанные с `wheel`.
+
+`src/ui/events.js`
+
+**Свойства**
+
+Название| Описание  
+---|---  
+`orignalEvent`| Событие DOM, вызвавшее событие `map`.  
+`preventDefault()`| Предотвращает последующую обработку события. Вызов этого
+метода предотвратит поведение `ScrollZoomHandler`.  
+`target`| Объект карты, который запустил событие.  
+`type`| Тип события.  
+  
+]
+

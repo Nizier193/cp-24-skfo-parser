@@ -1,0 +1,624 @@
+url: https://www.rustore.ru/help/sdk/general-push-notifications/kotlin/2-2-0
+title: Универсальные push-уведомления Kotlin 2.2.0
+
+[
+
+  * [](/help/)
+  * [Универсальные push-уведомления](/help/sdk/general-push-notifications)
+  * [Kotlin](/help/sdk/general-push-notifications/kotlin)
+  * 2.2.0
+
+Содержание этой страницы
+
+# SDK универсальных push-уведомлений для Kotlin (версия 2.2.0)
+
+SDK универсальных push-уведомлений от RuStore — это набор пакетов для работы с
+несколькими провайдерами одновременно. Вы можете настроить отправку и
+получение push-уведомлений через:
+
+  * RuStore
+  * Firebase Cloud Messaging(FCM)
+  * Huawei Mobile Services (HMS)
+
+RuStore SDK можно использовать совместно с настроенными ранее сервисами HMS и
+FCM.
+
+## Пример реализации​
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/rustore-sdk-universal-push-
+example), чтобы узнать, как правильно интегрировать SDK универсальных push-
+уведомлений.
+
+## Настройки для провайдера RuStore​
+
+### Условия работы​
+
+Чтобы push-уведомления передавались через провайдер RuStore, необходимо
+соблюдение следующих условий:
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore должно поддерживать функциональность push-уведомлений.
+  * Приложению RuStore разрешен доступ к работе в фоновом режиме. Без этого разрешения push-уведомления будут приходить, но со значительной задержкой.
+  * Отпечаток подписи приложения должен совпадать с отпечатком, добавленным в [Консоль RuStore](https://dev.rustore.ru/).
+
+### Подключение в проект​
+
+Подключите репозитории в файле `settings.gradle`.
+
+settings.gradle
+
+    
+    
+    dependencyResolutionManagement {  
+        repositories {  
+            google()  
+            mavenCentral()  
+            //  нужно для работы HMS  
+            maven {url = uri("https://developer.huawei.com/repo/")}  
+            //  нужно для работы RuStore  
+             maven {  
+                url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+            }  
+        }  
+    }  
+    
+
+### Подключение зависимостей​
+
+Чтобы подключить зависимости, добавьте следующий код в `build.gradle` на
+уровне `app`.
+
+build.gradle
+
+    
+    
+    dependencies {  
+        implementation 'ru.rustore.sdk:universalpush:2.2.0'  
+        implementation 'ru.rustore.sdk:universalrustore:2.2.0'  
+        implementation 'ru.rustore.sdk:universalhms:2.2.0'  
+        implementation 'ru.rustore.sdk:universalfcm:2.2.0'  
+    }  
+    
+
+Этого достаточно только для работы пакета `ru.rustore.sdk:universalrustore`.
+
+Для работы FCM и HMS выполните дополнительные шаги:
+
+  1. Добавьте следующий код в `build.gradle` на уровне `app`.
+
+build.gradle
+
+    
+           plugins {  
+        // ...  
+      
+        // нужно для FCM  
+        id 'com.google.gms.google-services'  
+        // нужно для HMS  
+        id 'com.huawei.agconnect'  
+    }  
+    
+
+  2. Добавьте следующий код в `build.gradle` на корневом уровне.
+
+build.gradle
+
+    
+        dependencies {  
+        // нужно для FCM  
+        classpath 'com.google.gms:google-services:4.3.15'  
+        // нужно для HMS  
+        classpath 'com.huawei.agconnect:agcp:1.6.0.300'  
+        classpath 'com.android.tools.build:gradle:7.4.0'  
+    
+
+  3. Добавьте следующий код в `settings.gradle` на корневом уровне.
+
+settings.gradle
+
+    
+        pluginManagement {  
+        repositories {  
+            google()  
+            mavenCentral()  
+            gradlePluginPortal()  
+            //  нужно для работы HMS  
+            maven {url = uri("https://developer.huawei.com/repo/")}  
+        }  
+    }  
+    
+
+## Настройки для провайдера FCM​
+
+### Настройка приложения​
+
+Чтобы push-уведомления передавались через провайдер FCM, настройте проект в
+сервисе Firebase Console.
+
+  1. Создайте новый проект в [console.firebase.google.com](https://console.firebase.google.com/u/0/).
+
+  2. Выберите проект, для которого планируете подключить push-уведомления.
+
+  3. Нажмите значок шестеренки в меню слева рядом с названием проекта.
+
+  4. Перейдите в раздел Project Settings — Your apps и скачайте файл `google-services.json`.
+
+  5. Поместите файл `google-services.json` в `app/google-services.json`.
+
+### Подключение в проект​
+
+Подключите репозиторий в `settings.gradle` на корневом уровне.
+
+settings.gradle
+
+    
+    
+    dependencyResolutionManagement {  
+        repositories {  
+            google()  
+            mavenCentral()  
+            //  нужно для работы RuStore  
+            maven {  
+                url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+            }  
+        }  
+    }  
+    
+
+### Подключение зависимостей​
+
+Для публикации приложения в Google Play добавьте зависимости для работы push-
+уведомлений только через FCM и RuStore. Нужно использовать только пакеты
+`universalfcm`, `universalrustore` и `universalpush`.
+
+  1. Добавьте следующий код в `build.gradle` на уровне `app`.
+
+build.gradle
+
+    
+        dependencies {  
+        implementation 'ru.rustore.sdk:universalpush:2.0.0'  
+        implementation 'ru.rustore.sdk:universalrustore:2.0.0'  
+        implementation 'ru.rustore.sdk:universalfcm:2.0.0'  
+    }  
+    
+
+  2. Добавьте следующий код в `build.gradle` на уровне `app`.
+
+build.gradle
+
+    
+        plugins {  
+        // ...  
+      
+        // нужно для FCM  
+        id 'com.google.gms.google-services'  
+    }  
+    
+
+  3. Добавьте следующий код в `build.gradle` на корневом уровне.
+
+build.gradle
+
+    
+        buildscript {  
+        dependencies {  
+            // нужно для FCM  
+            classpath 'com.google.gms:google-services:4.3.15'  
+        }  
+    }  
+    
+
+## Настройки для провайдера HMS​
+
+### Настройка приложения​
+
+Чтобы push-уведомления передавались через провайдер HMS, настройте проект в
+сервисе developer.huawei.com.
+
+  1. Создайте новый проект в [developer.huawei.com](https://developer.huawei.com/consumer/ru/console).
+
+  2. Выберите проект, для которого планируете подключить push-уведомления.
+
+  3. Перейдите на страницу «Настройки» проекта, затем на вкладку «Основная информация».
+
+  4. Перейдите в раздел «Данные приложения» и скачайте файл `agconnect-services.json`.
+
+  5. Поместите файл `agconnect-services.json` в `app/agconnect-services.json`.
+
+### Подключение в проект​
+
+Подключите репозиторий в `settings.gradle`.
+
+settings.gradle
+
+    
+    
+    dependencyResolutionManagement {  
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)  
+        repositories {  
+            google()  
+            mavenCentral()  
+            //  нужно для работы HMS  
+            maven {url = uri("https://developer.huawei.com/repo/")}  
+            //  нужно для работы RuStore  
+            maven {  
+                url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+            }  
+        }  
+    }  
+    
+
+### Подключение зависимостей​
+
+Для публикации приложения в AppGallery добавьте зависимости для работы push-
+уведомл ений только через HMS и RuStore. Используйте следующие пакеты:
+`universalhms`, `universalrustore` и `universalpush`.
+
+  1. Добавьте следующий код в `build.gradle` на уровне `app`.
+
+build.gradle
+
+    
+        dependencies {  
+        implementation 'ru.rustore.sdk:universalpush:2.2.0'  
+        implementation 'ru.rustore.sdk:universalrustore:2.2.0'  
+        implementation 'ru.rustore.sdk:universalhms:2.2.0'  
+    }  
+    
+
+  2. Добавьте следующий код в `build.gradle` на уровне `app`.
+
+build.gradle
+
+    
+        plugins {  
+        // ...  
+      
+        // нужно для HMS  
+        id 'com.huawei.agconnect'  
+    }  
+    
+
+  3. Добавьте следующий код в `build.gradle` на корневом уровне.
+
+build.gradle
+
+    
+        buildscript {  
+        dependencies {  
+            // нужно для HMS  
+            classpath 'com.huawei.agconnect:agcp:1.6.0.300'  
+            classpath 'com.android.tools.build:gradle:7.4.0'  
+        }  
+    }  
+    
+
+  4. Добавьте следующий код в `settings.gradle` на корневом уровне.
+
+settings.gradle
+
+    
+        pluginManagement {  
+        repositories {  
+            google()  
+            mavenCentral()  
+            gradlePluginPortal()  
+            //  нужно для работы HMS  
+            maven {url = uri("https://developer.huawei.com/repo/")}  
+        }  
+    }  
+    
+
+## Инициализация​
+
+Для инициализации понадобится идентификатор проекта из [RuStore
+Консоль](https://console.rustore.ru/waiting). Чтобы получить его, на странице
+приложения перейдите в раздел «Push-уведомления» — «Проекты» и скопируйте
+з начение в поле «ID проекта».
+
+![img](https://www.rustore.ru//help/assets/images/project-
+id-c3f7d16c6ea4bb0472a203c945461513.webp)
+
+Чтобы инициализировать провайдеры push-уведомлений, добавьте следующий код в
+`App.kt`.
+
+App.kt
+
+    
+    
+    import android.app.Application  
+    import ru.rustore.sdk.universalpush.RuStoreUniversalPushClient  
+    import ru.rustore.sdk.universalpush.firebase.provides.FirebasePushProvider  
+    import ru.rustore.sdk.universalpush.hms.providers.HmsPushProvider  
+    import ru.rustore.sdk.universalpush.rustore.logger.DefaultLogger  
+    import ru.rustore.sdk.universalpush.rustore.providers.RuStorePushProvider  
+       
+    class App: Application() {  
+       
+        private val tag = "UniversalPushExampleApp"  
+       
+        override fun onCreate() {  
+            super.onCreate()  
+       
+            RuStoreUniversalPushClient.init(  
+                context = this,  
+                rustore = RuStorePushProvider(  
+                    application = this,  
+                    projectId = "m3Id6aPeXq36mp...",  
+                    logger = DefaultLogger(tag = tag),  
+                ),  
+                firebase = FirebasePushProvider(  
+                    context = this,  
+                ),  
+                hms = HmsPushProvider(  
+                    context = this,  
+                    appid = "108003365",  
+                ),  
+            )  
+        }  
+    }  
+    
+
+Если вы используете не все провайдеры, инициализируйте только нужные.
+Например, код ниже инициализирует только провайдеры RuStore и HMS.
+
+App.kt
+
+    
+    
+    RuStoreUniversalPushClient.init(  
+        context = this,  
+        rustore = RuStorePushProvider(  
+            application = this,  
+            projectId = "m3Id6aPeXq36mp...",  
+            logger = DefaultLogger(tag = tag),  
+        ),  
+        hms = HmsPushProvider(  
+            context = this,  
+            appid = "108003365",  
+        ),  
+    )  
+    
+
+## Проверка работоспособности провайдеров​
+
+Чтобы проверить доступность провайдеров push-уведомлений, вызовите метод
+`checkAvailability (context)`.
+
+    
+    
+    RuStoreUniversalPushClient.checkAvailability(this)  
+                .addOnSuccessListener { result ->  
+                    Log.w(tag, "get availability success $result")  
+                }  
+                .addOnFailureListener { throwable ->  
+                    Log.e(tag, "get availability error: $throwable")  
+                }  
+    
+
+`result` — словарь с ключами:
+
+    
+    
+    public const val UNIVERSAL_FCM_PROVIDER: String = "firebase"  
+    public const val UNIVERSAL_HMS_PROVIDER: String = "hms"  
+    public const val UNIVERSAL_RUSTORE_PROVIDER: String = "rustore"  
+    
+
+Проверить конкретный провайдер можно следующим образом:
+
+    
+    
+    if (result[UNIVERSAL_HMS_PROVIDER] ?: false) {  
+        // провайдер HMS доступен  
+    }  
+    
+
+## Методы для работы с push-токеном​
+
+### Получение push-токена пользователя​
+
+Чтобы получить список токенов по всем провайдерам, вызовите метод
+`getTokens()`.
+
+    
+    
+    RuStoreUniversalPushClient.getTokens()  
+                .addOnSuccessListener { result ->  
+                    Log.w(tag, "get tokens success $result")  
+                }  
+                .addOnFailureListener { throwable ->  
+                    Log.e(tag, "get tokens error: $throwable")  
+                }  
+    
+
+`result` — словарь с ключами:
+
+    
+    
+    public const val UNIVERSAL_FCM_PROVIDER: String = "firebase"  
+    public const val UNIVERSAL_HMS_PROVIDER: String = "hms"  
+    public const val UNIVERSAL_RUSTORE_PROVIDER: String = "rustore"  
+    
+
+Получить конкретный токен можно следующим образом:
+
+    
+    
+    result[UNIVERSAL_FCM_PROVIDER].orEmpty()  
+    
+
+### Удаление push-токена пользователя​
+
+Чтобы удалить токены, вызовите метод `deleteTokens(token)` и передайте словарь
+со списком токенов.
+
+    
+    
+    RuStoreUniversalPushClient.deleteTokens(  
+        mapOf(  
+            UNIVERSAL_RUSTORE_PROVIDER to "xxx",  
+            UNIVERSAL_FCM_PROVIDER to "yyy",  
+            UNIVERSAL_HMS_PROVIDER to "zzz"  
+        )  
+    )  
+    
+
+`xxx`, `yyy`, `zzz` — токены провайдеров push-уведомлений.
+
+## Методы для работы с push-топиком​
+
+### Подписка на push-уведомления по топику​
+
+Чтобы подписаться на топик, вызовите метод `subscribeToTopic ("some_topic")`.
+
+    
+    
+    RuStoreUniversalPushClient.subscribeToTopic("some_topic")  
+    
+
+### Отписка от push-уведомлений по топику​
+
+Чтобы отписаться от топика, вызовите метод `unsubscribeToTopic
+("some_topic")`.
+
+    
+    
+    RuStoreUniversalPushClient.unsubscribeFromTopic("some_topic")  
+    
+
+## Обработка уведомлений​
+
+Для получения уведомлений добавьте callback `OnMessageReceiveListener` в
+`App`-классе после инициализации `RuStoreUniversalPushClient`. Если
+уведомления отправляются через `universal api`, они дедублицируются на клиенте
+и callback получения уведомлений вызывается один раз.
+
+Если в объекте `notification` есть данные, RuStore SDK самостоятельно
+отображает уведомление. Если вы не хотите этого, используйте объект `data`, а
+`notification` оставьте пустым. Callback `OnMessageReceiveListener` вызывается
+в любом случае.
+
+Получить `payload` push-уведомления (`Map<String, String>`) можно из поля
+`remoteMessage.data`.
+
+    
+    
+    RuStoreUniversalPushClient.setOnMessageReceiveListener { remoteMessage ->  
+        // process message  
+    }  
+    
+
+## Обработка события onDeletedMessages​
+
+ Для обработки события `onDeletedMessages` добавьте callback
+`OnDeletedMessagesListener` в `App`-классе после инициализации
+`RuStoreUniversalPushClient`. При событии `onDeletedMessages` вызывается
+callback с параметром `providerType` — провайдер push-уведомлений, который
+вызвал событие.
+
+    
+    
+    RuStoreUniversalPushClient.setOnDeletedMessagesListener { providerType ->  
+        // process event  
+    }  
+    
+
+## Обработка события onNewToken​
+
+Для обработки события `onNewToken` добавьте callback `OnNewTokenListener` в
+`App`-классе после инициализации `RuStoreUniversalPushClient`. При событии
+`onNewToken` вызывается callback с параметрами:
+
+  * `providerType` — провайдер push-уведомлений, который вызвал событие.
+  * `token` — новый push-токен.
+
+    
+    
+    RuStoreUniversalPushClient.setOnNewTokenListener {  providerType, token ->  
+         // process event  
+    }  
+    
+
+## Обработка ошибок провайдеров​
+
+Для обработки ошибок добавьте callback `OnPushClientErrorListener` в
+`App`-классе после инициализации `RuStoreUniversalPushClient`. При появлении
+ошибок вызывается callback с параметрами:
+
+  * `providerType` — провайдер push-уведомлений, который вызвал событие.
+  * `errors` — список ошибок.
+
+    
+    
+    RuStoreUniversalPushClient.setOnPushClientErrorListener { providerType, error ->  
+         // process error  
+    }  
+    
+
+## Если push-уведомления уже передаются через HMS или FCM​
+
+Если вы хотите подключить SDK универсальных push-уведомлений, но в приложении
+уже используются сервисы FCM или HMS, добавьте дополнительный код:
+
+  * Код для сервиса FCM
+    
+        import ru.rustore.sdk.universalpush.rustore.messaging.toUniversalRemoteMessage  
+    import ru.rustore.sdk.universalpush.UNIVERSAL_FCM_PROVIDER  
+       
+    class MyFirebaseMessagingService: FirebaseMessagingService() {  
+        override fun onMessageReceived(message: RemoteMessage) {  
+            super.onMessageReceived(message)  
+       
+            RuStoreUniversalPushManager.processMessage(message.toUniversalRemoteMessage())  
+        }  
+       
+        override fun onNewToken(token: String) {  
+            super.onNewToken(token)  
+       
+            RuStoreUniversalPushManager.processToken(UNIVERSAL_FCM_PROVIDER, token)  
+        }  
+       
+        override fun onDeletedMessages() {  
+            super.onDeletedMessages()  
+       
+            RuStoreUniversalPushManager.processDeletedMessages(UNIVERSAL_FCM_PROVIDER)  
+        }  
+    }  
+    
+
+  * Код для сервиса HMS
+    
+        import ru.rustore.sdk.universalpush.rustore.messaging.toUniversalRemoteMessage  
+    import ru.rustore.sdk.universalpush.UNIVERSAL_HMS_PROVIDER  
+       
+    class MyMessagePushService: HmsMessageService() {  
+        override fun onMessageReceived(msg: RemoteMessage?) {  
+            super.onMessageReceived(msg)  
+       
+            RuStoreUniversalPushManager.processMessage(UNIVERSAL_HMS_PROVIDER, msg.toUniversalRemoteMessage())  
+        }  
+       
+        override fun onNewToken(token: String?) {  
+            super.onNewToken(token)  
+       
+            RuStoreUniversalPushManager.processToken(token)  
+        }  
+       
+        override fun onDeletedMessages() {  
+            super.onDeletedMessages()  
+       
+            RuStoreUniversalPushManager.processDeletedMessages(UNIVERSAL_HMS_PROVIDER)  
+        }  
+     }  
+    
+
+## См. также​
+
+  * [Отправка универсальных push-уведомлений (API)](/help/sdk/general-push-notifications/send-push-notifications)
+  * [Отправка универсальных push-уведомлений по топикам (API)](/help/sdk/general-push-notifications/push-notifications-topics)
+
+]
+

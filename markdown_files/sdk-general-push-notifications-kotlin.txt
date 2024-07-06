@@ -1,0 +1,15 @@
+url: https://www.rustore.ru/help/sdk/general-push-notifications/kotlin
+title: Универсальные push-уведомления Kotlin
+
+[## [🟦 История обновлений](/help/sdk/general-push-
+notifications/kotlin/history)## [🟦 2.2.0](/help/sdk/general-push-
+notifications/kotlin/2-2-0)## [🟦 2.1.0](/help/sdk/general-push-
+notifications/kotlin/2-1-0)## [🟦 2.0.0](/help/sdk/general-push-
+notifications/kotlin/2-0-0)## [🟦 1.0.0](/help/sdk/general-push-
+notifications/kotlin/1-0-0), ## [🟦 История обновлений](/help/sdk/general-push-
+notifications/kotlin/history), ## [🟦 2.2.0](/help/sdk/general-push-
+notifications/kotlin/2-2-0), ## [🟦 2.1.0](/help/sdk/general-push-
+notifications/kotlin/2-1-0), ## [🟦 2.0.0](/help/sdk/general-push-
+notifications/kotlin/2-0-0), ## [🟦 1.0.0](/help/sdk/general-push-
+notifications/kotlin/1-0-0)]
+

@@ -1,0 +1,198 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-feedback-process/get-feedback
+title: Работа с отзывами с помощью RuStore API Получение отзывов приложения
+
+[
+
+  * [](/help/)
+  * [Работа с отзывами с помощью RuStore API](/help/work-with-rustore-api/api-feedback-process)
+  * Получение отзывов приложения
+
+Содержание этой страницы
+
+# Получение отзывов приложения
+
+Метод позволяет получить список всех последних отзывов для вашего приложения
+или получить отдельно взятый отзыв.
+
+Ограничения:
+
+  * по умолчанию на каждой странице отображается по 20 отзывов, вы можете отображать до 100 отзывов на странице, указав значение в параметре `size`;
+  * совместно использовать параметры пагинации и фильтрации по 1 отзыву — нельзя (либо пагинация с указанием пары параметров `page` и `size` либо `id`);
+  * если пользователь отредактировал отзыв, то признак редактирования отзыва (`edited`) принимает значение `true`;
+  * по умолчанию сортировка производится по дате публикации отзыва (параметр `updatedAt`) от наиболее свежего отзыва.
+
+## Параметры взаимодействия​
+
+`GET`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/comment?id={id}&page={number}&size={size}`
+
+Атрибут| Тип| Обязателен| Расположение| Описание| Пример  
+---|---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к API RuStore](/help/work-
+with-rustore-api/api-authorization-token).| N/A  
+`packageName`| string| Да| path| Наименование пакета приложения. Максимальная
+длина – 50 символов.| `com.myapp.example`  
+`id`| number| Нет| query| `id` конкретного отзыва. Задается при необходимости
+получить конкретный отзыв.| `743103`  
+`page`| number| Нет| query| Номер страницы. Начинается с `0`.| `0`  
+`size`| number| Нет| query| Количество отзывов на странице. По умолчанию —
+`20`, максимально — `100`.| `100`  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+`body{}`| object| Да| N/A| N/A  
+  
+### body​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`packageName`| string| Да| Наименование пакета приложения.|
+`com.myapp.example`  
+`appId`| number| Да| `id` приложения.| `385727`  
+`commentId`| number| Да| `id` отзыва.| `697535`  
+`userName`| string| Да| Имя автора отзыва.| `Irina`  
+`appRating`| number| Да| Оценка отзыва.| `4`  
+`commentStatus`| string| Да| Статус отзыва.| `PUBLISHED`  
+`commentDate`| timestamptz| Да| Дата, когда был оставлен отзыв.| `2023-05-22
+16:32:08.008`  
+`commentText`| string| Да| Текст отзыва.| `Все супер!`  
+`likeCounter`| number| Да| Количество лайков отзыву от других пользователей
+витрины RuStore.| `5`  
+`dislikeCounter`| number| Да| Количество дизлайков отзыву от других
+пользователей витрины RuStore.| `0`  
+`updatedAt`| timestamptz| Да| Дата прохождения модерации и публикации отзыва в
+системе.| `2022-10-14 15:14:33.033`  
+`appVersionName`| string| Да| Версия приложения.| `1.4`  
+`edited`| boolean| Да| Признак редактирования отзыва| • `True` — отзыв
+редактировался и был перезаписан.  
+• `False` — отзыв не редактировался.  
+  
+## Пример запроса для вывода множества отзывов​
+
+    
+    
+    curl --location 'https://public-api.rustore.ru/public/v1/application/ru.voonsh.push/comment' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Public-Token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAtMjU2In0.jrVl3YT99saGcata9fzN6_QpoQhDsv8oBUAj9p7UyR4Ga5PM8TTyNbpTKIeaIjGoEfsBMJx0aw0b7fhD04bhSp7SWEBKGBTzFCjwOZ5_Fcezq0-NOMSayzoPttYa7oMRDiqNS4rqaUOdCUrf9qlDyEq3BGoUYCaUD7L5399l51NhSLrWpoPx1l4ZLVJ5bjlhiCoPAtLArnulq5LBoDk3naoGaRHabkkffcucEjA45uNpCsq0fx77Lk4YhN30LOccyImE-O8fUq8YryMWv4w-ZmWjax1oT9nRgO95r9EYG7Gwdekg2ILuWnsofiMXME8t1EiEuUmDpNTEyS9SiUMRwQ.lSJBV1mSmHehuqVs.8pXL_GRLwEJgIWZOzkklKgrsGKKJrG9kv1AIdD0PPU8KtsY8GVAc5xaaQgeyjSsJiSUvma_IohAaIBwP-tjTRxrnzVinMhKAJMCbiMIVqsQSRDB5j_mf91nTNewQkWJwB33Rvxd9F4Tt-Tk-1QKALU8tAT_HXAI.v9WBgx8T6yFDpeMrjw-ECQ'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": [  
+            {  
+                "packageName": "ru.voonsh.push",  
+                "appId": 227169215,  
+                "commentId": 2142370751,  
+                "userName": "Saber",  
+                "appRating": 5,  
+                "commentStatus": "PUBLISHED",  
+                "commentDate": "2023-06-13 11:58:06.006",  
+                "commentText": "Good App, nice done!",  
+                "likeCounter": 0,  
+                "dislikeCounter": 0,  
+                "updatedAt": "2023-06-13 11:59:50.050",  
+                "appVersionName": "1.4",  
+                "edited": false  
+            },  
+            {  
+               "packageName": "ru.voonsh.push",  
+                "appId": 227169215,  
+                "commentId": 1981700287,  
+                "userName": "Виктор",  
+                "appRating": 5,  
+                "commentStatus": "PUBLISHED",  
+                "commentDate": "2023-04-27 18:54:27.027",  
+                "commentText": "Отличное приложение! ;#",  
+                "likeCounter": 0,  
+                "dislikeCounter": 0,  
+                "updatedAt": "2023-04-27 18:55:30.030",  
+                "appVersionName": "1.3",  
+                "edited": false  
+            },  
+            {  
+                "packageName": "ru.voonsh.push",  
+                "appId": 227169215,  
+                "commentId": 1981699775,  
+                "userName": "Григорий",  
+                "appRating": 5,  
+                "commentStatus": "PUBLISHED",  
+                "commentDate": "2023-04-27 18:54:18.018",  
+                "commentText": "Отличное приложение!",  
+                "likeCounter": 1,  
+                "dislikeCounter": 0,  
+                "updatedAt": "2023-04-27 18:55:30.030",  
+                "appVersionName": "1.3",  
+                "edited": false  
+            },  
+            {  
+                "packageName": "ru.voonsh.push",  
+                "appId": 227169215,  
+                "commentId": 237681343,  
+                "userName": "Ибрагим",  
+                "appRating": 5,  
+                "commentStatus": "PUBLISHED",  
+                "commentDate": "2022-09-15 17:26:46.046",  
+                "commentText": "Повышаем ДАУ)))",  
+                "likeCounter": 1,  
+                "dislikeCounter": 1,  
+                "updatedAt": "2022-09-16 18:06:39.039",  
+                "appVersionName": null,  
+                "edited": false  
+            }  
+        ],  
+        "timestamp": "2023-06-15T07:32:55.505979576+03:00"  
+    }  
+    
+
+## Пример запроса для вывода конкретного отзыва​
+
+    
+    
+    curl --location 'https://public-api.rustore.ru/public/v1/application/ru.voonsh.push/comment?id=1981699775' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Public-Token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAtMjU2In0.h635qF_TZc43287jXQVImu_-o4eVFQwrQYe2WnjbywC_KUC4oX6W3ssyPWzlAugd2RELbVCTk1wiDdKwPIbkOJC_HdF0yAmnPg0PRxwyfCHblRuccuuEg_l6sKY1Fqrh6kH3D5N2i_HnDei-hTusAvHR333ZstAK73dc-4Ecn24jb1XyBsdg0_KddKaRpEjTMSudIV6rdpBNMlQRUyQufrP2RMXK5Kc_0gY0iA-tazQoOJmK4xstHmuFbSBx3J6oN5QIlYonx0LZ6ABf2fD0O1E7LFsVUMd2bOdLYg5id5bTRXKd238iB5snmPhGJJN3d6v8xdoV5TdOMGPvjO0A5A.-mSbEMAvEglyEOJu.eKxraHkohwEcn3cG4glUBnwypjnapol4WnwhQGyKe-TDq9TGNj9CO4hnXGh4UPSRI55w73pJwSCuDe7LfsQ8zqBVjirT_HXypowHsWBwvBG-6rwSRvhZsad2YY8wHTZeXOddVynWnESoKAnXIdImafEbIWN1Hik.VJ-b1KxDxMrgJTz_Vuul2Q'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": [  
+            {  
+                "packageName": "ru.voonsh.push",  
+                "appId": 227169215,  
+                "commentId": 1981699775,  
+                "userName": "Григорий",  
+                "appRating": 5,  
+                "commentStatus": "PUBLISHED",  
+                "commentDate": "2023-04-27 18:54:18.018",  
+                "commentText": "Отличное приложение!",  
+                "likeCounter": 1,  
+                "dislikeCounter": 0,  
+                "updatedAt": "2023-04-27 18:55:30.030",  
+                "appVersionName": "1.3",  
+                "edited": false  
+            }  
+        ],  
+        "timestamp": "2023-06-15T07:13:16.309841987+03:00"  
+    }  
+    
+
+]
+

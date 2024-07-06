@@ -1,0 +1,44 @@
+url: https://www.rustore.ru/help/users/start/notification
+title: Начало работы с RuStore Уведомления в RuStore
+
+[
+
+  * [](/help/)
+  * [Начало работы с RuStore](/help/users/start)
+  * Уведомления в RuStore
+
+Содержание этой страницы
+
+# Уведомления в RuStore: Как разрешить обновления приложений
+
+Разрешите RuStore отправлять уведомления об обновлениях. Вам будут приходить
+уведомления о новых версиях приложений, установленных на вашем устройстве.
+
+подсказка
+
+В Android 13 и выше вы можете разрешить отправку уведомлений сразу после входа
+в аккаунт RuStore.
+
+## Как настроить уведомления​
+
+  1. Откройте приложение RuStore.
+
+  2. Найдите сообщение об уведомлениях на главном экране с приложениями.
+
+  3. Нажмите «Разрешить».
+
+![img](https://www.rustore.ru//help/assets/images/interesting-notification-
+cf354e75c11b88799a20d34b723fd10a.webp)
+
+**Читайте также:**
+
+  * [Как обновить RuStore](/help/users/start/update-rustore-app)
+
+  * [Как настроить родительский контроль в RuStore](/help/users/start/change-theme)
+
+  * [Как изменить тему в приложении RuStore](/help/users/start/parental-control)
+
+  * [Как оставить отзыв на приложение](/help/users/app-management/app-review)
+
+]
+

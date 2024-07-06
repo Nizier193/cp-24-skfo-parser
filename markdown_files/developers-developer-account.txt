@@ -1,0 +1,15 @@
+url: https://www.rustore.ru/help/developers/developer-account
+title: Аккаунт разработчика
+
+[## [🗃️ Регистрация разработчиков](/help/developers/developer-
+account/registration-developer/)## [🟦 Как узнать VK
+ID](/help/developers/developer-account/your-vkid)## [🟦 Добавление
+дополнительных разработчиков](/help/developers/developer-account/add-
+developer)## [🟦 Добавление пользователей и выбор
+роли](/help/developers/developer-account/user-roles), ## [🗃️ Регистрация
+разработчиков](/help/developers/developer-account/registration-developer/), ##
+[🟦 Как узнать VK ID](/help/developers/developer-account/your-vkid), ## [🟦
+Добавление дополнительных разработчиков](/help/developers/developer-
+account/add-developer), ## [🟦 Добавление пользователей и выбор
+роли](/help/developers/developer-account/user-roles)]
+

@@ -1,0 +1,14 @@
+url: https://www.rustore.ru/help/sdk/updates
+title: Обновление приложения
+
+[## [🗃️ Kotlin/Java](/help/sdk/updates/kotlin-java)## [🗃️
+Unity](/help/sdk/updates/unity)## [🗃️ Godot](/help/sdk/updates/godot)## [🗃️
+React Native](/help/sdk/updates/react)## [🗃️
+Flutter](/help/sdk/updates/flutter)## [🗃️ Unreal
+Engine](/help/sdk/updates/unreal)## [🗃️ Defold](/help/sdk/updates/defold), ##
+[🗃️ Kotlin/Java](/help/sdk/updates/kotlin-java), ## [🗃️
+Unity](/help/sdk/updates/unity), ## [🗃️ Godot](/help/sdk/updates/godot), ##
+[🗃️ React Native](/help/sdk/updates/react), ## [🗃️
+Flutter](/help/sdk/updates/flutter), ## [🗃️ Unreal
+Engine](/help/sdk/updates/unreal), ## [🗃️ Defold](/help/sdk/updates/defold)]
+

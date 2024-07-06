@@ -1,0 +1,8 @@
+url: https://www.rustore.ru/help/developers/faq
+title: Вопросы и ответы
+
+[## [🟦 Отчётность и монетизация](/help/developers/faq/legal-faq)## [🟦 Работа с
+платежами](/help/developers/faq/payments-faq), ## [🟦 Отчётность и
+монетизация](/help/developers/faq/legal-faq), ## [🟦 Работа с
+платежами](/help/developers/faq/payments-faq)]
+

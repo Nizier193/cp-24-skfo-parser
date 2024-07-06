@@ -1,0 +1,53 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/ios-apps/add-ios-apps
+title: Инструменты RuStore Remote Config Подключение IOS приложений в Remote Config Добавление IOS приложения
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * [Подключение IOS приложений в Remote Config](/help/developers/tools/remote-config/ios-apps/ios)
+  * Добавление IOS приложения
+
+# Добавление IOS приложения
+
+_Предварительные условия:_
+
+  * для подключения вашего приложения к Remote Config не обязательно иметь аккаунт в RuStore;
+  * добавлять приложения к аккаунту может только его владелец.
+
+  1. Откройте [Remote Config](https://remote-config.rustore.ru).
+  2. Перейдите на вкладку «Приложения».
+
+![](https://www.rustore.ru//help/assets/images/ios-
+list-5fe1b3588be678f069007526f493fbaf.webp)
+
+  3. Нажмите ![img](https://www.rustore.ru/data:image/webp;base64,UklGRsYHAABXRUJQVlA4WAoAAAAQAAAAzwAAHwAAQUxQSHYAAAABV2CQbeTgnUERzuBRPiIi7HsAp7W2rc0b8rxBVDy1ihYAmQl6OkHPP0BphEiGWfO4ioj+T4B0fi/r1t9TSccVMZY/MRjrsEK6LcV+oKhHCjNT/FbKBuOP9IIxU/wmisdAUXcU2YXC8ycGY+nKkEi6vTaveeYSVlA4ICoHAABQJQCdASrQACAAPj0WiUMiISEc628wIAPEswd38NjyAVxeKP43+e/YB8OVf7NbFe8A9QH5J/SX2EfNu9QH6geoD9gP3G9oj1AegB+rnquf472AP5z/pPYA8tb2Hv7P/x/YG/Z3//9YB1Y6W/5n+RPmP4SPSnsJoC/M/71+VXp3/ZvAHeK/yD+2fl3wBQAPxn+Lf4r8r/MQ/jPxm9yvqB/d/xg+En82/on5Sf1LnU6AH5D/2H9b/J36SP3n/g/4L8UfaJ8+f8f3Bf5N/TP9R9yPg0/bH2gP2gcLre/Oexc62rueJO9cbeCmIOSosEYd0s8f3l6VBxThVu9VsklqOxEvz7iatpYGtWFtU/HZg/W/wxojOySoYxq296cuT0bWIU+/HZs3NCqaegnhqCUHlhvXcVdAAP7qaYCi/z6RVWHFXVKqZfYtv9Lg/4t/vnUEWzA6AG7h/5GE/p/4vhxmNoCX+IdlZfuQv+Vn//05eBa4HbLQp6bI8+Uu3Vn2QKhOe1Wjs2v+czHczuelAnOIc0RVTnG2ncWWH+rFfmexXjbCqRcxiCKf/5A6k/Mu+/gRuvfe8l9wevjhOl4PuAo6WWzLuB7YzdxV+H+H3ddxipNVCVotHXEvIC3iGXwRwareYYZiNO69saQ7R+JlL5NrHseL9M1lNDT80icDEjxGnApg36ZKfMoG/nbglGQhPOJ80N+E9uoAci/mh8r8M+emNg9qmIXKbxa8YY9fBC5zCvN1piVZrH2q8xQUhRsVlzP6A8v4mx9rjlB/L9efty+mMZ4WdJemz6Ksj2z6FttKbNCiOJy7iQVnItYn6cj4IDhjoQSsLgFlbVcQjW+hO0P0m1sXNE7/iFa9+C1JAprgYJaBDI//5ACes8jjsFU4cFQqTjPx1/E12K5n3amaAwSuiX8VRMnbolgghs8OSRFkDlql3HAWTHxgLAy95VyQ+wd3HvV5xT6vfB71jUYND/zGUrnDBE4kxK0G7mMPwytHufYdWdHt5QKSqmdSFJxqAxLRN65Tif/8NOJm8GOJDUC+GyA1diTMWYOPrXByN5y06o1efeA/TUL5ApUOXKVj+YJUGv9YxuXV/LXls4HfZAnjW0TyUBo4NaeJ/ZZZQNak0Q245yIR89bTaRsLCH+sAvz/hSi3NcO9xhEeazFR7x1iDOxUAJ2mwZ3P+UO+I274H/xJIYNAZUcT0fA8Qb6h3yMY2Vjjz75F8zOjgavJP2ssJmtvhM+Ozo6TQDBV4Vwl2jaL/zCgd1uAlMgi1VQr02p+UoFXC0lgy8NcRgiexMk2y0FAuffODV266/dLpeSPym+oX0n2QiclHtT26mDkNJ3sFpI4Z5gso6e8yEGRzZxeEOL0aQfr4ZyK0gSUT0yUSNduOz25ZjWVRfiirhLL29rjHKSJyiUDdIVSekHthqYFBQy+mkaMBsOIhppGio4nkNzX5RUf0LRaw7Ywwmjquug+cKVtAzLVbZKUd1i7+tWw9KUIwljNYxcVWteHpoDEwkhwvLjyc4LI6u9UUFkeq4REa6xk5bqmyNT/pUcImZZkRiOUG69NBCSL2X+wW0Z3NmbDupW8CEE0TSbeD4fBBQvN61sX2z0xZ6wag2rB8VEUYaKZS0sotz01mNMKGki1XCSXT5JHX5nooKU2YorjTzuGfdrKrbr/giETT37rMJ73zOUyoY8sjlubyYMHG2lTXC1W8i/L74IVsIhjalM7vBUPi9nSoPqpk2zYW9coLfuKjM8+KVDTN5Mi+2sfWX5BY4CsWf+Dxxx6cXdcXocnxnO3V5BNcimwxFN8ix8FSbX45Mo4l99gPlgBxpJLjj7zBc+5wvFGD2r//jJEOrBhvcBPLkFhY4CGJrJ4px/EbkDAAWyYXyFN3yj8+lKWJt934DkH6L/QkDpu1ZVJPARUjcdGiv9RwO7+CdQ6xnvUcUCpHVBywguR+aNhn4qlj+4PQE3mAzy1dbhS0sCr8QqhyhQA7GQc6evnsfJAcbCRYnItc1fPqoOe90d8SFbbT6fmEdSvBO+zxgoIJU9Ge+Ed0uJ0tayhv3z35IadCggsU0awQrIH3k3tjzEkqrjKeWuLvy++pR36leLtp9Yb64eKdz9iiWAt+ajMJTpcLf1w+MdrTCeDLj+R+/VQEhaQci+6nxAnLVPfDmR2LoYHolLHHstGHILw8PMSei41Pe4bMJfkKzDwSKRLLQmSXm0z0z80kNK0APDUjIwV8/+v9oMVLJUuEDmitFR9ifDU2tnftt60dHUqUKT5pHhxmLfBVCm1CvrRboGJvm3CyEqqq5AWBOMGXPOTfShJde5LUL99o5Nq3feqa+3//gslTnSMOy7ZD3xgcNc9SftznlJutSp9U91EgH7ZJNyuEhd818n/heT7JTZUyhaUnUVoY0wRGIAISe4uDd5oHFWjSvAtqrg660mIgZvP+n6PqCJKAAAA) , чтобы добавить приложение в систему.
+
+  4. Введите имя для приложения и выберите тип платформы «IOS».
+
+![](https://www.rustore.ru//help/assets/images/add-
+app-64b68a420be873515b02931ee6987d2b.webp)
+
+подсказка
+
+Что такое функционал предварительной проверки?
+
+При добавлении вы сразу можете включить предварительную проверку при изменении
+и создании параметров. Это позволит протестировать конфигурацию перед
+применением, а также, при необходимости, назначить ответственных.
+
+При включённой настройке:
+
+  * после создания эксперименты переходят в статус _Pending_ и требуют обязательного теста вариантов. Только после теста вариантов эксперимент перейдет в статус _Ready to run_ и будет запущен в указанную дату старта;
+  * подтверждение параметров и условий после их создания становится обязательным.
+
+Читайте также:
+
+[Настройка работы с параметрами](/help/developers/tools/remote-config/setting-
+parameters)
+
+  5. Нажмите «Добавить» и приложение появится в списке.
+
+]
+

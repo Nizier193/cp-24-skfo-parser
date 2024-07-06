@@ -1,0 +1,20 @@
+url: https://www.rustore.ru/help/sdk/payments/kotlin-java
+title: Платежи in-app и подписки Kotlin/Java
+
+[## [🟦 Вопросы и ответы](/help/sdk/payments/payment-issues-faq)## [🟦 История
+обновлений](/help/sdk/payments/kotlin-java/history)## [🟦
+6.0.0](/help/sdk/payments/kotlin-java/6-0-0)## [🟦
+5.1.1](/help/sdk/payments/kotlin-java/5-1-1)## [🟦
+5.0.0](/help/sdk/payments/kotlin-java/5-0-0)## [🟦
+4.0.0](/help/sdk/payments/kotlin-java/4-0-0)## [🟦
+3.2.0](/help/sdk/payments/kotlin-java/3-2-0)## [🗃️ Обновление версии
+платежей](/help/sdk/payments/kotlin-java/migration), ## [🟦 Вопросы и
+ответы](/help/sdk/payments/payment-issues-faq), ## [🟦 История
+обновлений](/help/sdk/payments/kotlin-java/history), ## [🟦
+6.0.0](/help/sdk/payments/kotlin-java/6-0-0), ## [🟦
+5.1.1](/help/sdk/payments/kotlin-java/5-1-1), ## [🟦
+5.0.0](/help/sdk/payments/kotlin-java/5-0-0), ## [🟦
+4.0.0](/help/sdk/payments/kotlin-java/4-0-0), ## [🟦
+3.2.0](/help/sdk/payments/kotlin-java/3-2-0), ## [🗃️ Обновление версии
+платежей](/help/sdk/payments/kotlin-java/migration)]
+

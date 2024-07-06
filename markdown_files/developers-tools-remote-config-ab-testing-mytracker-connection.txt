@@ -1,0 +1,46 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/ab-testing/mytracker-connection
+title: Инструменты RuStore Remote Config A/B-тестирование Подключение MyTracker
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * [A/B-тестирование](/help/developers/tools/remote-config/ab-testing)
+  * Подключение MyTracker
+
+Содержание этой страницы
+
+# Как подключить MyTracker
+
+Для работы с А/В эскпериментами требуется подключение к MyTracker, иначе
+некоторые возможности будут недоступны. С помощью MyTracker вы можете добавить
+метрики и отслеживать их. Метрики позволяют понять, успешен ли ваш
+эксперимент.
+
+### Пример​
+
+Вам нужно увечилить продажи внутри приложения. У вас есть гипотеза, что
+пользователи охотнее купят товары, если обновить навигацию в меню. Создайте
+эксперимент, в рамках которого часть пользователей увидят обновлённое
+приложение, и добавьте метрику для отслеживания его результатов.
+
+## Как подключить MyTracker​
+
+  1. Откройте [Remote Config](https://remote-config.rustore.ru).
+  2. Выберите приложение.
+  3. Перейдите во вкладку «A/B эксперименты».
+  4. Нажмите «Подключить MyTracker». Подключение происходит в сервисе «Инструменты» в RuStore Консоли.
+
+![](https://www.rustore.ru//help/assets/images/metrics-not-
+available-e7fe08e1f0cfa460a017910fb5c9685a.png)
+
+  5. После подключения MyTracker нажмите «Добавить метрику». (См. [Метрики](/help/developers/tools/remote-config/ab-testing/metrics))
+
+![](https://www.rustore.ru//help/assets/images/metrics-1-524eb7cb6ae3298c7d260dc023e8a772.png)
+
+Читайте также: [как зарегистрироваться в MyTracker через
+RuStore](/help/developers/tools/mytracker/quick-start/).
+
+]
+

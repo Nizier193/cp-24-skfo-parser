@@ -1,0 +1,60 @@
+url: https://www.rustore.ru/help/developers/monetization/payment-callback/
+title:  Монетизация Уведомления на сервер
+
+[
+
+  * [](/help/)
+  * [ Монетизация](/help/developers/monetization/)
+  * Уведомления на сервер
+
+Содержание этой страницы
+
+# Как настроить получение уведомлений на сервер
+
+Уведомления на сервер (server notification, callback) — это сервис, который в
+режиме реального времени отправляет уведомления об изменении [статусов
+платежей](/help/developers/monetization/manage-payments#payment-status) в
+вашем приложении. Вы сможете своевременно получать актуальные статусы без
+необходимости запрашивать их вручную.
+
+Чтобы начать получать уведомления, [настройте ваш
+сервер](/help/developers/monetization/payment-callback/server-set-up) и
+[включите отправку уведомлений](/help/developers/monetization/payment-
+callback/enable-notifications) в RuStore Консоль.
+
+к сведению
+
+Настройка отправки уведомлений доступна только «Владельцам» и
+«Администраторам» приложения. Подробнее о ролях см. в разделе [Управление
+доступами и ролями пользователей в RuStore
+Консоли](/help/developers/developer-account/user-roles/).
+
+## Ограничения​
+
+Уведомления сообщают только об изменении статуса платежей. Чтобы узнать полную
+информации о платеже, используйте токен покупки `purchase_token`, который
+передаётся в уведомлении. См. [получение данных платежа](/help/work-with-
+rustore-api/api-subscription-payment/api-token-payment-method) через RuStore
+API.
+
+## Гарантии доставки уведомлений​
+
+Если RuStore не получает от вашего сервера ответ «Уведомление успешно
+доставлено» в течение 3 секунд, уведомление отправляется повторно. Всего
+совершается 16 попыток отправить уведомление повторно в течение 36 часов.
+Интервалы между попытками с каждым разом увеличиваются.
+
+Если после всех повторных отправок RuStore не получает подтверждение о
+доставке, попытки отправить уведомление прекращаются.
+
+## В этом разделе​
+
+  * [Настройка сервера для получения уведомлений](/help/developers/monetization/payment-callback/server-set-up)
+  * [Включение отправки уведомлений](/help/developers/monetization/payment-callback/enable-notifications)
+  * [Отключение отправки уведомлений](/help/developers/monetization/payment-callback/disable-notifications)
+  * [Изменение адреса сервера для получения уведомлений](/help/developers/monetization/payment-callback/edit-server-name)
+  * [Обновление ключа шифрования](/help/developers/monetization/payment-callback/update-key)
+  * [Структура уведомления](/help/developers/monetization/payment-callback/notification)
+
+]
+

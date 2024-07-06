@@ -1,0 +1,20 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings/react/history
+title: Подключение отзывов и оценок React Native История обновлений
+
+[
+
+  * [](/help/)
+  * [Подключение отзывов и оценок](/help/sdk/reviews-ratings)
+  * [React Native](/help/sdk/reviews-ratings/react)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 1.0.0​
+
+Релизная версия.
+
+]
+

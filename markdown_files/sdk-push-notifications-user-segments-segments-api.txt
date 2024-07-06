@@ -1,0 +1,338 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/user-segments/segments-api
+title: Push-уведомления Работа с сегментами пользователей (API) Работа с сегментами (API)
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Работа с сегментами пользователей (API)](/help/sdk/push-notifications/work-with-segments-push-api)
+  * Работа с сегментами (API)
+
+Содержание этой страницы
+
+# Работа с сегментами (API)
+
+Для работы с сегментами потребуются следующие артефакты:
+
+  * `project_id` (ID проекта) и `ss_token` (сервисный токен) — значения из [RuStore Консоль](https://console.rustore.ru/waiting). Чтобы получить их, на странице приложения перейдите в раздел «Push-уведомления» — «Проекты» и скопируйте значения из полей «ID проекта» и «Сервисные токены».
+  * `push_token` — push-токен(ы) устройств для подписки на рассылку по топику и отписки от неё.
+  * `mt_api_user_id` — API User ID из myTracker.
+  * `mt_secret_key` — cекретный ключ к API из myTracker.
+  * `mt_segment_id` — ID сегмента из myTracker.
+  * `mt_app_id` — идентификатор приложения.
+  * `export_project_id` (uuid) — ID проекта экспорта.
+  * `export_segment_id` (uuid) — ID сегмента для экспорта.
+
+## Создание проекта экспорта​
+
+`POST` `https://vkpns-segments.rustore.ru/v1/export_settings/project/create`
+
+**Заголовок**
+
+`Authorization: Authorization: Bearer $ss_token`
+
+**Тело запроса**
+
+Параметр| Тип| Описание  
+---|---|---  
+`project`| text| ID push проекта из консоли разработчика  
+`secret_key`| text| Секретный ключ к API MyTracker  
+`api_user_id`| text| ID пользователя MyTracker, от которого будут выгружаться
+сегменты  
+`app_id`| int| ID приложения MyTracker  
+  
+**Тело успешного ответа**
+
+Параметр| Тип| Описание  
+---|---|---  
+`export_project_id`| text| ID проекта экспорта  
+  
+**Тело ответа ошибки**
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки  
+`message`| text| Подробная ошибка  
+`status`| text| Статус  
+  
+**Пример запроса**
+
+    
+    
+    curl --location 'https://vkpns-segments.rustore.ru/v1/export_settings/project/create' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Accept: application/json' \  
+    --header 'Authorization: Bearer <ss_token>' \  
+    --data '{  
+      "project": "<project_id>",  
+      "api_user_id": "<mt_api_user_id>",  
+      "secret_key": "<mt_secret_key>",  
+      "app_id": <mt_app_id>  
+    }';  
+    
+
+**Примеры ответа**
+
+Успешный ответ
+
+    
+    
+    HTTP/2 200  
+       
+    {  
+        "id": "b04b48ab-3125-444f-94eb-aad511c074e7"  
+    };  
+    
+
+Невалидный s2s-токен
+
+    
+    
+    HTTP/2 400  
+       
+    {  
+        "code": 2000,  
+        "status": "BAD_REQUEST",  
+        "message": "Invalid S2S token"  
+    };  
+    
+
+## Получение настроек проекта экспорта​
+
+`POST` `https://vkpns-segments.rustore.ru/v1/export_settings/project/get`
+
+**Заголовок**
+
+`Authorization: Authorization: Bearer $ss_token`
+
+**Тело запроса**
+
+Параметр| Тип| Описание  
+---|---|---  
+`id`| text| ID проекта экспорта  
+  
+**Тело успешного ответа**
+
+Параметр| Тип| Описание  
+---|---|---  
+`app_id`| int| ID приложения MyTracker  
+`id`| text| ID проекта экспорта  
+`project`| text| ID push проекта из консоли разработчика  
+  
+**Тело ответа ошибки**
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки  
+`status`| text| Статус  
+`message`| text| Подробная ошибка  
+  
+**Пример запроса**
+
+    
+    
+    curl --location 'https://vkpns-segments.rustore.ru/v1/export_settings/project/get' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Accept: application/json' \  
+    --header 'Authorization: Bearer <ss_token>' \  
+    --data '{  
+      "id": "<export_project_id>"  
+    }';  
+    
+
+**Пример ответа**
+
+Успешный ответ
+
+    
+    
+    HTTP/2 200  
+       
+    {  
+        "id": "<export_project_id>",  
+        "app_id": <mt_app_id>,  
+        "project": "<project_id>"  
+    };  
+    
+
+## Создание сегмента для экспорта​
+
+`POST` `https://vkpns-
+segments.rustore.ru/v1/export_settings/project/<export_project_id>/segments/create`
+
+**Заголовок**
+
+`Authorization: Authorization: Bearer $ss_token`
+
+**Тело запроса**
+
+Параметр| Тип| Описание  
+---|---|---  
+`period`| int| Периодичность выгрузки в часах  
+`segment`| text| ID сегметра из MyTracker  
+  
+**Тело успешного ответа**
+
+Параметр| Тип| Описание  
+---|---|---  
+`export_segment_id`| text| ID сегмента для выгрузки  
+  
+**Тело ответа ошибки**
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки  
+`status`| text| Статус  
+`message`| text| Подробная ошибка  
+  
+**Пример запроса**
+
+    
+    
+    curl --location 'https://vkpns-segments.rustore.ru/v1/export_settings/project/<export_project_id>/segments/create' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Accept: application/json' \  
+    --header 'Authorization: Bearer <ss_token>' \  
+    --data '{  
+      "period": 24,  
+      "segment": "<mt_segment_id>"  
+    }';  
+    
+
+**Пример ответа**
+
+Успешный ответ
+
+    
+    
+    HTTP/2 200  
+       
+    {  
+        "id": "<export_segment_id>"  
+    };  
+    
+
+## Получение данных сегментов для экспорта​
+
+`POST` `https://vkpns-
+segments.rustore.ru/v1/export_settings/project/<export_project_id>/segments/get`
+
+**Заголовок**
+
+`Authorization: Authorization: Bearer $ss_token`
+
+**Тело успешного ответа**
+
+Параметр| Тип| Описание  
+---|---|---  
+`segments`| `array<Segment>`| Массив с сегментами  
+  
+**Segment**
+
+Параметр| Тип| Описание  
+---|---|---  
+`id`| text| ID сегмента для выгрузки  
+`segment`| text| ID сегметра из MyTracker  
+`period`| int| Периодичность выгрузки в часах  
+`is_enabled`| boolean| Флаг, включён данный сегмент или нет  
+  
+**Тело ответа ошибки**
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки  
+`status`| text| Статус  
+`message`| text| Подробная ошибка  
+  
+**Пример запроса**
+
+    
+    
+    curl --location --request POST 'https://vkpns-segments.rustore.ru/v1/export_settings/project/<export_project_id>/segments/get' \  
+    --header 'Accept: application/json' \  
+    --header 'Authorization: Bearer <ss_token>';  
+    
+
+**Пример ответа**
+
+Успешный ответ
+
+    
+    
+    HTTP/2 200  
+       
+    {  
+        "segments": [  
+            {  
+                "id": "<export_segment_id>",  
+                "segment": "<mt_segment_id>",  
+                "period": 24,  
+                "is_enabled": true  
+            }  
+        ]  
+    };  
+    
+
+## Отправка push-уведомления в сегмент​
+
+`POST` `https://vkpns-
+segments.rustore.ru/v1/projects/<project_id>/segments/<mt_segment_id>/publish`
+
+**Заголовок**
+
+`Authorization: Authorization: Bearer $ss_token`
+
+**Тело запроса**
+
+Параметр| Тип| Описани е  
+---|---|---  
+`message`| object (message)| Сообщение  
+  
+**Тело успешного ответа**
+
+Параметр| Тип| Описание  
+---|---|---  
+`message`| text| Сообщение об успешной отправке пуша  
+  
+**Тело ответа ошибки**
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки  
+`status`| text| Статус  
+`message`| text| Подробная ошибка  
+  
+**Пример запроса**
+
+    
+    
+    curl --location 'https://vkpns-segments.rustore.ru/v1/projects/<project_id>/segments/<mt_segment_id>/publish' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Accept: application/json' \  
+     --header 'Authorization: Bearer <ss_token>' \  
+    --data '{  
+        "message": {  
+            "notification":{  
+            "body":"This is a notification message!",  
+            "title":"Message",  
+            "image":"https://image-hosting.org/284239234.jpeg"  
+          }  
+        }  
+    }';  
+    
+
+**Пример ответа**
+
+Успешный ответ
+
+    
+    
+    HTTP/2 200  
+       
+    {  
+        "message": "payload has been successfully published to segment <mt_segment_id>"  
+    };  
+    
+
+]
+

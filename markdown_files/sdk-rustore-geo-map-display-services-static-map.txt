@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/map-display-services/static-map
+title: Карты и геосервисы Сервисы отображения карт Статичная карта
+
+[## [🟦 Сервис получения карты](/help/sdk/rustore-geo/map-display-
+services/static-map/main)## [🟦 Коллекция булавок](/help/sdk/rustore-geo/map-
+display-services/static-map/collection-of-pins), ## [🟦 Сервис получения
+карты](/help/sdk/rustore-geo/map-display-services/static-map/main), ## [🟦
+Коллекция булавок](/help/sdk/rustore-geo/map-display-services/static-
+map/collection-of-pins)]
+

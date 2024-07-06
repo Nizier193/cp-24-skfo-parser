@@ -1,0 +1,42 @@
+url: https://www.rustore.ru/help/users/start/change-theme
+title: Начало работы с RuStore Как изменить тему приложения RuStore
+
+[
+
+  * [](/help/)
+  * [Начало работы с RuStore](/help/users/start)
+  * Как изменить тему приложения RuStore
+
+# Как легко изменить тему в приложении RuStore
+
+В приложении RuStore доступны следующие темы оформления:
+
+  1. Светлая
+  2. Тёмная
+  3. Розовая
+  4. Как в системе
+
+Чтобы изменить тему:
+
+  1. Откройте приложение RuStore.
+  2. Нажмите ![icon](https://www.rustore.ru/data:image/webp;base64,UklGRuwDAABXRUJQVlA4IOADAAAQFwCdASpLADsAPkUgjESioiETOgXAKAREswBouf49J/IDhmzBqEBykHqA8wH6Mfsz7JvqA9AD+x+if6gHoAfrd6VP7R/BF+1n7mfAR+uP/s1sBNXlVT7N0a8j3+A1jPyJvlf+L+0nXLfrVxg3cHnD/zPps/6XlH+Xv2C+AX+T/0r/aerN6+P2O9k79wDMTAhGxc+gtoyI77XVmjXdvWXvJ6OkDwQiy+9Y9wCZmKPJWy4tt5L7aQjWPL/EhtTIWnfAAP7+FMLD/J2ApwB5z/0IsUIimwzPe51se+A0BlzPCpWtpi//wZsWlettI9xDo55f+srulxNzeHsIWx7t/cIHnnYF77/0UH5TJYntCCTTJ+uFTVkwnJOo4YCEzYIUZCi8G8PlYL3wnzs+fZPYFglXfc8cfsNa0qpG9ECP+W+letFdw3zrP5NIJOLrPkgRAoq2lcK6GICmAZ263dk/oloH3Zxq2X//GplLNz9j0UMPgP7g1BDqavYH8Hoh/gARHv3D2Yzy5ea9hjJe8s9cJ7y/q6n9sl82/o030/36gYqREXfHwrjejbPxgp/krktI6kqx/FvAv6Ep8fYhlXID5xKeyPl+AvTVMBNqPWLfAX1clhJSa0ia0lBquaf+rPr30ha/7eoH74c9C/SAtEC+klIfR7R3oEseOiYpJotyBOoNo9Usxh+sVR3oBZ/x0A6EOcxhsb3mjHTYIubdH//JnPvKmeuUZcC9b9LLSHt8krmsWutKI4C9aXUgMyAbMQBkG3dx/almRHxupEeEarBPmf9Aj/p+pEinH/+Efv/jB7G7NjpDb1Z81v8vFY0HVIckuZ3YRJn21TdlZ17E/Rsppz+TJwpogjrimyBbfn/YXbD/VL32+Atz6IOVxqF/2v/7OEglTyNB+XU8E0w8eKBSw/NoQMHQG9yObvoJZ+V0vJ2lvh+JPzHgsm87WZJFBYwr9s0gC/7Ye73BzT+b8EuePjeRTtSI/vlKtfEROIWtUQ9xK8QxCyw9AVZrPYnQQqNxHPJeIazEctorMJLXVYta4BXOL5z5iDIWW781TzYA48W5VhO/CaF80TSBgHBJax7fP700NU3/7Hx/7ANHzrd+JrNnXpzb0AqYIfw19urSwzdH0t+2a1fdsqfxN3UKqK9Eq1SHf3PnaMleJn7y6bh0/3AnF+U3Yid2RdhlnFfgtmNQwi/iiEL+BaMVOxwyRwzbW6qn4gWVdUjt9p+Z+ywb0kJSkLOpvk4tydUJJkn3M7e1w3GVd9wkqW3LA/liGbOLUmvFTA9oxh5UNQeKMQGMFhcsGsoAAmg8AAVJzR6GIAAAAA==) в нижнем меню.
+  3. Выберите пункт «Тема».
+  4. Выберите вариант оформления.
+  5. Нажмите кнопку «Применить».
+
+![img](https://www.rustore.ru//help/assets/images/b5e06e82357058b315650e7d9cb83ea9-3c365d39688d0eff6104b0918cd2fec4.webp)
+
+![img](https://www.rustore.ru//help/assets/images/199ac1b4e4c49678022be27c0810b914-febdeb82f91ab0b1e9e945f69c7edc65.webp)
+
+![img](https://www.rustore.ru//help/assets/images/dc09ed0b67a0f124b6fb442fc72bf65f-1656ea01af22050281289cbb9cd2aa8c.webp)
+
+**Читайте также:**
+
+  * [Как обновить RuStore](/help/users/start/update-rustore-app)
+
+  * [Как настроить родительский контроль в RuStore](/help/users/start/change-theme)
+
+  * [Как настроить уведомления в RuStore](/help/users/start/notification)
+
+]
+

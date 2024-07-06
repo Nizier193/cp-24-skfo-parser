@@ -1,0 +1,14 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/search-and-geocoding-services
+title: Карты и геосервисы Сервисы поиска и геокодирования
+
+[## [🟦 Поиск мест интереса](/help/sdk/rustore-geo/search-and-geocoding-
+services/search-places-of-interest)## [🟦 Сервис
+геокодирования](/help/sdk/rustore-geo/search-and-geocoding-services/geocoding-
+service)## [🟦 Подсказчик адреса и мест интереса](/help/sdk/rustore-geo/search-
+and-geocoding-services/adress-and-places-of-interest-prompter), ## [🟦 Поиск
+мест интереса](/help/sdk/rustore-geo/search-and-geocoding-services/search-
+places-of-interest), ## [🟦 Сервис геокодирования](/help/sdk/rustore-
+geo/search-and-geocoding-services/geocoding-service), ## [🟦 Подсказчик адреса
+и мест интереса](/help/sdk/rustore-geo/search-and-geocoding-services/adress-
+and-places-of-interest-prompter)]
+

@@ -1,0 +1,13 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/sdk/defold
+title: Инструменты RuStore Remote Config SDK и конфигурация приложения Defold
+
+[## [🟦 История обновлений](/help/developers/tools/remote-
+config/sdk/defold/history)## [🟦 1.1.1](/help/developers/tools/remote-
+config/sdk/defold/1-1-1)## [🟦 1.1.0](/help/developers/tools/remote-
+config/sdk/defold/1-1-0)## [🟦 1.0.0](/help/developers/tools/remote-
+config/sdk/defold/1-0-0), ## [🟦 История
+обновлений](/help/developers/tools/remote-config/sdk/defold/history), ## [🟦
+1.1.1](/help/developers/tools/remote-config/sdk/defold/1-1-1), ## [🟦
+1.1.0](/help/developers/tools/remote-config/sdk/defold/1-1-0), ## [🟦
+1.0.0](/help/developers/tools/remote-config/sdk/defold/1-0-0)]
+

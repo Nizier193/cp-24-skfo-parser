@@ -1,0 +1,20 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/flutter/history
+title: Push-уведомления Flutter История обновлений
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Flutter](/help/sdk/push-notifications/flutter)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 1.0.0​
+
+Релизная версия.
+
+]
+

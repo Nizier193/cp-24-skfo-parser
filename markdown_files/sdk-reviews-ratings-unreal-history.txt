@@ -1,0 +1,29 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings/unreal/history
+title: Подключение отзывов и оценок Unreal Engine История обновлений
+
+[
+
+  * [](/help/)
+  * [Подключение отзывов и оценок](/help/sdk/reviews-ratings)
+  * [Unreal Engine](/help/sdk/reviews-ratings/unreal)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия SDK 2.0.0​
+
+  * Версия SDK review 2.+.
+
+## Версия SDK 1.0.1​
+
+  * Внутреннее обновление SDK.
+
+## Версия SDK 1.0​
+
+  * Добавлены асинхронные варианты Blueprint-методов вместо подписок на события.
+  * Багфиксы.
+
+]
+

@@ -1,0 +1,67 @@
+url: https://www.rustore.ru/help/sdk/rustore-deeplinks
+title: RuStore Deeplinks
+
+[
+
+  * [](/help/)
+  * RuStore Deeplinks
+
+Содержание этой страницы
+
+# RuStore Deeplinks
+
+Вы можете открыть некоторые экраны приложения RuStore из вашего приложения,
+используя deeplinks.
+
+К примеру, вы можете открыть экран со всеми подписками пользователя, используя
+следующий код.
+
+    
+    
+    try {  
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse( "rustore://profile/subscriptions" )))  
+    }  catch (ex: ActivityNotFoundException) {  
+        // Handle error when RuStore is not installed  
+    }  
+    
+
+Здесь: `rustore://profile/subscriptions` — это RuStore deeplink. Вы можете
+заменить его на любой из перечисленных ниже, чтобы открыть необходимый экран
+приложения RuStore.
+
+## Поддерживаемые браузеры​
+
+Браузер| Поддержка RuStore Deeplinks  
+---|---  
+Google Chrome| Есть  
+Яндекс Браузер| Есть  
+Mozilla Firefox| Нет  
+Opera| Нет  
+Mi Browser| Нет  
+Samsung Internet| Нет  
+  
+## Список deeplinks​
+
+Функция| Deeplinks  
+---|---  
+Экран приложения|
+
+  * `rustore://apps.rustore.ru/app/{packageName}` — откроется RuStore;
+  * `https://apps.rustore.ru/app/{packageName}` — откроется RuStore, если приложение RuStore установлено на устройстве пользователя, иначе откроется web-страница приложения в витрине;
+  * `market://details?id={packageName}` — предложит открыть RuStore или другие магазины приложений.
+
+  
+Здесь: `{packageName}` — имя пакета приложения.  
+Экран подписок| `rustore://profile/subscriptions`.  
+Экран аккаунта/обновлений| `rustore://apps.rustore.ru/updates`.  
+Экран авторизации| `rustore://auth`.  
+Экран разработчика (с версии 1.36.0)|
+`rustore://apps.rustore.ru/developer/{devId}`:  
+
+  * deeplink будет вести на отдельный экран со всеми приложениями разработчика, опубликованными в RuStore (на мобильное устройство или в веб);
+  * `devId` можно увидеть в строке браузера в веб-версии при переходе на экран со всеми приложениями разработчика.
+
+  
+  
+]
+

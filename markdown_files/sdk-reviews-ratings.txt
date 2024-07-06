@@ -1,0 +1,15 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings
+title: Подключение отзывов и оценок
+
+[## [🗃️ Kotlin/Java](/help/sdk/reviews-ratings/kotlin-java)## [🗃️
+Unity](/help/sdk/reviews-ratings/unity)## [🗃️ Godot](/help/sdk/reviews-
+ratings/godot)## [🗃️ React Native](/help/sdk/reviews-ratings/react)## [🗃️
+Flutter](/help/sdk/reviews-ratings/flutter)## [🗃️ Unreal
+Engine](/help/sdk/reviews-ratings/unreal)## [🗃️ Defold](/help/sdk/reviews-
+ratings/defold), ## [🗃️ Kotlin/Java](/help/sdk/reviews-ratings/kotlin-java),
+## [🗃️ Unity](/help/sdk/reviews-ratings/unity), ## [🗃️
+Godot](/help/sdk/reviews-ratings/godot), ## [🗃️ React
+Native](/help/sdk/reviews-ratings/react), ## [🗃️ Flutter](/help/sdk/reviews-
+ratings/flutter), ## [🗃️ Unreal Engine](/help/sdk/reviews-ratings/unreal), ##
+[🗃️ Defold](/help/sdk/reviews-ratings/defold)]
+

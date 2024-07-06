@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/sdk/updates/react
+title: Обновление приложения React Native
+
+[## [🟦 6.0.0](/help/sdk/updates/react/6-0-0)## [🟦
+3.0.0](/help/sdk/updates/react/3-0-0)## [🟦
+2.0.0](/help/sdk/updates/react/2-0-0), ## [🟦
+6.0.0](/help/sdk/updates/react/6-0-0), ## [🟦
+3.0.0](/help/sdk/updates/react/3-0-0), ## [🟦
+2.0.0](/help/sdk/updates/react/2-0-0)]
+

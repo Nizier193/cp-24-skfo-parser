@@ -1,0 +1,397 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/unity/1-0-0
+title: Push-уведомления Unity 1.0.0
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Unity](/help/sdk/push-notifications/unity)
+  * 1.0.0
+
+Содержание этой страницы
+
+# SDK push-уведомлений для Unity (версия 1.0.0)
+
+Условия работы push-уведомлений:
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore должно поддерживать функциональность push-уведомлений.
+  * Приложению RuStore разрешен доступ к работе в фоновом режиме. Без этого разрешения push-уведомления будут приходить, но со значительной задержкой.
+  * Отпечаток подписи приложения должен совпадать с отпечатком, добавленным в [Консоль RuStore](https://dev.rustore.ru/).
+
+## Пример реализации​
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/unity-rustore-push-sdk), чтобы
+узнать, как правильно интегрировать SDK push-уведомлений.
+
+## Подключение в проект​
+
+  1. Скачайте [RuStore Push SDK](https://gitflic.ru/project/rustore/unity-rustore-push-sdk).
+
+  2. Импортируйте SDK в проект: Assets — Import Package — Custom Package. Зависимости подключаются автоматически с помощью External Dependency Manager, который включен в SDK.
+
+  3. Установите `Minimum API level` не ниже `24`.
+
+  4. Отключите минификацию приложения (ProGuard/R8) в настройках проекта: File — Build Settings — Player Settings — Publishing Settings— Minify. Она не поддерживается.
+
+### Редактирование манифеста приложения​
+
+Объявите службу `RuStoreUnityMessagingService`:
+
+    
+    
+    <service  
+        android:name = "ru.rustore.unitysdk.pushclient.RuStoreUnityMessagingService"  
+        android:exported = "true"  
+        tools:ignore = "ExportedService">  
+        <intent-filter>  
+            <action android:name = "ru.rustore.sdk.pushclient.MESSAGING_EVENT" />  
+        </intent-filter>  
+    </service>  
+    
+
+Если нужно изменить иконку или цвет стандартной нотификации, добавьте:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_icon"  
+        android:resource="@drawable/ic_baseline_android_24" />  
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_color"  
+        android:resource="@color/your_favorite_color" />  
+    
+
+Если нужно переопределить канал уведомлений, добавьте:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_channel_id"  
+        android:value="@string/pushes_notification_channel_id" />  
+    
+
+При добавлении канала push-уведомлений вы должны создать канал самостоятельно.
+
+## Инициализация​
+
+Для инициализации переопределите в проекте класс `Application`. Необходимый
+исходный код уже содержится в файле
+`Assets/RuStoreSDK/PushClient/Android/RuStoreUnityApplication.java`:
+
+RuStoreUnityApplication.java
+
+    
+    
+    package ru.rustore.unitysdk;  
+    import android.app.Application;  
+    import ru.rustore.unitysdk.pushclient.RuStoreUnityPushClient;  
+    public class RuStoreUnityApplication extends Application {  
+        @Override public void onCreate() {  
+             super .onCreate();  
+             RuStoreUnityPushClient.init(  
+                application = this  
+             );  
+        }  
+    }  
+    
+
+  * `application` — экземпляр класса `Application`.
+
+Этот класс укажите `AndroidManifest.xml` проекта:
+
+AndroidManifest.xml
+
+    
+    
+    <application android:name = "ru.rustore.unitysdk.RuStoreUnityApplication">  
+    
+
+Параметры, с которыми инициализируется библиотека, настраиваются в редакторе
+Unity. Выберите в меню редактора пункт Window — RuStoreSDK — Settings — Push
+Client.
+
+  * `VKPNS Project Id` — идентификатор проекта из [RuStore Консоль](https://console.rustore.ru/waiting). Чтобы получить его, на странице приложения перейдите в раздел «Push-уведомления» — «Проекты» и скопируйте значение в поле «ID проекта».
+  * `Allow Native Error Handling` — разрешить обработку ошибок в нативном SDK.
+
+Перед вызовом методов библиотеки из кода C# вызовите её инициализацию:
+
+    
+    
+    var сonfig =  new RuStorePushClientConfig() {  
+        allowNativeErrorHandling = true ,  
+        messagingServiceListener = pushServiceListener,  
+        logListener = pushLogListener  
+    };  
+    RuStorePushClient.Instance.Init(сonfig);  
+    
+
+  * `allowNativeErrorHandling` — разрешить обработку ошибок в нативном SDK, см. раздел Обработка ошибок.
+  * `messagingServiceListener` — объект класса, который реализует интерфейс `IMessagingServiceListener`.
+  * `logListener` — объект класса, который реализует интерфейс `ILogListener`.
+
+## Проверка возможности получать push-уведомления​
+
+Для проверки того, что приложение RuStore установлено на устройстве
+пользователя, используйте метод `RuStorePushClient.checkPushAvailability`.
+
+    
+    
+    RuStorePushClient.Instance.CheckPushAvailability(  
+        onFailure: (error) => {  
+            // Process error  
+        },  
+        onSuccess: (response) => {  
+            if (!response.isAvailable) {  
+                // Process push unavailable  
+            }  
+        });  
+    
+
+## Методы для работы с push-токеном​
+
+### Получение push-токена пользователя​
+
+предупреждение
+
+Если у пользователя нет push-токена, метод создаст и вернёт новый push-токен.
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.getToken()`, чтобы получить текущий push-токен
+пользователя.
+
+    
+    
+    RuStorePushClient.Instance.GetToken(  
+        onFailure: (error) => {  
+            // Process error   
+        },  
+        onSuccess: (token) => {  
+            // Process success   
+        });  
+      
+    
+
+### Удаление push-токена пользователя​
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.deleteToken()`, чтобы удалить текущий push-токен
+пользователя.
+
+    
+    
+    RuStorePushClient.Instance.DeleteToken(  
+        onFailure: (error) => {  
+            // Process error  
+        },  
+        onSuccess: () => {  
+            // Process success  
+        });  
+    
+
+## Методы для работы с push-топиком​
+
+### Подписка на push-уведомления по топику​
+
+После инициализации библиотеки вы можете использовать метод
+`SubscribeToTopic(your_topic_name)` для подписки на топик.
+
+    
+    
+    RuStorePushClient.Instance.SubscribeToTopic(  
+        topicName: "your_topic_name" ,  
+        onFailure: (error) => {  
+            // Process error  
+        },  
+        onSuccess: () => {  
+            // Process success  
+        });  
+    
+
+### Отписка от push-уведомлений по топику​
+
+После инициализации библиотеки вы можете использов ать метод
+`UnsubscribeFromTopic(your_topic_name)` для отписки от топика.
+
+    
+    
+    RuStorePushClient.Instance.UnsubscribeFromTopic(  
+        topicName: "your_topic_name" ,  
+        onFailure: (error) => {  
+            // Process error  
+        },  
+        onSuccess: () => {  
+            // Process success  
+        });  
+    
+
+## Получение данных от RuStore SDK​
+
+    
+    
+    public interface IMessagingServiceListener {  
+        public void OnNewToken(string token);  
+        public void OnMessageReceived(RemoteMessage message);  
+        public void OnDeletedMessages();  
+        public void OnError(List<RuStoreError> errors);  
+    }  
+    
+
+Название метода| Описание  
+---|---  
+`onNewToken`| Метод вызывается при получении нового push-токена. После вызова
+этого метода ваше приложение становится ответственно за передачу нового push-
+токена на свой сервер. Метод возвращает значение нового токена.  
+`onMessageReceived`| Метод вызывается при получении нового push-уведомления. <
+p/> Если в объекте `notification` есть данные, RuStore SDK самостоятельно
+отображает уведомление. Если вы не хотите этого, используйте объект `data`, а
+`notification` оставьте пустым. Метод вызывается в любом случае. < p/>
+Получить payload push-уведомления Dictionary<string, string> можно из поля
+`message.data`.  
+`DeletedMessagesResponse`| Метод вызывается, если один или несколько push-
+уведомлений не доставлены на устройство. Например, если время жизни
+уведомления истекло до момента доставки. < p/> При вызове этого метода
+рекомендуется синхронизироваться со своим сервером, чтобы не пропустить
+данные.  
+`ErrorResponse`| Метод вызывается, если в момент инициализации возникает
+ошибка. Он возвращает массив объектов с ошибками. < p/> Возможные ошибки:
+
+  * `UnauthorizedException` — пользователь не авторизован в RuStore.
+  * `HostAppNotInstalledException` — RuStore отсутствует на устройстве пользователя.
+  * `HostAppBackgroundWorkPermissionNotGranted` — у RuStore нет разрешения на работу в фоне.
+
+Все возмож ные ошибки описаны в разделе Обработка ошибок.  
+  
+### Структура уведомления​
+
+Структура полного уведомления
+
+    
+    
+    public class RemoteMessage {  
+        public string collapseKey;  
+        public Dictionary< string ,  string > data;  
+        public string messageId;  
+        public Notification notification;  
+        public int priority;  
+        public sbyte [] rawData;  
+        public int ttl;  
+    }  
+    
+
+  * `messageId` — уникальный ID сообщения. Является идентификатором каждого сообщения.
+
+  * `priority` — возвращает значение приоритетности (на данный момент не учитывается).
+
+Сейчас заложены следующие варианты:
+
+    * `0` — `UNKNOWN`.
+    * `1` — `HIGH`.
+    * `2` — `NORMAL`.
+
+< p/>
+
+  * `ttl` — время жизни push-уведомления типа `Int` в секундах.
+
+  * `from` — поле, по которому можно понять, откуда пришло уведомление: < p/>
+
+    * Для уведомлений, отправленных в топик, в поле отображается имя топика.
+    * В других случаях — часть вашего сервисного токена.
+
+< p/>
+
+  * `collapseKey` — идентификатор группы уведомлений (на данный момент не учитывается).
+
+  * `data` — словарь, в который можно передать дополнительные данные для уведомления.
+
+  * `rawData` — словарь `data` в виде массива байтов.
+
+  * `notification` — объект уведомления.
+
+Структура объекта Notification
+
+    
+    
+    public class Notification {  
+        public string title;  
+        public string body;  
+        public string channelId;  
+        public string imageUrl;  
+        public string color;  
+        public string icon;  
+        public string clickAction;  
+    }  
+    
+
+  * `title` — заголовок уведомления.
+
+  * `body` — тело уведомления
+  * `channelId` — возможность задать канал, в который отправится уведомление. Актуально для Android 8.0 и выше.
+
+  * `imageUrl` — прямая ссылка на изображение для вставки в уведомление. Изображение должно быть не более 1 Мбайт.
+
+  * `color` — цвет уведомления в HEX-формате, строкой. Например, `#0077FF`.
+
+  * `icon` — значок уведомления из `res/drawable` в формате строки, которая совпадает с названием ресурса. < p/> Например, в `res/drawable` есть значок `small_icon.xml`, который доступен в коде через `R.drawable.small_icon`. Чтобы значок отображался в уведомлении, сервер должен указать в параметре `icon` значение `small_icon`. < p/>
+
+  * `clickAction` — `intent action`, с помощью которого будет открыта активити при клике на уведомление.
+
+### Создание канала для отправки уведомления​
+
+Для канала, в который отправляется уведомление, действует следующий приоритет:
+
+  * Если в push-уведомлении есть поле `channelId`, RuStore SDK отправит уведомление в указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, но ваше приложение указало параметр с каналом в `AndroidManifest.xml`, используется указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, и канал по умолчанию не задан в `AndroidManifest.xml`, RuStore SDK создаст канал и отправит уведомление в него. В дальнейшем все уведомления без явного указания канала будут отправляться в этот канал.
+
+## Обработка ошибок​
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore.
+
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает push-уведомления.
+
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore.
+
+  * `RuStoreFeatureUnavailableException` — RuStore не имеет разрешения на работу в фоне.
+
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки.
+
+Если при инициализации SDK вы передали параметр `allowNativeErrorHandling ==
+true`, в случае ошибки:
+
+  * Вызовется соответствующий обработчик `onFailure`.
+
+  * Ошибка передастся в метод `resolveForPush` нативного SDK. Это нужно, чтобы показать пользователю диалог с ошибкой.
+
+Метод resolveForPush
+
+    
+    
+    fun RuStoreException.resolveForPush(context: Context)  
+    
+
+Чтобы отключить передачу ошибки в нативный SDK, установите значение `false`
+для свойства `AllowNativeErrorHandling`.
+
+Запрет нативной обработки ошибок
+
+    
+    
+    RuStorePushClient.Instance.AllowNativeErrorHandling =  false ;  
+    
+
+## См. также​
+
+  * [Отправка push-уведомлений (API)](/help/sdk/push-notifications/send-push-notifications)
+  * [Отправка push-уведомлений по топикам (API)](/help/sdk/push-notifications/topic-notifications)
+  * [Работа с сегментами пользователей (API)](/help/sdk/push-notifications/work-with-segments-push-api)
+
+]
+

@@ -1,0 +1,543 @@
+url: https://www.rustore.ru/help/sdk/payments/react/5-0-0
+title: Платежи in-app и подписки React Native 5.0.0
+
+[
+
+  * [](/help/)
+  * [Платежи in-app и подписки](/help/sdk/payments)
+  * [React Native](/help/sdk/payments/react)
+  * 5.0.0
+
+Содержание этой страницы
+
+# 5.0.0
+
+RuStore позволяет интегрировать платежи в мобильное приложение.
+
+подсказка
+
+Сценарий работы с платежами описан в [гайде](/help/guides/payments). Изучите
+его перед началом работы.
+
+## Пример реализации​
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/react-native-rustore-billing-sdk)
+чтобы узнать, как правильно интегрировать SDK платежей.
+
+## Условия работы платежей​
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Пользователь авторизован в RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Для приложения включена возможность покупок в [Консоли RuStore](https://console.rustore.ru/).
+
+предупреждение
+
+Сервис имеет некоторые ограничения на работу за пределами России.
+
+## Подготовка к работе​
+
+Для подключения пакета к проекту выполните следующую команду.
+
+    
+    
+    // HTTPS  
+    npm install git+https://git@gitflic.ru/project/rustore/react-native-rustore-billing-sdk.git  
+      
+    // SSH  
+    npm install git+ssh://git@gitflic.ru/project/rustore/react-native-rustore-billing-sdk.git  
+    
+
+## Обработка deeplink​
+
+Для корректной работы оплаты через сторонние приложения (СБП, SberPay и др.)
+необходимо правильно реализовать обработку deeplink. Укажите в
+`AndroidManifest.xml` `intent-filter` с `scheme` вашего проекта (см. ниже).
+
+AndroidManifest.xml
+
+    
+    
+    <activity  
+        android:name=".sample.MainActivity">  
+         <intent-filter>  
+          
+        <action android:name="android.intent.action.MAIN"/>  
+          
+        <category android:name="android.intent.category.LAUNCHER"/>  
+        </intent-filter>  
+         <intent-filter>  
+          
+        <action android:name="android.intent.action.VIEW"/>  
+          
+        <category android:name="android.intent.category.DEFAULT"/>  
+          
+        <category android:name="android.intent.category.BROWSABLE"/>  
+          
+        <data android:scheme="yourappscheme"/>  
+        </intent-filter>   
+    </activity>  
+    
+
+Здесь: `yourappscheme` — схема вашего deeplink, её можно изменить на другую.
+
+Эта схема должна совпадать со схемой deeplink, указываемой при инициализации
+библиотеки billing-клиента.
+
+## Инициализация​
+
+Перед вызовом методов библиотеки необходимо выполнить её инициализацию.
+
+Для инициализации вызовите метод `RustoreBillingClient.init()`.
+
+    
+    
+    try {    
+        RustoreBillingClient.init({  
+            consoleApplicationId: 'appId' ,  
+            deeplinkScheme: 'scheme' ,    
+        });    
+        console.log(initialize success: ${result});  
+    } catch (err) {    
+        console.log(initialize err: ${err});  
+    }  
+    
+
+  * `consoleApplicationId` — код приложения из консоли разработчика RuStore (пример: `<https://console.rustore.ru/apps/123456>`).
+
+Чтобы получить ID приложения, скопируйте цифры из URL-адреса страницы
+приложения в RuStore Консоли после `apps/`.
+
+  * `deeplinkScheme` — схема deeplink, необходимая для возврата в ваше приложение после оплаты через стороннее приложение (например, SberPay или СБП). SDK генерирует свой хост к данной схеме.
+
+примечание
+
+Схема deeplink, передаваемая в `deeplinkScheme`, должна совпадать со схемой,
+указанной в `AndroidManifest.xml` (подробнее см. Обработка deeplink).
+
+## Как работают платежи​
+
+## Проверка доступности работы с платежами​
+
+Во время проверки доступности платежей проверяются следующие условия.
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore поддерживает функциональность платежей.
+  * Пользователь авторизован в RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Для приложения включена возможность покупок в [Консоли RuStore](https://console.rustore.ru/).
+
+Для проверки доступности платежей используйте метод
+`RustoreBillingClient.checkPurchasesAvailability()`.Если все указанные выше
+условия выполняются, возвращается `true`.
+
+    
+    
+    try {  
+      const isAvailable = await RustoreBillingClient.checkPurchasesAvailability();  
+      console.log(available success ${isAvailable});  
+    }  catch (err) {  
+      console.log(available error ${err});  
+    }   
+    
+
+## Работа с SDK​
+
+### Получение списка продуктов​
+
+Для получения списка продуктов используйте метод
+`RustoreBillingClient.getProducts(productIds)`.
+
+    
+    
+    try {  
+      const products = await RustoreBillingClient.getProducts(productIds);  
+      for (const product of products) {  
+        console.log(product?.productId);  
+      }  
+    }  catch (err) {  
+      console.log(products err: ${err});  
+    }  
+    
+
+`productIds` — список идентификаторов продуктов. В нём не должно быть более
+100 позиций.
+
+Метод возвращает список продуктов `Product[]`. Ниже представлена модель
+продукта.
+
+    
+    
+    interface Product {  
+        productId: string;  
+        productType?: ProductType;  
+        productStatus: ProductStatus;  
+        priceLabel?: string;  
+        price?: number;  
+        currency?: string;  
+        language?: string;  
+        title?: string;  
+        description?: string;  
+        imageUrl?: string;  
+        promoImageUrl?: string;  
+        subscription?: ProductSubscription;  
+    }  
+    
+
+  * `productId` — идентификатор продукта.
+  * `productType` — тип продукта.
+  * `productStatus` — статус продукта.
+  * `priceLabel` — отформатированная цена товара, включая валютный знак на языке `language`.
+  * `price` — цена в минимальных единицах (в копейках).
+  * `currency` — код валюты ISO 4217.
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+  * `title` — название продукта на языке `language`.
+  * `description` — описание на языке `language`.
+  * `imageUrl` — ссылка на картинку.
+  * `promoImageUrl` — ссылка на промокартинку.
+  * `subscription` — описание подписки, возвращается только для продуктов с типом `subscription`.
+
+**Структура подписки`Subscription`**
+
+    
+    
+    interface ProductSubscription {  
+      subscriptionPeriod?: SubscriptionPeriod;  
+      freeTrialPeriod?: SubscriptionPeriod;  
+      gracePeriod?: SubscriptionPeriod;  
+      introductoryPrice?: string;  
+      introductoryPriceAmount?: string;  
+      introductoryPricePeriod?: SubscriptionPeriod;  
+    }  
+    
+
+  * `subscriptionPeriod` — период подписки.
+  * `freeTrialPeriod` — пробный период подписки.
+  * `gracePeriod` — льготный период подписки.
+  * `introductoryPrice` — отформатированная вступительная цена подписки, включая знак валюты, на языке `product:language`.
+  * `introductoryPriceAmount` — вступительная цена в минимальных единицах валюты (в копейках).
+  * `introductoryPricePeriod` — расчётный период вступительной цены.
+
+**Структура периода подписки`SubscriptionPeriod`**
+
+    
+    
+    interface SubscriptionPeriod {  
+        years: number;  
+        months: number;  
+        days: number;  
+    }  
+    
+
+  * `years` — количество лет.
+  * `months` — количество месяцев.
+  * `days` — количество дней.
+
+### Покупка продукта​
+
+Для вызова покупки продукта используйте метод
+`RustoreBillingClient.purchaseProduct({...})`.
+
+    
+    
+    try {  
+      const response = await RustoreBillingClient.purchaseProduct({  
+        productId:  'productId' ,  
+        orderId:  'orderId' ,  
+        quantity: 0,  
+        developerPayload:  'developerPayload'  
+      });  
+      console.log(purchase success: ${response});  
+    }  catch (err) {  
+      console.log(purchase err: ${err});  
+    }  
+    
+
+  * `productId` — идентификатор продукта.
+  * `orderId` — уникальный ид ентификатор оплаты, сформированный приложением (UUID).
+  * `quantity` — количество продукта.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+
+Результатом покупки может быть один из следующих интерфейсов:
+`SuccessPayment`, `CancelledPayment` или `FailurePayment`.
+
+    
+    
+    enum PaymentResult {  
+      SUCCESS =  'SUCCESS' ,  
+      CANCELLED =  'CANCELLED' ,  
+      FAILURE =  'FAILURE' ,  
+    }  
+    interface SuccessPaymentResult {  
+      orderId?: string;  
+      purchaseId: string;  
+      productId: string;  
+      invoiceId: string;  
+      subscriptionToken?: string;  
+    }  
+    interface SuccessPayment {  
+      type: PaymentResult.SUCCESS;  
+      result: SuccessPaymentResult;  
+    }  
+    interface CancelledPaymentResult {  
+      purchaseId: string;  
+    }  
+    interface CancelledPayment {  
+      type: PaymentResult.CANCELLED;  
+      result: CancelledPaymentResult;  
+    }  
+    interface FailurePaymentResult {  
+      purchaseId?: string;  
+      invoiceId?: string;  
+      orderId?: string;  
+      quantity?: number;  
+      productId?: string;  
+      errorCode?: number;  
+    }  
+    interface FailurePayment {  
+      type: PaymentResult.FAILURE;  
+      result: FailurePaymentResult;  
+    }  
+    
+
+  * `SuccessPayment` \- результат успешного завершения покупки цифрового товара.
+  * `FailurePayment` \- при отправке запроса на оплату или получения статуса оплаты возникла проблема, невозможно установить статус покупки.
+  * `CancelledPayment` — запрос на покупку отправлен, при этом пользователь закрыл «платёжную шторку» на своём устройстве, и результат оплаты неизвестен.
+
+### Получение списка покупок​
+
+Метод возвращает только покупки со статусами из таблицы ниже. Подробнее о
+других возможных состояниях покупки смотрите в разделе Получение сведений о
+покупке.
+
+Тип/Статус| `INVOICE_CREATED`| `CONFIRMED`| `PAID`  
+---|---|---|---  
+`CONSUMABLE`| +| | +  
+`NON-CONSUMABLE`| +| +|  
+`SUBSCRIPTION`| +| +|  
+  
+примечание
+
+Метод возвращает незавершённые состояния покупки и покупки потребляемых
+товаров, требующих обработки. Помимо этого, он показывает подтверждённые
+покупки для подписок и непотребляемых товаров — тех, которые нельзя купить
+повторно.
+
+Для получения списка покупок пользователя используйте метод
+`RustoreBillingClient.getPurchases()`.
+
+    
+    
+    try {  
+      const purchases = await RustoreBillingClient.getPurchases();  
+      for (const purchase of purchases) {  
+        console.log(purchase?.purchaseId);  
+      }  
+    }  catch (err) {  
+      console.log(purchase err: ${err});  
+    }  
+    
+
+Метод возвращает список покупок `Purchase[]`. Ниже предста влена модель
+покупки.
+
+    
+    
+    interface Purchase {    
+      purchaseId?: string;  
+      productId: string;  
+      productType?: ProductType;  
+      invoiceId?: string;  
+      description?: string;  
+      language?: string;  
+      purchaseTime?: string;  
+      orderId?: string;  
+      amountLabel?: string;  
+      amount?: number;  
+      currency?: string;  
+      quantity?: number;  
+      purchaseState?: PurchaseState;  
+      developerPayload?: string;  
+      subscriptionToken?: string;  
+    }  
+    
+
+  * `purchaseId` — идентификатор покупки.
+  * `productId` — идентификатор продукта.
+  * `productType` — тип продукта.
+  * `invoiceId` — идентификатор счёта.
+  * `description` — описание на языке `language`.
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+  * `purchaseTime` — время покупки.
+  * `orderId` — уникальный идентификатор оплаты, сформированный приложением (UUID).
+  * `amountLable` — отформатированная цена покупки, включая валютный знак на языке `language`.
+  * `amount` — цена в минимальных единицах валюты.
+  * `currency` — код валюты ISO 4217.
+  * `quantity` — количество продукта.
+  * `purchaseState` — состояние покупки:
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+  * `subscriptionToken` — токен для валидации покупки на сервере.
+
+### Получение сведений о покупке​
+
+Для получения информации о покупке, используйте метод `getPurchaseInfo`.
+
+    
+    
+    try {  
+        const purchaseInfo = await RustoreBillingClient.getPurchaseInfo(purchaseId);  
+        console.log(purchase info ${purchaseInfo});  
+    } catch (err) {  
+        console.log(purchase error ${err});  
+    }   
+    
+
+`purchaseId` — идентификатор покупки.
+
+Метод возвращает `Purchase`, который описан выше.
+
+**Статусная модель (`purchaseState`)**
+
+Статусная модель покупки потребляемых продуктов (`CONSUMABLES`)
+
+![img](https://www.rustore.ru//help/assets/images/CONSUMABLES-v0-2a8b6588b84e0fa3bd488789d2638530.webp)
+
+Статусная модель покупки непотребляемых продуктов (`NON-CONSUMABLES`)
+
+![img](https://www.rustore.ru//help/assets/images/NON-
+CONSUMABLES-v0-61bffa3e95ea1d4ba739c15b0f14b240.webp)
+
+Статусная модель покупки подписок (`SUBSCRIPTIONS`)
+
+![img](https://www.rustore.ru//help/assets/images/SUBSCRIPTIONS-v0-b2602189ecdb115e687fe6b3d284921e.webp)
+
+### Валидация покупок на сервере​
+
+Если вам необходимо произвести валидацию успешной покупки на сервере методами
+[API RuStore](/help/work-with-rustore-api/api-subscription-payment/), вы
+можете использовать `subscriptionToken` в `PurchaseResult`, возвращаемой
+`purchaseProduct` при успешной покупке продукта.
+
+`SubscriptionToken` состоит из `invoiceId` покупки и `userId`, записанных
+через точку: `$invoiceId.$userId`.
+
+    
+    
+    try {  
+        const paymentResult = await RustoreBillingClient.purchaseProduct({  
+            productId,  
+        });  
+      
+        if (paymentResult.type == PaymentResult.SUCCESS) {  
+            const subscriptionToken = paymentResult.response.subscriptionToken  
+            yourApi.validate(subscriptionToken)  
+        }  
+        setPayment(paymentResult);  
+    } catch (err: any) {  
+        setError(JSON.stringify(err));  
+    }  
+    
+
+Также можно получить `subscriptionToken` в сущности `Purchase`. Сущность
+`Purchase` можно получить используя метод `getPurchases`.
+
+    
+    
+    const purchases = RustoreBillingClient.getPurchases();  
+    for (const purchase of purchases) {  
+        yourApi.validate(purchase.subscriptionToken)  
+    }  
+    
+
+### Подтверждение покупки​
+
+#### Продукты, требующие подтверждения​
+
+RuStore содержит продукты следующих типов.
+
+  * `SUBSCRIPTION` — подписка (можно купить на период времени, например: подписка в стриминговом сервисе).
+  * `NON_CONSUMABLE` — непотребляемый (можно купить один раз, например: отключение рекламы в приложении).
+  * `CONSUMABLE` — потребляемый (можно купить много раз, например: кристаллы в приложении).
+
+Подтверждения требуют только продукты типа `CONSUMABLE`, если они находятся в
+состоянии `PurchaseState.PAID`.
+
+#### Вызов метода подтверждения​
+
+### Отмена покупки​
+
+Для отмены покупки используйте метод
+`RustoreBillingClient.deletePurchase(purchaseId)`.
+
+    
+    
+    try {  
+      const isDeleted = await RustoreBillingClient.deletePurchase(purchaseId)  
+      console.log(delete success: ${isDeleted});  
+    }  catch (err) {  
+      console.log(delete err: ${err});  
+    }  
+    
+
+  * `purchaseId` — идентификатор покупки.
+
+Если все условия выполняются, метод `RustoreBillingClient.deletePurchase()`
+возвращает значение `true`.
+
+к сведению
+
+Используйте этот метод, если у вас есть логика, завязанная на удалении
+покупки. Покупка отменяется автоматически через таймаут в 20 минут, либо при
+повторной покупке от того же клиента.
+
+### Обработка незавершённых платежей​
+
+Обработка незавершённых платежей производится разработчиком.
+
+Чтобы подтвердить покупку типа `CONSUMABLE` и в статусе `PAID` вызовите метод
+подтверждения покупки (см. Получение сведений о покупке).
+
+В случае с отменой покупки при использовании методов обработки платежей
+учитывайте свой внутренний процесс. У некоторых разработчиков он
+предусматривает проверки перед потреблением или отменой покупки. В этом случае
+запросите отдельно статус такой покупки.
+
+подсказка
+
+Например, если пользователь оплатил товар, который вы по каким-то причинам не
+можете ему поставить, вызовите метод отмены покупки в статусе `PAID`, чтобы
+отменить покупку.
+
+В случаях, когда метод получения списка покупок возвращает покупку со статусом
+`INVOICE_CREATED` вы можете использовать метод отмены покупки. Например, если
+не хотите видеть покупку с такими статусами в списке покупок. Делать это самим
+не обязательно, поскольку RuStore обрабатывает отмену таких покупок на своей
+стороне.
+
+к сведению
+
+Иногда после оплаты через приложение банка (СБП, SberPay, Tinkoff Pay и др.) и
+при последующем возврате обратно в приложение статус покупки остаётся
+`INVOICE_CREATED`, при этом статус платежа — неуспешная покупка. Это связано с
+временем обработки покупки на сторо не банка. Поэтому разработчику необходимо
+правильно связать логику получения списка покупок с жизненным циклом экрана.
+
+Альтернативное решение — отмена покупки в статусе `INVOICE_CREATED` только
+через взаимодействие пользователя с приложением. Например, вы можете вынести
+эту логику в отдельную кнопку.
+
+## Обработка ошибок​
+
+**Возможные ошибки**
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore;
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает платежи;
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore;
+  * `RuStoreRequestLimitReached` — с момента последнего отображения процесса прошло слишком мало времени;
+  * `RuStoreReviewExists` — этот пользователь уже оценил ваше приложение;
+  * `RuStoreInvalidReviewInfo` — проблемы с `ReviewInfo`;
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуют ся остальные ошибки.
+
+]
+

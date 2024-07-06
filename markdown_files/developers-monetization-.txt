@@ -1,0 +1,18 @@
+url: https://www.rustore.ru/help/developers/monetization/
+title:  Монетизация
+
+[
+
+  * [](/help/)
+  * Монетизация
+
+# Гайд по монетизации в RuStore - подключение и настройка платежей
+
+Для подключения монетизации:
+
+  1. Заполните заявление на [монетизацию](/help/developers/monetization/enable-monetization).
+  2. Настройте в приложении [RuStoreSDK для подключения платежей](/help/sdk/payments).
+  3. Создайте [подписки](/help/developers/monetization/create-app-subscription) или [разовые покупки](/help/developers/monetization/create-paid-product-in-application).
+
+]
+

@@ -1,0 +1,30 @@
+url: https://www.rustore.ru/help/developers/publishing-and-verifying-apps/app-publication/card-delete
+title: Публикация и проверка приложений Публикация приложений Как удалить карточку приложения
+
+[
+
+  * [](/help/)
+  * [Публикация и проверка приложений](/help/developers/publishing-and-verifying-apps/)
+  * [Публикация приложений](/help/developers/publishing-and-verifying-apps/app-publication/)
+  * Как удалить карточку приложения
+
+# Как удалить карточку приложения в RuStore: подробная инструкция
+
+Вы можете удалить карточку приложения из [Консоли
+RuStore](https://console.rustore.ru/sign-in). Удаление доступно только для тех
+приложений, в которых ни одна из версий не была отправлена на модерацию.
+
+примечание
+
+Удалить карточку приложения может только владелец аккаунта — см. [Роли
+пользователей в RuStore](/help/developers/developer-account/user-roles).
+
+  1. Перейдите в раздел «Приложения».
+  2. Выберите нужное приложение и нажмите ![icon](https://www.rustore.ru//help/three-dots-hor-icon.svg) чтобы перейти в контекстное меню.
+  3. Выберите пункт «Удалить приложение».
+  4. Нажмите на кнопку «Удалить».
+
+![](https://www.rustore.ru//help/assets/images/d1143c60bdc79fcde36849a08da2545e-96936dfe3283ba4626d2b599536d0103.png)
+
+]
+

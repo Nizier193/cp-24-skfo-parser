@@ -1,0 +1,181 @@
+url: https://www.rustore.ru/help/sdk/payments/kotlin-java/migration/3-2-0-migration
+title: Платежи in-app и подписки Kotlin/Java Обновление версии платежей Переход на версию платежей 3.2.0
+
+[
+
+  * [](/help/)
+  * [Платежи in-app и подписки](/help/sdk/payments)
+  * [Kotlin/Java](/help/sdk/payments/kotlin-java)
+  * [Обновление версии платежей](/help/sdk/payments/kotlin-java/migration)
+  * Переход на версию платежей 3.2.0
+
+Содержание этой страницы
+
+# Обновление RuStore SDK до версии 3.2.0: Изменения в платежах и миграция для
+Kotlin и Java
+
+примечание
+
+Примеры кода представлены для Kotlin.
+
+В версии 3.2.0 платежей были значительно изменены модели результата покупки
+продуктов `PaymentResult`.
+
+Чтобы быстро перейти на новую версию SDK, используйте настоящую инструкцию по
+миграции.
+
+## Обновление зависимости​
+
+Для обновления зависимости, поднимите версию у `billingclient` в блоке
+`dependencies` вашего `build.gradle`.
+
+    
+    
+    dependencies {  
+        implementation( "ru.rustore.sdk:billingclient:3.2.0" )  
+    }  
+    
+
+Модель продукта и модели ошибок остались без изменений.
+
+## Получение списка продуктов​
+
+Изменилась модель результата получения списка продуктов. Теперь метод
+`getProducts()` сразу возвращается список продуктов.
+
+    
+    
+    val productsUseCase: ProductsUseCase = billingClient.products  
+    productsUseCase.getProducts(productIds = listOf("id1", "id2"))  
+        .addOnSuccessListener { products: List<Product> ->  
+            // Process success  
+        }  
+        .addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+Модель продукта и модели ошибок остались без изменений.
+
+## Получение списка покупок​
+
+Изменилась модель результата получения информации о покупке. Теперь метод
+`getPurchasecaution()` сразу возвращается модель покупки.
+
+**Вызов метода получения списка покупок пользователя**
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.getPurchasecaution("purchaseId")  
+         .addOnSuccessListener { purchase: Purchase ->  
+            // Process success  
+        }  
+        .addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+Модели ошибок остались без изменений.
+
+## Покупка продукта​
+
+Изменилась модель результата покупки продукта. Обновленная модель представлена
+ниже.
+
+    
+    
+    public sealed  interface PaymentResult {        
+        public data  class Success(  
+            val orderId: String?,  
+            val purchaseId: String,  
+            val productId: String,  
+            val invoiceId: String,  
+            val subscriptionToken: String? =  null ,  
+        ) : PaymentResult  
+        public data  class Cancelled(  
+            val purchaseId: String,  
+        ) : PaymentResult  
+        public data  class Failure(  
+            val purchaseId: String?,  
+            val invoiceId: String?,  
+            val orderId: String?,  
+            val quantity: Int?,  
+            val productId: String?,  
+            val errorCode: Int?,  
+        ) : PaymentResult  
+        public object InvalidPaymentState : PaymentResult()  
+    }  
+    
+
+  * `Success` \- результат успешного завершения покупки цифрового товара.
+  * `Failure` \- при отправке запроса на оплату или получения статуса оплаты возникла проблема, невозможно установить статус покупки.
+  * `Cancelled` — запрос на покупку отправлен, при этом пользователь закрыл «платёжную шторку» на своём устройстве, и результат оплаты неизвестен.
+  * `InvalidPaymentState` — ошибка работы SDK платежей. Может возникнуть, в случае некорректного обратного deeplink.
+
+к сведению
+
+Обратите особое внимание на сценарии потребления и отмены покупки.
+
+## Подтверждение покупки​
+
+Изменилась модель результата потребления покупки. Теперь потребление может
+завершиться либо успехом, либо ошибкой.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.confirmPurchase(purchaseId =  "purchaseId" , developerPayload =  null )  
+        .addOnSuccessListener {  
+            // Process success  
+        }.addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+## Отмена покупки​
+
+Изменилась модель результата отмены покупки. Теперь отмена покупки может
+завершиться либо успехом, либо ошибкой.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.deletePurchase(purchaseId =  "purchaseId" )  
+        .addOnSuccessListener {  
+            // Process success  
+        }.addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+## Сценарий подтверждения и отмены покупки​
+
+В связи с тем, что изменилась модель результата покупки продукта, изменилась и
+логика потребления и отмены покупки.
+
+Метод отмены покупки `deletePurchase` необходимо использовать при следующих
+условиях.
+
+  * Метод получения списка покупок getPurchases вернул покупку со статусами `PurchaseState.CREATED` или `PurchaseState.INVOICE_CREATED`.
+
+к сведению
+
+В некоторых случаях, после оплаты через приложение банка (СБП, СберPay,
+TinkoffPay и т. д.), при последующем возврате обратно в приложение AnyApp,
+статус покупки может быть всё ещё `PurchaseState.INVOICE_CREATED`. Это связано
+с временем обработки покупки на стороне банка. Поэтому разработчику необходимо
+правильно связать логику получения списка покупок с жизненным циклом экрана.
+Альтернативным вариантом решения данной проблемы является отмена покупки в
+статусе `PurchaseState.INVOICE_CREATED` только через взаимодействие
+пользователя с приложением. Например, вынести эту логику в отдельную кнопку.
+
+  * Метод покупки `purchaseProduct` вернул `PaymentResult.Cancelled`.
+  * Метод покупки `purchaseProduct` вернул `PaymentResult.Failure`.
+
+Метод подтверждения покупки `confirmPurchase` необходимо использовать, если
+метод получения списка покупок `getPurchases` вернул покупку типа `CONSUMABLE`
+и со статусом `PurchaseState.PAID`.
+
+]
+

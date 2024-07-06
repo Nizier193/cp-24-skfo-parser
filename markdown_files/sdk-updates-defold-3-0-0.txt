@@ -1,0 +1,558 @@
+url: https://www.rustore.ru/help/sdk/updates/defold/3-0-0
+title: Обновление приложения Defold 3.0.0
+
+[
+
+  * [](/help/)
+  * [Обновление приложения](/help/sdk/updates)
+  * [Defold](/help/sdk/updates/defold)
+  * 3.0.0
+
+Содержание этой страницы
+
+# 3.0.0
+
+## Общие сведения​
+
+RuStore In-app updates SDK поддерживает актуальную версию приложения на
+устройстве пользователя. Это помогает пользователю увидеть обновления, оценить
+улучшение производительности и результат исправления ошибок.
+
+## Пример пользовательского сценария​
+
+Используйте RuStore In-app updates SDK для реализации различных способов
+обновлений. В настоящий момент поддерживаются: отложенное, тихое (без UI от
+RuStore) и принудительное обновление.
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/rustore-defold-appupdate), чтобы
+узнать, как правильно интегрировать SDK обновлений.
+
+![img](https://www.rustore.ru//help/assets/images/8c0c1aa079e8c1e20e0708fb329b3d63-42e8a206c312c7532d52edacbc5a84c2.webp)
+
+## Условия корректной работы SDK​
+
+Для работы RuStore In-app updates SDK необходимо соблюдение следующих условий.
+
+  * ОС Android версии 7.0 или выше.
+  * Версия RuStore на устройстве пользователя актуальная.
+  * Пользователь авторизован в RuStore.
+  * Приложению RuStore разрешена установка приложений.
+
+## Подключение в проект​
+
+Для подключения выполните следующие шаги.
+
+  1. Скопируйте проекты плагина из официального репозитория RuStore на [GitFlic](https://gitflic.ru/project/rustore/rustore-defold-appupdate).
+  2. Скопируйте папки `appupdate_example/extension_rustore_appupdate` и `appupdate_example / extension_rustore_core` в корень вашего проекта.
+
+## Создание менеджера обновлений​
+
+Перед вызовом методов библиотеки необходимо создать менеджер обновлений.
+
+    
+    
+    function init(self)  
+        rustoreappupdate.init()  
+    end  
+    
+
+## Проверка наличия обновлений​
+
+Прежде чем запрашивать обновление, проверьте, доступно ли обновление для
+вашего приложения. Для проверки наличия обновлений вызовите метод
+`get_appupdateinfo`. При вызове данного метода проверяются следующие условия.
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Приложению RuStore разрешена установка приложений.
+  * Пользователь авторизован в RuStore.
+
+Перед использованием метода необходимо единожды выполнить подписку на события:
+
+  * `rustore_get_app_update_info_success`;
+  * `rustore_get_app_update_info_failure`.
+
+Подписка на события
+
+    
+    
+    function init(self)  
+        rustorecore.connect("rustore_get_app_update_info_success", _on_get_app_update_info_success)  
+        rustorecore.connect("rustore_get_app_update_info_failure", _on_get_app_update_info_failure)  
+    	  
+    	-- Инициализация rustoreappupdate  
+    end  
+       
+    function _on_get_app_update_info_success(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+       
+    function _on_get_app_update_info_failure(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+    
+
+Вызов метода get_appupdateinfo
+
+    
+    
+    rustoreappupdate.get_appupdateinfo()  
+    
+
+Обратный вызов (callback) `rustore_get_app_update_info_success` возвращает
+строку JSON (объект AppUpdateInfo), который содержит информацию о
+необходимости обновления. Запросите информацию заранее, чтобы выполнить запуск
+скачивания обновления без задержки в удобный для пользователя момент времени.
+
+  * `updateAvailability` — доступность обновления:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию.
+    * `UPDATE_NOT_AVAILABLE (int == 1)` — обновление не нужно.
+    * `UPDATE_AVAILABLE (int == 2)` — обновление требуется загрузить или обновление уже загружено на устройство пользователя.
+    * `DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS (int == 3)` — обновление уже скачивается или установка уже запущена.
+  * `installStatus` — статус установки обновления, если пользователь уже устанавливает обновление в текущий момент времени:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию.
+    * `DOWNLOADED (int == 1)` — скачано.
+    * `DOWNLOADING (int == 2)` — скачивается.
+    * `FAILED (int == 3)` — ошибка.
+    * `PENDING (int == 5)` — в ожидании.
+  * `availableVersionCode` — код версии обновления.
+
+Обратный вызов (callback) `rustore_get_app_update_info_failure` возвращает
+строку JSON с информацией об ошибке. Структура ошибки описана в разделе
+Обработка ошибок.
+
+к сведению
+
+Запуск скачивания обновления возможен только в том случае, если поле
+`updateAvailability` содержит значение `UPDATE_AVAILABLE`.
+
+## Скачивание и установка обновлений​
+
+### Использование слушателя​
+
+После подтверждения доступности обновления вы можете получать статус
+скачивания обновления. Для этого необходимо выполнить подписку на событие
+`on_state_updated` и вызовом метода `register_listener` запустить слушатель
+статуса скачивания.
+
+### Проверка статуса скачивания обновления​
+
+Подписка на событие `rustore_on_state_updated` выполняется единожды.
+Прослушивание процесса скачивания активируется с помощью метода
+`register_listener`.
+
+Запуск слушателя
+
+    
+    
+    function init(self)  
+    	-- Инициализация rustoreappupdate  
+      
+    	rustorecore.connect("rustore_on_state_updated", _on_state_updated)  
+     	rustoreappupdate.register_listener()  
+    end  
+      
+    function _on_state_updated(self, channel, value)  
+    	local data = json.decode(value)  
+    end  
+    
+
+Обратный вызов (callback) `rustore_on_state_updated` возвращает строку JSON
+(объект InstallState) с информацией о ходе процесса обновления. Объект
+содержит поля:
+
+  * `installStatus` — статус установки обновления, если пользователь уже устанавливает обновление в текущий момент времени:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию.
+    * `DOWNLOADED (int == 1)` — скачано.
+    * `DOWNLOADING (int == 2)` — скачивается.
+    * `FAILED (int == 3)` — ошибка.
+    * `PENDING (int == 5)` — в ожидании.
+  * `bytesDownloaded` — количество загруженных байт.
+
+  * `totalBytesToDownload` — общее количество байт, которое необходимо скачать.
+
+  * `packageName` — имя пакета обновления.
+
+  * `installErrorCode` — код ошибки во время скачивания. Коды ошибок описаны в разделе Обработка ошибок.
+
+### Удаление слушателя​
+
+Если необходимости в слушателе больше нет, воспользуйтесь методом удаления
+слушателя `unregister_listener`.
+
+Вызов метода unregister_listener
+
+    
+    
+    rustoreappupdate.unregister_listener()  
+    
+
+## Запуск скачивания обновления​
+
+### Отложенное обновление​
+
+**Описание сценария отложенного обновления**
+
+Обновление с UI от RuStore
+
+![img](https://www.rustore.ru//help/assets/images/scenario-delayed-
+update-v1-5d07d01778317689710646d333debbf4.webp)
+
+  1. Пользователю будет показан диалог с UI от RuStore для подтверждения обновления.
+  2. При нажатии на кнопку «Обновить» покажется диалоговое окно для подтверждения установки обновления.
+
+**Запуск сценария обновления**
+
+Перед использованием методов запуска сценариев обновления необходимо единожды
+выполнить подписку на события:
+
+  * `rustore_start_update_flow_success`.
+  * `rustore_start_update_flow_failure`.
+
+Для запуска скачивания обновления приложения используйте метод
+`start_update_flow_delayed`.
+
+к сведению
+
+Объект `AppUpdateInfo` после однократного использования становится невалидным.
+Для повторного вызова метода `start_update_flow_delayed` запросите объект
+`AppUpdateInfo` повторно, используя метод `get_appupdateinfo`.
+
+См. раздел Проверка наличия обновлений.
+
+Подписка на события
+
+    
+    
+    function init(self)  
+        rustorecore.connect("rustore_start_update_flow_success", _on_start_update_flow_success)  
+        rustorecore.connect("rustore_start_update_flow_failure", _on_start_update_flow_failure)  
+          
+        -- Инициализация rustoreappupdate  
+    end  
+      
+    function _on_start_update_flow_success(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+      
+    function _on_start_update_flow_failure(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+    
+
+Вызов метода start_update_flow_delayed
+
+    
+    
+    rustoreappupdate.start_update_flow_delayed()  
+    
+
+Обратный вызов (callback) `rustore_start_update_flow_success` возвращает
+строку JSON с информацией о результате обновления в поле `flowResult
+(number)`:
+
+  * `RESULT_OK (int = -1)` — пользователь подтвердил скачивание обновления.
+  * `RESULT_CANCELED (int = 0)` — пользователь отказался от скачивания обновления.
+
+Обратный вызов (callback) `rustore_start_update_flow_failure` возвращает
+строку JSON с информацией об ошибке. Структура ошибки описана в разделе
+Обработка ошибок.
+
+После получения статуса `DOWNLOADED (int == 1)` в поле `installStatus` объекта
+`InstallState`, может быть вызван метод установки обновления.
+
+### Принудительное обновление​
+
+**Описание сценария принудительного обновления**
+
+Обновление с UI от RuStore
+
+![img](https://www.rustore.ru//help/assets/images/scenario-forced-update-
+bdbb37026442d5850c063420e5ecc62a.webp)
+
+  1. Пользователю будет показан полноэкранный диалог с UI от RuStore для подтверждения обновления. Использование приложения будет заблокировано до тех пор, пока обновление не будет установлено.
+  2. При нажатии на кнопку «Обновить» отобразится диалоговое окно для подтверждения установки обновления.
+  3. Далее при нажатии на кнопку «Установить» появится полноэкранный диалог об установке новой версии приложения.
+  4. После завершения установки приложение перезапустится.
+
+предупреждение
+
+Приложение будет перезапущено, если версия Rustore больше, либо равна 1.37.
+Если версия Rustore ниже, то приложение закроется для установки обновления и
+не будет открыто заново, когда закончится обновление.
+
+**Запуск сценария обновления**
+
+После получения успешного ответа от `get_appupdateinfo` можно проверить
+доступность принудительного обновления, используя метод
+`check_is_immediate_update_allowed`.
+
+Вызов метода check_is_immediate_update_allowed
+
+    
+    
+    local isAvailable = rustoreappupdate.check_is_immediate_update_allowed()  
+    
+
+  * `true` — принудительное обновление доступно.
+  * `false` — принудительное обновление недоступно.
+
+Результат метода `check_is_immediate_update_allowed` рекомендуется
+использовать для принятия решения о запуске принудительного обновления, но
+данный результат не влияет на возможность запуска сценария. Необходимость
+запуска сценария обновления может происходить по вашей внутренней логике.
+
+Перед использованием методов запуска сценариев обновления необходимо единожды
+выполнить подписку на события:
+
+  * `rustore_start_update_flow_success`.
+  * `rustore_start_update_flow_failure`.
+
+Для запуска скачивания обновления приложения используйте метод
+`start_update_flow_immediate`.
+
+к сведению
+
+Объект `AppUpdateInfo` после однократного использования становится невалидным.
+Для повторного вызова метода `start_update_flow_immediate` запросите объект
+`AppUpdateInfo` повторно, используя метод `get_appupdateinfo`.
+
+См. раздел Проверка наличия обновлений.
+
+Подписка на события
+
+    
+    
+    function init(self)  
+        rustorecore.connect("rustore_start_update_flow_success", _on_start_update_flow_success)  
+        rustorecore.connect("rustore_start_update_flow_failure", _on_start_update_flow_failure)  
+          
+        -- Инициализация rustoreappupdate  
+    end  
+      
+    function _on_start_update_flow_success(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+      
+    function _on_start_update_flow_failure(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+    
+
+Вызов метода start_update_flow_immediate
+
+    
+    
+    rustoreappupdate.start_update_flow_immediate()  
+    
+
+Обратный вызов (callback) `rustore_start_update_flow_success` возвращает
+строку JSON с информацией о результате обновления в поле `flowResult
+(number)`:
+
+  * `RESULT_OK (int = -1)` — обновление выполнено, код может быть не получен, т.к. приложение в момент обновления завершается.
+  * `RESULT_CANCELED (int = 0)` — флоу прервано пользователем или произошла ошибка. Предполагается, что при получении этого кода, следует завершить работу приложения.
+  * `ACTIVITY_NOT_FOUND (int = 2)` — RuStore не установлен, либо установлена версия, которая не поддерживает принудительное обновление (`RuStore versionCode` < `191`).
+
+Обратный вызов (callback) `rustore_start_update_flow_failure` возвращает
+строку JSON с информацией об ошибке. Структура ошибки описана в разделе
+Обработка ошибок.
+
+При успешном обновлении дальнейших действий не требуется.
+
+### Тихое обновление​
+
+**Описание сценария тихого обновления**
+
+Обновление без UI от RuStore
+
+![img](https://www.rustore.ru//help/assets/images/scenario-silent-
+update-v1-952c0a2ebe23fedf9cb7a942406d5caf.webp)
+
+Пользователю будет показано диалоговое окно для подтверждения установки
+обновления (обновление будет скачано в фоне).
+
+**Запуск сценария обновления**
+
+Перед использованием методов запуска сценариев обновления необходим о единожды
+выполнить подписку на события:
+
+  * `rustore_start_update_flow_success`.
+  * `rustore_start_update_flow_failure`.
+
+Для запуска скачивания обновления приложения используйте метод
+`start_update_flow_silent`.
+
+к сведению
+
+Объект `AppUpdateInfo` после однократного использования становится невалидным.
+Для повторного вызова метода `start_update_flow_immediate` запросите объект
+`AppUpdateInfo` повторно, используя метод `get_appupdateinfo`.
+
+См. раздел Проверка наличия обновлений.
+
+Подписка на события
+
+    
+    
+    function init(self)  
+        rustorecore.connect("rustore_start_update_flow_success", _on_start_update_flow_success)  
+        rustorecore.connect("rustore_start_update_flow_failure", _on_start_update_flow_failure)  
+          
+        -- Инициализация rustoreappupdate  
+    end  
+      
+    function _on_start_update_flow_success(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+      
+    function _on_start_update_flow_failure(self, channel, value)  
+        local data = json.decode(value)  
+    end  
+    
+
+Вызов метода start_update_flow_silent
+
+    
+    
+    rustoreappupdate.start_update_flow_silent()  
+    
+
+Обратный вызов (callback) `rustore_start_update_flow_success` возвращает
+строку JSON с информацией о результате обновления в поле `flowResult
+(number)`:
+
+  * `RESULT_OK (int = -1)` — задача на скачивание обновления зарегистрирована.
+
+Обратный вызов (callback) `rustore_start_update_flow_failure` возвращает
+строку JSON с информацией об ошибке. Структура ошибки описана в разделе
+Обработка ошибок.
+
+Вызовите метод установки обновления после получения статуса `DOWNLOADED (int
+== 1)` в поле `installStatus` объекта `InstallState`.
+
+подсказка
+
+Для тихого обновления рекомендуется реализовать свой интерфейс.
+
+## Установка обновления​
+
+После завершения скачивания файла обновления вы можете запустить установку
+о бновления. Обновление происходит через нативный инструмент Android. Для
+запуска установки обновления используйте методы:
+
+  * `complete_update_flexible` — обновление и перезапуск приложения.
+  * `complete_update_silent` — обновление и закрытие приложения.
+
+подсказка
+
+Рекомендуется уведомить пользователя о готовности обновления к установке.
+
+Перед использованием методов необходимо единожды выполнить подписку на
+событие:
+
+  * `on_complete_update_failure`.
+
+Подписка на событие
+
+    
+    
+    function init(self)  
+    	rustorecore.connect("rustore_complete_update_failure", _on_complete_update_failure)  
+    	  
+    	-- Инициализация rustoreappupdate  
+    end  
+      
+    function _on_complete_update_failure(self, channel, value)  
+    	local data = json.decode(value)  
+    end  
+    
+
+Обратный вызов (callback) `rustore_complete_update_failure` возвращает строку
+json с информацией об ошибке. Структура ошибки описана в разделе Обработка
+ошибок.
+
+### Гибкое завершение обновления​
+
+Вызов метода complete_update_flexible
+
+    
+    
+    rustoreappupdate.complete_update_flexible()  
+    
+
+Обновление с UI от RuStore:
+
+![img](https://www.rustore.ru//help/assets/images/scenario-complete-update-
+flexible-722e8462c9059b76d32253e33a83dd39.webp)
+
+  1. Пользователю будет показан UI-диалог завершения обновления.
+
+  2. В случае успешного обновления приложение будет перезапущено.
+
+### Тихое завершение обновления​
+
+Вызов метода complete_update_silent
+
+    
+    
+    rustoreappupdate.complete_update_silent()  
+    
+
+Обновление без UI от RuStore:
+
+  1. UI-диалог завершения обновления не будет показан.
+
+  2. В случае успешного обновления приложение будет закрыто.
+
+## Обработка ошибок​
+
+подсказка
+
+При получении любого события `*_failure` не рекомендуется самостоятельно
+отображать ошибку пользователю. Отображение ошибки может негативно повлиять на
+пользовательский опыт.
+
+Обработка json ошибки
+
+    
+    
+    function _on_failure(self, channel, value)  
+        local data = json.decode(value)  
+          
+        local name = data.simpleName  
+        local message = data.detailMessage  
+    end  
+    
+
+  * `simpleName` – имя ошибки.
+  * `detailMessage` – описание ошибки.
+
+### Возможные ошибки​
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore;
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не подд ерживает платежи;
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore;
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки;
+  * `RuStoreInstallException(public val code: Int)` — ошибка скачивания и установки.
+    * `ERROR_UNKNOWN(Int = 4001)` — неизвестная ошибка.
+    * `ERROR_DOWNLOAD(Int = 4002)` — ошибка при скачивании.
+    * `ERROR_BLOCKED(Int = 4003)` — установка заблокированна системой.
+    * `ERROR_INVALID_APK(Int = 4004)` — некорректный APK обновления.
+    * `ERROR_CONFLICT(Int = 4005)` — конфликт с текущей версией приложения.
+    * `ERROR_STORAGE(Int = 4006)` — недостаточно памяти на устройстве.
+    * `ERROR_INCOMPATIBLE(Int = 4007)` — несовместимо с устройством.
+    * `ERROR_APP_NOT_OWNED(Int = 4008)` — приложение не куплено.
+    * `ERROR_INTERNAL_ERROR(Int = 4009)` — внутренняя ошибка.
+    * `ERROR_ABORTED(Int = 4010)` — пользователь отказался от установки обновления.
+    * `ERROR_APK_NOT_FOUND(Int = 4011)` — APK для запуска установки не найден.
+    * `ERROR_EXTERNAL_SOURCE_DENIED(Int = 4012)` — запуск обновления запрещён. Например, в первом методе вернулся ответ о том, что обновление недоступно, но пользователь вызывает второй метод.
+    * `ERROR_ACTIVITY_SEND_INTENT(Int = 9901)` — ошибка отправки intent на открытие активити.
+    * `ERROR_ACTIVITY_UNKNOWN(Int = 9902)` — неизвестная ошибка отрытия активити.
+
+]
+

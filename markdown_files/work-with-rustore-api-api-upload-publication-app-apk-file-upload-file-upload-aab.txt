@@ -1,0 +1,85 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/apk-file-upload/file-upload-aab
+title: Загрузка и публикация приложений с помощью API RuStore Загрузка APK/AAB-файлов Загрузка AAB-файла
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * [Загрузка APK/AAB-файлов](/help/work-with-rustore-api/api-upload-publication-app/apk-file-upload/)
+  * Загрузка AAB-файла
+
+Содержание этой страницы
+
+# Загрузка AAB-файла
+
+Метод позволяет загрузить файл с расширением `.aab` для публикации.
+
+AAB-файл для версии можно обновлять.
+
+Ограничения:
+
+  * файл только с расширением `.aab`;
+  * размер файла — не более 512МБ;
+  * загружаемая версия AАВ должна быть выше, чем текущая активная;
+  * можно загрузить только 1 ААВ-файл;
+  * максимально можно загрузить только 1 ААВ-файл и 8 APK-файлов или 10 APK-файлов в рамках одной версии.
+
+примечание
+
+Перед загрузкой ААВ-файла убедитесь, что у вас загружена подпись для
+публикации [Android App Bundle (AAB)](/help/developers/publishing-and-
+verifying-apps/app-publication/upload-aab) через [RuStore
+Консоль](https://console.rustore.ru/sign-in).
+
+## Параметры взаимодействия​
+
+`POST`
+
+`/public-
+api.rustore.ru/public/v1/application/{packageName}/version/{versionId}/aab`
+
+Атрибут| Тип| Обязателен| Расположение| Описание  
+---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к Public API
+Rustore](/help/work-with-rustore-api/api-authorization-token/)  
+`packageName`| string| Да| path| Имя пакета приложения  
+`versionId`| number| Да| path| Версия приложения  
+  
+## Form data​
+
+Атрибут| Тип| Обязателен| Расположение| Описание  
+---|---|---|---|---  
+`file`| multipart| Да| N/A| Файл в формате `.aab`  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа| error/OK  
+`message`| string| Нет| Расшифровка кода ответа| N/A  
+`timestamp`| timestamptz| Да| Время ответа|
+2023-07-21T17:11:44.173750678+03:00  
+  
+## Пример запроса​
+
+    
+    
+    curl --location --request POST 'https://public-api.rustore.ru/public/v1/application/com.package.example/version/123/aab  
+    --header 'Public-Token: {YOURtoken}' \  
+    --form 'file=@"/Users/User/Downloads/package.aab"'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": null  
+        "timestamp": "2023-06-02T16:36:57.847391009+03:00"  
+    }  
+    
+
+]
+

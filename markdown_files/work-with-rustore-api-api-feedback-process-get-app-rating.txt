@@ -1,0 +1,94 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-feedback-process/get-app-rating
+title: Работа с отзывами с помощью RuStore API Получение рейтинга приложения
+
+[
+
+  * [](/help/)
+  * [Работа с отзывами с помощью RuStore API](/help/work-with-rustore-api/api-feedback-process)
+  * Получение рейтинга приложения
+
+Содержание этой страницы
+
+# Получение рейтинга приложения
+
+Метод позволяет получить рейтинг приложения.
+
+## Параметры взаимодействия​
+
+`GET`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/comment/statistic`
+
+Атрибут| Тип| Обязателен| Расположение| Описание| Пример  
+---|---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к API RuStore](/help/work-
+with-rustore-api/api-authorization-token).| N/A  
+`packageName`| string| Да| path| Наименование пакета приложения. Максимальная
+длина – 50 символов.| `com.myapp.example`  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+`body{}`| object| Да| N/A| N/A  
+  
+### body​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`raitings`| object| Да| N/A| N/A  
+`averageUserRating`| number| Да| Средняя пользовательская оценка по
+приложению.| `4`  
+`totalRatings`| number| Да| Общее количество оценок.| `0`  
+`totalResponses`| number| Да| Общее количество отзывов без ответов.| `0`  
+`ratingsNoComments`| number| Да| Общее количество оценок без отзывов.| `0`  
+  
+### raitings​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`amountFive`| number| Да| Количество оценок «5».| `0`  
+`amountFour`| number| Да| Количество оценок «4».| `3`  
+`amountThree`| number| Да| Количество оценок «3».| `0`  
+`amountTwo`| number| Да| Количество оценок «2».| `0`  
+`amountOne`| number| Да| Количество оценок «1».| `0`  
+  
+## Пример запроса​
+
+    
+    
+    curl --location 'https://public-api.rustore.ru/public/v1/application/ru.voonsh.push/comment/statistic' \  
+    --header 'Public-Token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAtMjU2In0.1r3cxOdxuNpypJSWXMQ4oAVYhqh6_3RlqKfItkhthhTzisiRYnboOkZpw_r5J9w0S5G8u-BexQeganyoG3MbCJ5QP2X6945wQMxlPkl81UKewkZuFrjsH36USk6dnnMbjT8Yw8nA4Yr0n8Oinspj3zkw66kZd-57EJvoMfneCEyTBY1mYEoc2DnfUa99syX1kIgX7Jfipn4yRm3pxWad5aesCK3eQFlP57CBirm8qGecDzkKcV1DeBx-qXK1S72FaXId11zN-rbe14U1z8jCCiEHhYrTIT9ci7OKF7OqF2kgRRVdCoO3eRWl4JWF-JfGAeYcv7rEpNLC32pEm5FOCA.khXZSeTodz2mVoNd.fKVjmkHUEM9AW7S_mYf-LFO4T26Lqf4RNSyjyNmFfsxZybDKahZgnaJ4lXYq-MPVN-o39eg1jISmoJcBonqS-0rIFe1P3CAM5cbNiSsTCX1r-cVdf4ei998KKGMg8bZL24-uLfxgcJSBBTgmUkyvf_KqH_dcxmQ.DwbK_08RLgHibat3h5dvkQ'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": {  
+            "ratings": {  
+                "amountFive": 13,  
+                "amountFour": 2,  
+                "amountThree": 0,  
+                "amountTwo": 0,  
+                "amountOne": 0  
+            },  
+            "averageUserRating": 4.87,  
+            "totalRatings": 15,  
+            "totalResponses": 9,  
+            "ratingsNoComments": 4  
+        },  
+        "timestamp": "2023-06-15T08:35:06.412194896+03:00"  
+    }  
+    
+
+]
+

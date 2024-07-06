@@ -1,0 +1,40 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/parameters-and-conditions/
+title: Инструменты RuStore Remote Config Работа с параметрами и условиями в Remote Config
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * Работа с параметрами и условиями в Remote Config
+
+Содержание этой страницы
+
+# Remote Config: эффективное управление параметрами и условиями
+
+Remote Config защищает пользователей от непреднамеренных действий с
+параметрами и условиями, поэтому любое изменение, которое может повлиять на
+поведение приложения, будет отправлено на подтверждение. Не все изменения
+требуют подтверждения. Например, изменение описания параметра или условия
+никак не влияет на поведение системы, поэтому изменения вступают в силу сразу.
+
+## Права и доступы​
+
+Важно сказать, что права для совершения операций изменения подтверждения
+разделены — см. [Роли пользователей](/help/developers/tools/remote-
+config/roles).
+
+**В этом разделе:**
+
+[Работа с условиями в Remote Config](/help/developers/tools/remote-
+config/parameters-and-conditions/conditions)
+
+[Управление параметрами в RuStore Remote
+Config](/help/developers/tools/remote-config/parameters-and-
+conditions/parameters)
+
+[Настройка работы с параметрами](/help/developers/tools/remote-config/setting-
+parameters)
+
+]
+

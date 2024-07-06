@@ -1,0 +1,694 @@
+url: https://www.rustore.ru/help/sdk/updates/kotlin-java/1-0-1
+title: Обновление приложения Kotlin/Java 1.0.1
+
+[
+
+  * [](/help/)
+  * [Обновление приложения](/help/sdk/updates)
+  * [Kotlin/Java](/help/sdk/updates/kotlin-java)
+  * 1.0.1
+
+Содержание этой страницы
+
+# 1.0.1
+
+## Общие сведения​
+
+RuStore In-app updates SDK поддерживает актуальную версию приложения на
+устройстве пользователя. Это помогает пользователю увидеть обновления, оценить
+улучшение производительности и результат исправления ошибок.
+
+## Пример пользовательского сценария​
+
+Используйте RuStore In-app updates SDK для реализации различных способов
+обновлений. В настоящий момент поддерживаются: отложенное, тихое (без UI от
+RuStore) и принудительное обновление.
+
+  * Kotlin
+  * Java
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/rustore-sdk-update-example) чтобы
+узнать, как правильно интегрировать SDK обновлений.
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/rustore-update-java-example)
+чтобы узнать, как правильно интегрировать SDK обновлений.
+
+![img](https://www.rustore.ru//help/assets/images/8c0c1aa079e8c1e20e0708fb329b3d63-42e8a206c312c7532d52edacbc5a84c2.webp)
+
+## Условия корректной работы SDK​
+
+Для работы RuStore In-app updates SDK необходимо соблюдение следующих условий.
+
+  * Kotlin
+  * Java
+
+  * ОС Android версии 7.0 или выше
+  * Версия RuStore на устройстве пользователя актуальная
+  * Пользователь авторизован в RuStore
+  * Приложению RuStore разрешена установка приложений
+
+  * ОС Android версии 7.0 или выше
+  * Версия RuStore на устройстве пользователя актуальная
+  * Пользователь авторизован в RuStore
+  * Приложению RuStore разрешена установка приложений
+
+## Подключение в проект​
+
+  * Kotlin
+  * Java
+
+Подключите репозиторий.
+
+    
+    
+    repositories {  
+        maven {  
+            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+        }  
+    }  
+    
+
+Добавьте следующий код в свой конфигурационный файл для подключения следующие
+зависимости.
+
+build.gradle
+
+    
+    
+    dependencies {  
+        implementation("ru.rustore.sdk:appupdate:1.0.1")  
+    }  
+    
+
+Подключите репозиторий.
+
+    
+    
+    repositories {  
+        maven {  
+            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+        }  
+    }  
+    
+
+Добавьте следующий код в свой конфигурационный файл для подключения следующие
+зависимости.
+
+build.gradle
+
+    
+    
+    dependencies {  
+        implementation("ru.rustore.sdk:appupdate:1.0.1")  
+    }  
+    
+
+## Создание менеджера обновлений​
+
+  * Kotlin
+  * Java
+
+Перед вызовом методов библиотеки необходимо создать менеджер обновлений.
+
+    
+    
+    val updateManager = RuStoreAppUpdateManagerFactory.create(context)  
+    
+
+Перед вызовом методов библиотеки необходимо создать менеджер обновлений.
+
+    
+    
+    RuStoreAppUpdateManager ruStoreAppUpdateManager = RuStoreAppUpdateManagerFactory.INSTANCE.create(context);  
+    
+
+## Проверка наличия обновлений​
+
+  * Kotlin
+  * Java
+
+Прежде чем запрашивать обновление, проверьте, доступно ли обновление для
+вашего приложения. Для проверки наличия обновлений вызовите метод
+`getAppUpdateInfo()`. При вызове данного метода проверяются следующие условия.
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Приложению RuStore разрешена установка приложений.
+  * Пользователь авторизован в RuStore.
+
+В ответ на данный метод вы получите объект `AppUpdateInfo`, который будет
+содержать в себе информацию о необходимости обновления. Запросите этот объект
+заранее и закэшируйте его, чтобы запросить у пользователя запуск скачивания
+обновления без задержки и в удобный для пользователя момент времени.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .getAppUpdateInfo()  
+        .addOnSuccessListener { appUpdateInfo ->  
+            if (appUpdateInfo.updateAvailability == UpdateAvailability.UPDATE_AVAILABLE) {  
+                // Обновление доступно(здесь можно зарегистрировать listener и начать загрузку)  
+            }  
+        }  
+        .addOnFailureListener { throwable ->  
+            Log.e(TAG, "getAppUpdateInfo error", throwable)  
+        }  
+    
+
+Объект `AppUpdateInfo` содержит набор параметров, необходимых для определения
+доступности обновления.
+
+  * `updateAvailability` — доступность обновления:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию;
+    * `UPDATE_NOT_AVAILABLE (int == 1)` — обновление не нужно;
+    * `UPDATE_AVAILABLE (int == 2)` — обновление требуется загрузить или обновление уже загружено на устройство пользователя;
+    * `DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS (int == 3)` — обновление уже скачивается или установка уже запущена.
+  * `installStatus` — статус установки обновления, если пользователь уже устанавливает обновление в текущий момент времени:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию;
+    * `DOWNLOADED (int == 1)` — скачано;
+    * `DOWNLOADING (int == 2)` — скачивается;
+    * `FAILED (int == 3)` — ошибка;
+    * `PENDING (int == 5)` — в ожидании.
+
+к сведению
+
+Запуск скачивания обновления возможен только в том случае, если поле
+`updateAvailability` содержит значение `UPDATE_AVAILABLE`.
+
+Прежде чем запрашивать обновление, проверьте, доступно ли обновление для
+вашего приложения. Для проверки наличия обновлений вызовите метод
+`getAppUpdateInfo()`. При вызове данного метода проверяются следующие условия.
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Приложению RuStore разрешена установка приложений.
+  * Пользователь авторизован в RuStore.
+
+В ответ на данный метод вы получите объект `AppUpdateInfo`, который будет
+содержать в себе информацию о необходимости обновления. Запросите этот объект
+заранее и закэшируйте его, чтобы запросить у пользователя запуск скачивания
+обновления без задержки и в удобный для пользователя момент времени.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .getAppUpdateInfo()  
+        .addOnSuccessListener(appUpdateInfo -> {  
+            if (appUpdateInfo.getUpdateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {  
+                // Обновление доступно(здесь можно зарегистрировать listener и начать загрузку)  
+            }  
+        })  
+        .addOnFailureListener(throwable ->  
+            Log.e(TAG, "getAppUpdateInfo error", throwable)  
+        );  
+    
+
+Объект `AppUpdateInfo` содержит набор параметров, необходимых для определения
+доступности обновления.
+
+  * `updateAvailability` — доступность обновления:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию;
+    * `UPDATE_NOT_AVAILABLE (int == 1)` — обновление не нужно;
+    * `UPDATE_AVAILABLE (int == 2)` — обновление требуется загрузить или обновление уже загружено на устройство пользователя;
+    * `DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS (int == 3)` — обновление уже скачивается или установка уже запущена.
+  * `installStatus` — статус установки обновления, если пользователь уже устанавливает обновление в текущий момент времени:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию;
+    * `DOWNLOADED (int == 1)` — скачано;
+    * `DOWNLOADING (int == 2)` — скачивается;
+    * `FAILED (int == 3)` — ошибка;
+    * `PENDING (int == 5)` — в ожидании.
+
+к сведению
+
+Запуск скачивания обновления возможен только в том случае, если поле
+`updateAvailability` содержит значение `UPDATE_AVAILABLE`.
+
+## Скачивание и установка обновлений​
+
+### Использование слушателя (listener)​
+
+После подтверждения доступности обновления (`AppUpdateInfo`) вы можете
+запросить статус скачивания обновления — для этого запустите слушатель статуса
+скачивания обновления.
+
+### Проверка статуса скачивания обновления​
+
+  * Kotlin
+  * Java
+
+Используйте метод `registerListener()`.
+
+    
+    
+    ruStoreAppUpdateManager.registerListener { state ->  
+        when (state.installStatus) {  
+            InstallStatus.DOWNLOADED -> {  
+                // Обновление готово к установке  
+            }  
+            InstallStatus.DOWNLOADING -> {  
+                val totalBytes = state.totalBytesToDownload  
+                val bytesDownloaded = state.bytesDownloaded  
+                // Здесь можно отобразить прогресс скачивания  
+            }  
+            InstallStatus.FAILED -> {  
+                Log.e(TAG, "Downloading error")  
+            }  
+        }  
+    }  
+    
+
+Объект `state` описывает текущий статус скачивания. Ниже представлено
+содержимое объекта.
+
+  * `installStatus` — статус установки обновления, если пользователь уже устанавливает обновление в текущий момент времени:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию;
+    * `DOWNLOADED (int == 1)` — скачано;
+    * `DOWNLOADING (int == 2)` — скачивается;
+    * `FAILED (int == 3)` — ошибка;
+    * `PENDING (int == 5)` — в ожидании;
+  * `bytesDownloaded` — количество загруженных байт;
+
+  * `totalBytesToDownload` — общее количество байт, которое необходимо скачать;
+
+  * `installErrorCode` — код ошибки во время скачивания. Коды ошибок описаны в разделе Обработка ошибок.
+
+Используйте метод `registerListener()`.
+
+    
+    
+    ruStoreAppUpdateManager.registerListener(state -> {  
+        switch (state.getInstallStatus()) {  
+            case InstallStatus.DOWNLOADED:  
+                // Обновление готово к установке  
+                break;  
+            case InstallStatus.DOWNLOADING:  
+                long totalBytes = installState.getTotalBytesToDownload();  
+                long bytesDownloaded = installState.getBytesDownloaded();  
+                // Здесь можно отобразить прогресс скачивания  
+                break;  
+            case InstallStatus.FAILED:  
+                Log.e(TAG, "Downloading error");  
+                break;  
+        }  
+    });  
+    
+
+Объект `state` описывает текущий статус скачивания. Ниже представлено
+содержимое объекта.
+
+  * `installStatus` — статус установки обновления, если пользователь уже устанавливает обновление в текущий момент времени:
+
+    * `UNKNOWN (int == 0) ` — по умолчанию;
+    * `DOWNLOADED (int == 1)` — скачано;
+    * `DOWNLOADING (int == 2)` — скачивается;
+    * `FAILED (int == 3)` — ошибка;
+    * `PENDING (int == 5)` — в ожидании;
+  * `bytesDownloaded` — количество загруженных байт;
+
+  * `totalBytesToDownload` — общее количество байт, которое необходимо скачать;
+
+  * `installErrorCode` — код ошибки во время скачивания. Коды ошибок описаны в разделе Обработка ошибок.
+
+### Удаление слушателя​
+
+  * Kotlin
+  * Java
+
+Если необходимости в слушателе больше нет, воспользуйтесь методом удаления
+слушателя `unregisterListener()`, передав в метод ранее зарегистрированный
+слушатель.
+
+    
+    
+    ruStoreAppUpdateManager.unregisterListener(listener);  
+    
+
+Если необходимости в слушателе больше нет, воспользуйтесь методом удаления
+слушателя `unregisterListener()`, передав в метод ранее зарегистрированный
+слушатель.
+
+    
+    
+    ruStoreAppUpdateManager.unregisterListener(listener);  
+    
+
+## Запуск скачивания обновления​
+
+### Отложенное обновление​
+
+**Описание сценария отложенного обновления**
+
+Обновление с UI от RuStore
+
+![img](https://www.rustore.ru//help/assets/images/scenario-delayed-
+update-8b203cb270ea5fd9d8d310caca47da39.webp)
+
+  1. Пользователю будет показан диалог с UI от RuStore для подтверждения обновления.
+  2. При нажатии на кнопку «Обновить» покажется диалоговое окно для подтверждения установки обновления.
+  3. После завершения установки приложение закроется.
+
+  * Kotlin
+  * Java
+
+**Запуск сценария обновления**
+
+Для запуска скачивания обновления приложения вызовите метод
+`startUpdateFlow()`.
+
+к сведению
+
+Объект `AppUpdateInfo` после однократного использования становится невалидным.
+Для повторного вызова метода `startUpdateFlow()` запросите `AppUpdateInfo`,
+снова используя метод `getAppUpdateInfo()`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .startUpdateFlow(appUpdateInfo, AppUpdateOptions.Builder().build())  
+        .addOnSuccessListener { resultCode ->  
+            if (resultCode == Activity.RESULT_CANCELED) {  
+                // Пользователь отказался от скачивания  
+            }  
+        }  
+        .addOnFailureListener { throwable ->  
+            Log.e(TAG, "startUpdateFlow error", throwable)  
+        }  
+    
+
+Если пользователь подтвердил скачивание обновления, тогда `resultCode =
+Activity.RESULT_OK`, если отказался, то `resultCode = Activity.RESULT_CANCEL`.
+
+После получения статуса `DOWNLOADED` вы можете вызвать метод установки
+обновления completeUpdate().
+
+Рекомендуется уведомить пользователя о готовности обновления к установке.
+
+Метод может вернуть ошибку.
+
+к сведению
+
+Список возможных ошибок
+
+**Запуск сценария обновления**
+
+Для запуска скачивания обновления приложения вызовите метод
+`startUpdateFlow()`.
+
+к сведению
+
+Объект `AppUpdateInfo` после однократного использования становится невалидным.
+Для повторного вызова метода `startUpdateFlow()` запросите `AppUpdateInfo`,
+снова используя метод `getAppUpdateInfo()`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .startUpdateFlow(appUpdateInfo, new AppUpdateOptions.Builder().build())  
+        .addOnSuccessListener(resultCode -> {  
+            if (resultCode == Activity.RESULT_CANCELED) {  
+                // Пользователь отказался от скачивания  
+            }  
+        })  
+        .addOnFailureListener(throwable ->  
+            Log.e(TAG, "startUpdateFlow error", throwable)  
+        );  
+    
+
+Если пользователь подтвердил скачивание обновления, тогда `resultCode =
+Activity.RESULT_OK`, если отказался, то `resultCode = Activity.RESULT_CANCEL`.
+
+После получения статуса `DOWNLOADED` вы можете вызвать метод установки
+обновления completeUpdate().
+
+Рекомендуется уведомить пользователя о готовности обновления к установке.
+
+Метод может вернуть ошибку.
+
+к сведению
+
+Список возможных ошибок
+
+### Принудительное обновление​
+
+**Описание сценария принудительного обновления**
+
+Обновление с UI от RuStore
+
+![img](https://www.rustore.ru//help/assets/images/scenario-forced-update-
+bdbb37026442d5850c063420e5ecc62a.webp)
+
+  1. Пользователю будет показан полноэкранный диалог с UI от RuStore для подтверждения обновления. Использование приложения будет заблокировано до тех пор, пока обновление не будет установлено.
+  2. При нажатии на кнопку «Обновить» отобразится диалоговое окно для подтверждения установки обновления.
+  3. Далее при нажатии на кнопку «Установить» появится полноэкранный диалог об установке новой версии приложения.
+  4. После завершения установки приложение перезапустится.
+
+предупреждение
+
+Приложение будет перезапущено, если версия Rustore больше, либо равна 1.37.
+Если версия Rustore ниже, то приложение закроется для установки обновления и
+не будет открыто заново, когда закончится обновление.
+
+  * Kotlin
+  * Java
+
+**Запуск сценария обновления**
+
+После получения `AppUpdateInfo` вы можете проверить доступность
+принудительного обновления.
+
+    
+    
+    if (appUpdateInfo.isUpdateTypeAllowed(IMMEDIATE)) {  
+        // Принудительное обновление доступно  
+    }  
+    
+
+Результат функции `isUpdateTypeAllowed` рекомендуется использовать для
+принятия решения о запуске принудительного обновления, но данный результат не
+влияет на возможность запуска сценария. Необходимость запуска сценария
+обновления может происходить по вашей внутренней логике.
+
+Для запуска сценария обновления используйте метод `startUpdateFlow()`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .startUpdateFlow(appUpdateInfo, AppUpdateOptions.Builder().appUpdateType(IMMEDIATE).build())  
+        .addOnSuccessListener { resultCode ->  
+       
+        }  
+        .addOnFailureListener { throwable ->  
+       
+        }  
+    
+
+`resultCode (Int)`:
+
+  * `Activity.RESULT_OK (-1)` — обнов ление выполнено, код может не быть получен, т. к. приложение в момент обновления завершается.
+  * `Activity.RESULT_CANCELED (0)` — флоу прервано пользователем, или произошла ошибка. Предполагается, что при получении этого кода следует завершить работу приложения.
+  * `ActivityResult.ACTIVITY_NOT_FOUND (2)` — RuStore не установлен, либо установлена версия, которая не поддерживает принудительное обновление (`RuStore versionCode` < `191`).
+
+`throwable` — ошибка старта сценария обновления.
+
+При успешном обновлении дальнейших действий не требуется.
+
+**Запуск сценария обновления**
+
+После получения `AppUpdateInfo` вы можете проверить доступность
+принудительного обновления.
+
+    
+    
+    if (appUpdateInfo.isUpdateTypeAllowed(IMMEDIATE)) {  
+        // Принудительное обновление доступно  
+    }  
+    
+
+Результат функции `isUpdateTypeAllowed` рекомендуется использовать для
+принятия решения о запуске принудительного обновления, но данный результат не
+влияет на возможность запуска сценария. Необходимость запуска сценария
+обновления может происходить по  вашей внутренней логике.
+
+Для запуска сценария обновления используйте метод `startUpdateFlow()`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .startUpdateFlow(appUpdateInfo, new AppUpdateOptions.Builder().appUpdateType(AppUpdateType.IMMEDIATE).build()  
+        .addOnSuccessListener(resultCode -> {  
+      
+        })  
+        .addOnFailureListener(throwable ->  
+      
+        );  
+    
+
+`resultCode (Int)`:
+
+  * `Activity.RESULT_OK (-1)` — обновление выполнено, код может не быть получен, т. к. приложение в момент обновления завершается.
+  * `Activity.RESULT_CANCELED (0)` — флоу прервано пользователем, или произошла ошибка. Предполагается, что при получении этого кода следует завершить работу приложения.
+  * `ActivityResult.ACTIVITY_NOT_FOUND (2)` — RuStore не установлен, либо установлена версия, которая не поддерживает принудительное обновление (`RuStore versionCode` < `191`).
+
+`throwable` — ошибка старта сценария обновления.
+
+При у спешном обновлении дальнейших действий не требуется.
+
+### Тихое обновление​
+
+**Описание сценария тихого обновления**
+
+Обновление без UI от RuStore
+
+![img](https://www.rustore.ru//help/assets/images/scenario-silent-
+update-62fe9fe724c2a63e0399cfc7cdaa53ce.webp)
+
+  1. Пользователю будет показано диалоговое окно для подтверждения установки обновления (обновление будет скачано в фоне).
+  2. После завершения установки приложение закроется.
+
+  * Kotlin
+  * Java
+
+**Запуск сценария обновления**
+
+Для запуска скачивания обновления приложения необходимо вызвать метод
+`startUpdateFlow()` с аргументом `AppUpdateInfo`, полученный в методе
+`getAppUpdateInfo`(), и установить тип обновления в `AppUpdateOptions` в
+значение `SILENT`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .startUpdateFlow(appUpdateInfo, AppUpdateOptions.Builder().appUpdateType(SILENT).build())  
+        .addOnSuccessListener { resultCode ->  
+       
+        }  
+        .addOnFailureListener { throwable ->  
+       
+        }  
+    
+
+При вызове `onSuccessListener` с `resultCode = Activity.RESULT_OK` будет
+зарегистрирована задача на скачивание обновления.
+
+В данном сценарии может быть вызван только `onSuccessListener` с `resultCode =
+Activity.RESULT_OK`, либо `onFailureListener`.
+
+После вызова метода вы можете следить за статусом скачивания обновления в
+слушателе.
+
+После получения статуса `DOWNLOADED` вы можете вызвать метод установки
+обновления completeUpdate(). Рекомендуется уведомить пользователя о готовности
+обновления к установке.
+
+подсказка
+
+Для тихого обновления рекомендуется реализовать свой интерфейс.
+
+**Запуск сценария обновления**
+
+Для запуска скачивания обновления приложения необходимо вызвать метод
+`startUpdateFlow()` с аргументом `AppUpdateInfo`, полученный в методе
+`getAppUpdateInfo()`, и установить тип обновления в `AppUpdateOptions` в
+значение `SILENT`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .startUpdateFlow(appUpdateInfo, new AppUpdateOptions.Builder().appUpdateType(AppUpdateType.SILENT).build())  
+        .addOnSuccessListener { resultCode ->  
+       
+        }  
+        .addOnFailureListener { throwable ->  
+       
+        }  
+    
+
+При вызове `onSuccessListener` с `resultCode = Activity.RESULT_OK` будет
+зарегистрирована задача на скачивание обновления.
+
+В данном сценарии может быть вызван только `onSuccessListener` с `resultCode =
+Activity.RESULT_OK`, либо `onFailureListener`.
+
+После вызова метода вы можете следить за статусом скачивания обновления в
+слушателе.
+
+После получения статуса `DOWNLOADED` вы можете вызвать метод установки
+обновления completeUpdate(). Рекомендуется уведомить пользователя о готовности
+обновления к установке.
+
+подсказка
+
+Для тихого обновления рекомендуется реализовать свой интерфейс.
+
+## Установка обновления​
+
+  * Kotlin
+  * Java
+
+Для запуска установки обновления вызовите метод `completeUpdate()`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .completeUpdate()  
+        .addOnFailureListener { throwable ->  
+            Log.e(TAG, "update error", throwable)  
+        }  
+    
+
+Обновление происходит через нативный инструмент Android. В случае успешного
+обновления приложение закроется.
+
+Для запуска установки обновления вызовите метод `completeUpdate()`.
+
+    
+    
+    ruStoreAppUpdateManager  
+        .completeUpdate()  
+        .addOnFailureListener(throwable -> {  
+            Log.e(TAG, "update error", throwable)  
+        });  
+    
+
+Обновление происходит через нативный инструмент Android. В случае успешного
+обновления приложение закроется.
+
+## Обработка ошибок​
+
+подсказка
+
+Если вы получили в ответ `onFailure`, не рекомендуется самостоятельно
+отображать ошибку пользователю. Отображение ошибки может негативно повлиять на
+пользовательский опыт.
+
+### Возможные ошибки​
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore;
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает платежи;
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore;
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки;
+  * `RuStoreInstallException(public val code: Int)` — ошибка скачивания и установки.
+    * `ERROR_UNKNOWN(Int = 4001)` — неизвестная ошибка.
+    * `ERROR_DOWNLOAD(Int = 4002)` — ошибка при скачивании.
+    * `ERROR_BLOCKED(Int = 4003)` — установка заблокированна системой.
+    * `ERROR_INVALID_APK(Int = 4004)` — некорректный APK обновления.
+    * `ERROR_CONFLICT(Int = 4005)` — ко нфликт с текущей версией приложения.
+    * `ERROR_STORAGE(Int = 4006)` — недостаточно памяти на устройстве.
+    * `ERROR_INCOMPATIBLE(Int = 4007)` — несовместимо с устройством.
+    * `ERROR_APP_NOT_OWNED(Int = 4008)` — приложение не куплено.
+    * `ERROR_INTERNAL_ERROR(Int = 4009)` — внутренняя ошибка.
+    * `ERROR_ABORTED(Int = 4010)` — пользователь отказался от установки обновления.
+    * `ERROR_APK_NOT_FOUND(Int = 4011)` — APK для запуска установки не найден.
+    * `ERROR_EXTERNAL_SOURCE_DENIED(Int = 4012)` — запуск обновления запрещён. Например, в первом методе вернулся ответ о том, что обновление недоступно, но пользователь вызывает второй метод.
+    * `ERROR_ACTIVITY_SEND_INTENT(Int = 9901)` — ошибка отправки intent на открытие активити.
+    * `ERROR_ACTIVITY_UNKNOWN(Int = 9902)` — неизвестная ошибка отрытия активити.
+
+]
+

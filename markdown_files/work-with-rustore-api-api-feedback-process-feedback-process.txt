@@ -1,0 +1,54 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-feedback-process/feedback-process
+title: Работа с отзывами с помощью RuStore API Общий процесс работы с отзывами
+
+[
+
+  * [](/help/)
+  * [Работа с отзывами с помощью RuStore API](/help/work-with-rustore-api/api-feedback-process)
+  * Общий процесс работы с отзывами
+
+# Общий процесс работы с отзывами
+
+  * Разработчик может получить отзывы на приложение:
+
+    * с помощью метода «[Получение отзывов приложения](/help/work-with-rustore-api/api-feedback-process/get-feedback)»;
+    * в формате CSV — метод «[Получение отзывов в формате .csv](/help/work-with-rustore-api/api-feedback-process/get-csv-feedback)»;
+  * Разработчик может ответить на отзыв, оставленный пользователем — метод «[Оставить ответ на отзыв](/help/work-with-rustore-api/api-feedback-process/feedback-answer)»;
+
+  * Узнать статус модерации ответа на отзыв — метод «[Получение статуса ответа на отзыв](/help/work-with-rustore-api/api-feedback-process/get-feedback-status)»;
+
+  * Можно изменить уже опубликованный ответ на отзыв — метод «[Изменение ответа на отзыв](/help/work-with-rustore-api/api-feedback-process/change-feedback-answer)»;
+
+  * Доступно удаление ответа на отзыв — метод «[Удаление ответа на отзыв](/help/work-with-rustore-api/api-feedback-process/delete-feedback-answer)»;
+
+  * Получить рейтинг приложения — метод «[Получение рейтинга приложения](/help/work-with-rustore-api/api-feedback-process/get-app-rating)».
+
+к сведению
+
+Для всех методов необходимо получить [токен доступа к API RuStore](/help/work-
+with-rustore-api/api-authorization-token). Срок жизни токена — 15 минут.
+
+Возможные варианты кодов ошибок
+
+Код| Значение  
+---|---  
+`200`| OK  
+`400`| Неправильный запрос  
+`401`| Не авторизован  
+`404`| Не найдено  
+`500`| Внутренняя ошибка сервера  
+  
+Пример ответа в случае ошибки
+
+    
+    
+    {  
+     "code": "ERROR",  
+     "message": "404",  
+     "body": null,  
+     "timestamp": "2023-05-30T20:08:14.120231216+03:00"  
+    }  
+    
+
+]
+

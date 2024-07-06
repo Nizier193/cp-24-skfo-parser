@@ -1,0 +1,60 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/ios-apps/enable-mytracker
+title: Инструменты RuStore Remote Config Подключение IOS приложений в Remote Config Подключение MyTracker
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * [Подключение IOS приложений в Remote Config](/help/developers/tools/remote-config/ios-apps/ios)
+  * Подключение MyTracker
+
+Содержание этой страницы
+
+# Подключение MyTracker
+
+Вы можете подключить MyTracker для сбора данных по метрикам для анализа
+результатов эксперимента.
+
+_Предварительные условия:_
+
+  * приложение добавлено в Remote Config. [Подробнее](/help/developers/tools/remote-config/ios-apps/add-ios-apps)
+  * к вашему приложению подключён SDK IOS Remote Config. [Подробнее](/help/developers/tools/remote-config/ios-apps/enable-sdk)
+
+## Как подключить MyTracker​
+
+Синхронизируйте аккаунты MyTracker и Remote Config.
+
+  1. Cоздайте аккаунт в MyTracker. [Подробнее](/help/developers/tools/mytracker/quick-start)
+
+  2. Перейдите в интерфейс и скопируйте `MyTracker idApp` из строки браузера на странице приложения.
+
+![](https://www.rustore.ru//help/assets/images/MyTracker-89f5a8130379dceb1045a4feed913262.webp)
+
+  3. Введите `idApp` на странице «Метрики» в вашем IOS приложении.
+
+  4. Введите email для уведомления о результатах синхронизации.
+
+  5. Нажмите «Отправить»
+
+Ваш запрос будет направлен на обработку в службу поддержки RuStore. На
+указанную почту придет письмо с результатом синхронизации аккаунта MyTracker и
+Remote Config.
+
+![](https://www.rustore.ru//help/assets/images/notification-a5b24f49b052366296cac8da57d3491a.webp)
+
+После синхронизации в интерфейсе Remote Config появится возможность добавлять
+метрики.
+
+**Читайте также:**
+
+  * [Управление параметрами в RuStore Remote Config](/help/developers/tools/remote-config/parameters-and-conditions/parameters)
+
+  * [Remote Config: атомарные условия и полное руководство по созданию](/help/developers/tools/remote-config/parameters-and-conditions/conditions)
+
+  * [Создание метрики](/help/developers/tools/remote-config/ab-testing/metric-create)
+
+  * [Создание эксперимента](/help/developers/tools/remote-config/ab-testing/experiment-create)
+
+]
+

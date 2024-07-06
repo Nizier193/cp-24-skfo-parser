@@ -1,0 +1,18 @@
+url: https://www.rustore.ru/help/developers/publishing-and-verifying-apps/app-publication/setting-up-publication
+title: Публикация и проверка приложений Публикация приложений Настройка публикации приложения
+
+[## [🟦 Автоматическая и ручная публикация
+приложения](/help/developers/publishing-and-verifying-apps/app-
+publication/setting-up-publication/instant-app-publishing)## [🟦 Отложенная
+публикация приложения](/help/developers/publishing-and-verifying-apps/app-
+publication/setting-up-publication/delayed-publication)## [🟦 Поэтапная
+публикация приложений](/help/developers/publishing-and-verifying-apps/app-
+publication/setting-up-publication/step-by-step-publication), ## [🟦
+Автоматическая и ручная публикация приложения](/help/developers/publishing-
+and-verifying-apps/app-publication/setting-up-publication/instant-app-
+publishing), ## [🟦 Отложенная публикация
+приложения](/help/developers/publishing-and-verifying-apps/app-
+publication/setting-up-publication/delayed-publication), ## [🟦 Поэтапная
+публикация приложений](/help/developers/publishing-and-verifying-apps/app-
+publication/setting-up-publication/step-by-step-publication)]
+

@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/sdk/payments/kotlin-java/migration
+title: Платежи in-app и подписки Kotlin/Java Обновление версии платежей
+
+[## [🟦 Переход на версию платежей 2.2.0](/help/sdk/payments/kotlin-
+java/migration/2-2-0-mirgation)## [🟦 Переход на версию платежей
+3.2.0](/help/sdk/payments/kotlin-java/migration/3-2-0-migration), ## [🟦
+Переход на версию платежей 2.2.0](/help/sdk/payments/kotlin-
+java/migration/2-2-0-mirgation), ## [🟦 Переход на версию платежей
+3.2.0](/help/sdk/payments/kotlin-java/migration/3-2-0-migration)]
+

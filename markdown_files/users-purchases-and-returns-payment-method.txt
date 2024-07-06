@@ -1,0 +1,36 @@
+url: https://www.rustore.ru/help/users/purchases-and-returns/payment-method
+title: Покупки и возвраты Как настроить способы оплаты
+
+[
+
+  * [](/help/)
+  * [Покупки и возвраты](/help/users/purchases-and-returns)
+  * Как настроить способы оплаты
+
+# Настройка способов оплаты в RuStore: Простой путь к оплате подписок и
+товаров
+
+Вы можете выбрать разные способы оплаты для оплаты подписок или товаров внутри
+приложения. В разделе «Способы оплаты» добавьте [банковские
+карты](/help/users/purchases-and-returns/link-bank-card) или карты из вашего
+профиля [Сбер ID](/help/users/purchases-and-returns/sber-id-connect).
+
+  1. Откройте приложение, в котором хотите оформить подписку или купить товар в приложении.
+  2. Выберите необходимые условия.
+  3. Нажмите «Оформить».
+  4. Выберите способ оплаты. В открывшемся окне RuStore вы можете оплатить подписку или товар сохраненными картами или добавьте другой способ оплаты.
+  5. Нажмите «Выбрать другую карту».
+  6. Выберите карту из сохраненных способов оплаты.
+  7. Нажмите «Оплатить новой картой».
+  8. Добавьте новую карту для оплаты. [Как это сделать?](/help/users/purchases-and-returns/link-bank-card)
+  9. Нажмите ![icon](https://www.rustore.ru/data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAABwBQCdASpAADMAPkUejkUioaGTCqycKAREtIAAMzEEnHGvaf/6fK+2IdAgrYCaYpcFkj+AAP79wI659y+VwB9YQ+vlr/HHZG6PY1HsdxmjG/wD1niuZf3Bf9ZNWMGUgsEkmu+XSwddlNwYqeeUeHAu8jdafXEctu4VpWQziwYzlxN7mHfZfYeXkEUlttUakXZMAW4bA1P4D9pFVW9m+pW/ZD/xwAAA), чтобы продолжить оплату.
+  10. Нажмите «Подписаться за».
+
+![img](https://www.rustore.ru//help/assets/images/7b3a930fe39735fa35ae871479ff84a0-909efe76aaff8217df3151cc78e07763.webp)
+
+![img](https://www.rustore.ru//help/assets/images/4ea78deb0ce7f3d78078d0706120fa92-118ea8063daf0ed918d971e91704546d.webp)
+
+![img](https://www.rustore.ru//help/assets/images/62ec7f9f614483dbe899dccd4a64de62-7c91ab18cb6b2849df63004e19d598d8.webp)
+
+]
+

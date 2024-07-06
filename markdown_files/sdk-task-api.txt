@@ -1,0 +1,140 @@
+url: https://www.rustore.ru/help/sdk/task-api
+title: Task API
+
+[
+
+  * [](/help/)
+  * Task API
+
+Содержание этой страницы
+
+# Task API
+
+Task — это асинхронная задача, возвращающая ошибку или значение в
+соответствующих callback-уведомлениях (`onFailure`, `onSuccess`).
+
+В качестве примера реализации используется метод SDK-оплаты `getProducts()`.
+
+## Обработка результата выполнения `Task`​
+
+Методы, выполняемые асинхронно, возвращают `Task<T>`. К примеру,
+`RuStoreBillingClient.getProducts()` возвращает `Task<ProductsResponse>`. Это
+означает, что `Task` вернет `ProductsResponse`, если выполнение метода было
+успешно (см. ниже).
+
+    
+    
+    val task: Task<ProductsResponse> = RuStoreBillingClient.products.getProducts()  
+    
+
+Чтобы получить результат успешного выполнения метода, добавьте callback
+`OnSuccessListener` к `Task` (см. ниже).
+
+    
+    
+    val task: Task<ProductsResponse> = RuStoreBillingClient.products.getProducts()  
+    task.addOnSuccessListener {  
+        // Process success  
+    }  
+    
+
+Чтобы получить ошибку выполнения, добавьте callback `OnFailureListener` к
+`Task` (см. ниже).
+
+    
+    
+    val task: Task<ProductsResponse> = RuStoreBillingClient.products.getProducts()  
+    task.addOnFailureListener {  
+        // Process error  
+    }  
+    
+
+Если необходимо получить факт любого завершения Task, используйте метод
+addOnCompletionListener (см. ниже).
+
+Если [cause] == null, то Task был завершен успешно через
+[Task.TaskResultProvider.setTaskSuccessResult]. Если [cause] ==
+[TaskCancellationException], то Task завершен через метод [Task.cancel], в
+противном случае [Task] был завершен c ошибкой через
+[Task.TaskResultProvider.setTaskErrorResult]
+
+    
+    
+    val task: Task<ProductsResponse> = RuStoreBillingClient.products.getProducts()  
+    task.addOnCompletionListener{ cause ->  
+            // Process  
+        }  
+    
+
+## Многопоточность​
+
+Callback, добавленные к `Task`, выполняются на главном потоке приложения. Если
+callback необходимо выполнить в другом потоке, передайте свой `Executor` в
+метод добавления `callback`.
+
+Добавление `executor` через сопроцесс (см. ниже).
+
+    
+    
+    val task: Task<ProductsResponse> = RuStoreBillingClient.products.getProducts()  
+    task.addOnSuccessListener(Dispatchers.IO.asExecutor()) {  
+        // Process success  
+    }  
+    
+
+## Синхронное выполнение​
+
+Если ваш код уже выполняется в бэкграунд потоке и вам необходимо получить
+результат синхронно, вы можете использовать `task.await()` (см. ниже).
+
+    
+    
+    try {  
+        val task: Task<ProductsResponse> = RuStoreBillingClient.products.getProducts()  
+        task.await()  
+    }  catch (e: CancellationException) {  
+        // Process error  
+    }  
+    
+
+предупреждение
+
+Метод `await()` блокирует поток, в котором выполняется. Во избежаниe ANR
+вызовите метод await() в фоновом потоке.
+
+предупреждение
+
+Использовать метод `await()` рекомендуется только после следующих версий SDK:
+SDK для платежей in-app и подписок - `billingclient:1.1.1` SDK для подключения
+push-уведомлений - `pushclient:0.1.8` SDK для подключения отзывов и оценок -
+`review:0.1.6` SDK для обновления приложения - `appupdate:0.1.1`
+
+Вызов метода `await()` для SDK более ранних версий может приводить к
+увеличенному потреблению батареи!
+
+## Обработка Task API через сопроцессы​
+
+Для обработки Task в сопроцессе можно использовать следующий код.
+
+    
+    
+    suspend fun <T> Task<T>.wrapInCoroutine(): Result<T> =  
+            suspendCancellableCoroutine { cont ->  
+      
+                cont.invokeOnCancellation { cancel() }  
+      
+                addOnSuccessListener { value ->  
+                    if (cont.isActive) {  
+                        cont.resume(Result.success(value))  
+                    }  
+                }  
+                addOnFailureListener { error ->  
+                    if (cont.isActive) {  
+                        cont.resume(Result.failure(error))  
+                    }  
+                }  
+            }  
+    
+
+]
+

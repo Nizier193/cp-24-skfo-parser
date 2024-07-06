@@ -1,0 +1,8 @@
+url: https://www.rustore.ru/help/sdk/payments/godot
+title: Платежи in-app и подписки Godot
+
+[## [🟦 История обновлений](/help/sdk/payments/godot/history)## [🟦
+5.0.0](/help/sdk/payments/godot/5-0-0), ## [🟦 История
+обновлений](/help/sdk/payments/godot/history), ## [🟦
+5.0.0](/help/sdk/payments/godot/5-0-0)]
+

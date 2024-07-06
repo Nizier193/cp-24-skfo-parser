@@ -1,0 +1,9 @@
+url: https://www.rustore.ru/help/sdk/general-push-notifications/send-push-notifications
+title: Универсальные push-уведомления Отправка универсальных push-уведомлений
+
+[## [🟦 API](/help/sdk/general-push-notifications/send-push-
+notifications/api)## [🟦 Примеры](/help/sdk/general-push-notifications/send-
+push-notifications/examples), ## [🟦 API](/help/sdk/general-push-
+notifications/send-push-notifications/api), ## [🟦 Примеры](/help/sdk/general-
+push-notifications/send-push-notifications/examples)]
+

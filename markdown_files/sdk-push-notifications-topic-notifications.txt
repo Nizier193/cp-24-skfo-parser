@@ -1,0 +1,274 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/topic-notifications
+title: Push-уведомления Отправка push-уведомлений по топикам (API)
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * Отправка push-уведомлений по топикам (API)
+
+Содержание этой страницы
+
+# Отправка push-уведомлений по топикам (API)
+
+## API для отправки push-уведомлений по топикам​
+
+Для работы с топиками потребуются следующие артефакты:
+
+  * `project_id` (ID проекта), `ss_token` (сервисный токен) — эти значения можно получить в консоли разработчика. Для этого нужно перейти в раздел **Push-уведомления** , открыть вкладку **Проекты** на странице приложения. Подробнее смотрите в разделе [Отправка push-уведомлений](/help/sdk/push-notifications/).
+  * `push_token` — push-токен(ы) устройств для подписки на рассылку по топику и отписки от неё.
+  * `topic` — топик в проекте.
+
+### Отправка push-уведомления в топик​
+
+к сведению
+
+Требуется наличие заголовка `Authorization`: `Authorization: Bearer
+$ss_token`.
+
+#### Тело запроса​
+
+Параметр| Тип| Описание  
+---|---|---  
+`data`| map| Объект, содержащий пары `"key": value`.  
+`notification`| object (message.notification)| Базовый шаблон уведомления для
+использования на всех платформах.  
+`android`| object (message.android)| Специальные параметры Android для
+сообщений.  
+  
+#### Тело успешного ответа​
+
+Параметр| Тип| Описание  
+---|---|---  
+`message`| text| Сообщение об успешной отправке пуша.  
+  
+#### Тело ответа ошибки​
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки.  
+`status`| text| Статус.  
+`message`| text| Подробная ошибка.  
+  
+### Подписка на push-уведомления по топику​
+
+к сведению
+
+Требуется наличие заголовка `Authorization`: `Authorization: Bearer
+$ss_token`.
+
+#### Тело запроса​
+
+Параметр| Тип| Описание  
+---|---|---  
+`push_tokens`| array (string)| Push-токены, которые нужно подписать на топик.  
+  
+#### Тело успешного ответа​
+
+Параметр| Тип| Описание  
+---|---|---  
+`message`| text| Сообщение об успешной подписке или наличии ошибок.  
+`errors`| object array (тело ошибки по токену)| Ошибки по токенам.  
+  
+#### Тело ошибки по токену​
+
+Параметр| Тип| Описание  
+---|---|---  
+`push_token`| text| Push-токен.  
+`error`| object (тело ответа ошибки)| Ошибка.  
+  
+#### Тело ответа ошибки​
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки.  
+`status`| text| Статус.  
+`message`| text| Подробная ошибка.  
+  
+### Отписка от push-уведомлений по топику​
+
+к сведению
+
+Требуется наличие заголовка Authorization: **Authorization: Bearer
+$ss_token**.
+
+#### Тело запроса​
+
+Параметр| Тип| Описание  
+---|---|---  
+`push_tokens`| string array| Push-токены, которые нужно отписать от топика.  
+  
+#### Тело успешного ответа​
+
+Параметр| Тип| Описание  
+---|---|---  
+`message`| text| Сообщение об успешной подписке или наличии ошибок.  
+`errors`| object array (тело ошибки по токену)| Ошибки по токенам.  
+  
+#### Тело ошибки по токену​
+
+Параметр| Тип| Описание  
+---|---|---  
+`push_token`| text| Push-токен.  
+`error`| object (тело ответа ошибки)| Ошибка.  
+  
+#### Тело ответа ошибки​
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Код ошибки.  
+`status`| text| Статус.  
+`message`| text| Подробная ошибка.  
+  
+## Примеры отправки push-уведомлений по топикам​
+
+### Подписка на топик hello​
+
+#### Запрос​
+
+    
+    
+    POST  'https://vkpns-topics.rustore.ru/v1/projects/{project_id}/topics/{topic}/batch_subscribe' HTTP /2  
+    Content-Type: application /json  
+    Authorization: Bearer $ss_token  
+    {  
+        "push_tokens" : [  
+            "kHrfTow3AjqdgUeCJLwbIHd7c0......",  
+            "9mbJVS0-2e0cCcIx7X5nxMIgp8......"  
+        ]  
+    }  
+    
+
+#### Успешный ответ​
+
+    
+    
+    HTTP/ 2 200  
+    {  
+        "message" : "success"  
+    }  
+    
+
+#### Частично успешный ответ​
+
+    
+    
+    HTTP/ 2 200  
+    {  
+        "message" : "1 error(s)",  
+        "errors" : [  
+            {  
+                "push_token" : "9mbJVS0-2e0cCcIx7X5nxMIgp8......",   
+                "error" : {  
+                    "code" : 1001 ,  
+                  "status" : "FORBIDDEN",  
+                    "message" : "s2s token invalid"  
+                }  
+            }  
+        ]  
+    }  
+    
+
+### Отписка от топика hello​
+
+#### Запрос​
+
+    
+    
+    POST  'https://vkpns-topics.rustore.ru/v1/projects/{project_id}/topics/{topic}/batch_unsubscribe' HTTP /2  
+    Content-Type: application /json  
+    Authorization: Bearer $ss_token  
+    {  
+        "push_tokens" : [  
+            "kHrfTow3AjqdgUeCJLwbIHd7c0......",  
+            "9mbJVS0-2e0cCcIx7X5nxMIgp8......"  
+        ]  
+    }  
+    
+
+#### Успешный ответ​
+
+    
+    
+    HTTP/ 2 200  
+    {  
+        "message" : "success"  
+    }  
+    
+
+#### Частично успешный ответ​
+
+    
+    
+    HTTP/ 2 200  
+    {  
+        "message" : "1 error(s)",  
+        "errors" : [  
+            {  
+                "push_token" : "9mbJVS0-2e0cCcIx7X5nxMIgp8......",   
+                "error" : {  
+                    "code" : 1001 ,  
+                  "status" : "FORBIDDEN",  
+                    "message" : "s2s token invalid"  
+                }  
+            }  
+        ]  
+    }  
+    
+
+### Отправка сообщения в топик hello​
+
+#### Запрос​
+
+    
+    
+    POST  'https://vkpns-topics.rustore.ru/v1/projects/Lpvk29a2Al2P6tWu-a-aN3PKwO6-qvXZ/topics/hello/publish' HTTP /2  
+    Content-Type: application /json  
+    Authorization: Bearer $ss_token  
+    {  
+        "message" : {  
+            "notification" :{  
+                "body" : "This is a notification message!",  
+                "title" : "Message",  
+                "image" : "https://image-hosting.org/284239234.jpeg"  
+            }  
+        }  
+    }  
+    
+
+#### Успешный ответ​
+
+    
+    
+    HTTP/ 2 200  
+    {  
+        "message" : "payload has been successfully published to topic hello"  
+    }  
+    
+
+#### Пример ошибки `BAD_REQUEST`​
+
+    
+    
+    HTTP/ 2 400  
+    {  
+        "code" : 2000 ,  
+        "status" : "BAD_REQUEST",  
+        "message" : "failed to parse request: invalid character 's' after object key:value pair"  
+    }  
+    
+
+#### Пример ошибки `FORBIDDEN`​
+
+    
+    
+    HTTP/ 2 403  
+    {  
+        "code" : 1001 ,  
+        "status" : "FORBIDDEN",  
+        "message" : "s2s token invalid"  
+    }  
+    
+
+]
+

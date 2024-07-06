@@ -1,0 +1,37 @@
+url: https://www.rustore.ru/help/users/authorization/login-sber-id
+title: Авторизация в RuStore Как авторизоваться через Сбер ID
+
+[
+
+  * [](/help/)
+  * [Авторизация в RuStore](/help/users/authorization)
+  * Как авторизоваться через Сбер ID
+
+Содержание этой страницы
+
+# Вход через Сбер ID в RuStore. Подробная инструкция с добавлением карт
+
+Вы можете авторизоваться в RuStore через Сбер ID:
+
+  1. Нажмите ![icon](https://www.rustore.ru//help/rustore-icon.svg) на домашнем экране вашего устройства.
+  2. Нажмите «Войти».
+  3. Нажмите ![icon](https://www.rustore.ru//help/sber-icon.svg), чтобы авторизоваться через приложение Сбербанк.
+  4. Войдите в приложение Сбербанка, чтобы авторизоваться в RuStore.
+
+![img](https://www.rustore.ru//help/assets/images/login-5c016c3fea206a44925ea99620816a61.webp)
+
+![img](https://www.rustore.ru//help/assets/images/ec5a9c24235b39ff4f63eeca18e9a02d-1bf2413c8ea98f72f85488f581cb3f7a.webp)
+
+## Как добавить карты из Сбер ID​
+
+После авторизации вы можете разрешить привязку карт из Сбер ID в профиль
+RuStore. Для этого:
+
+  1. Поставьте галочку рядом с пунктом «Добавить к аккаунту ранее сохранённые карты в Сбер ID». Так вы подтвердите своё согласие.
+  2. Нажмите кнопку «Продолжить».
+  3. Карты из Сбер ID появятся в разделе «Способы оплаты». [Как редактировать данные карт?](/help/users/purchases-and-returns/sber-id-connect)
+
+![img](https://www.rustore.ru//help/assets/images/ad609b95d76d4a6c3338e8b060160d2b-d147667dbce3b6aea55344b9697121f2.webp)
+
+]
+

@@ -1,0 +1,8 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/sdk/react
+title: Инструменты RuStore Remote Config SDK и конфигурация приложения React Native
+
+[## [🟦 6.0.0](/help/developers/tools/remote-config/sdk/react/6-0-0)## [🟦
+1.0.0](/help/developers/tools/remote-config/sdk/react/1-0-0), ## [🟦
+6.0.0](/help/developers/tools/remote-config/sdk/react/6-0-0), ## [🟦
+1.0.0](/help/developers/tools/remote-config/sdk/react/1-0-0)]
+

@@ -1,0 +1,53 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/apk-file-upload/
+title: Загрузка и публикация приложений с помощью API RuStore Загрузка APK/AAB-файлов
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * Загрузка APK/AAB-файлов
+
+Содержание этой страницы
+
+# Загрузка APK/AAB-файлов
+
+Методы позволяют загрузить файл для публикации с расширением `.apk` или
+`.aab`.
+
+[Загрузка APK-файла](/help/work-with-rustore-api/api-upload-publication-
+app/apk-file-upload/file-upload-apk)| [Загрузка AAB-файла](/help/work-with-
+rustore-api/api-upload-publication-app/apk-file-upload/file-upload-aab)  
+---|---  
+  
+предупреждение
+
+Убедитесь, что в загружаемых вами файлах нет запрещённых или новых
+чувствительных разрешений. Если в загружаемых файлах есть чувствительные
+разрешения, которые уже были в предыдущих версиях, RuStore сам предзаполнит их
+описание.
+
+При загрузке с помощью API все файлы с расширением `.apk` или `.aab` проходят
+проверку на используемые в них разрешения. (См. [Типы
+разрешений](https://www.rustore.ru/help/developers/publishing-and-verifying-
+apps/declare-app-permissions/permission-types))
+
+## Возможные ошибки при обработке разрешений​
+
+code| Текст| Описание| Действия  
+---|---|---|---  
+400| APK/AAB contains new sensitive permissions: [перечесление разрешений].
+Please, upload APK/AAB via the development console and declare permissions.| В
+загруженном APK/AAB-файле найдены новые чувствительные разрешения.| Загрузите
+файл через [RuStore Консоль](https://dev.rustore.ru/) и заполните [Декларацию
+разрешений](https://www.rustore.ru/help/developers/publishing-and-verifying-
+apps/declare-app-permissions/how-to-declare-permissions).  
+После перехода в консоль, откройте созданный в ней черновик и загрузите файл.
+Заполните описание разрешений, сохраните изменения и отправьте черновик на
+модерацию.  
+400| APK/AAB contains illegal permissions: [перечесление разрешений]. Please,
+remove these permissions and reupload.| В загруженном APK/AAB-файле найдены
+запрещённые разрешения.| Удалите запрещённые разрешения и повторите загрузку
+файла.  
+  
+]
+

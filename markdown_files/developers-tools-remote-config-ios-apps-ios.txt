@@ -1,0 +1,31 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/ios-apps/ios
+title: Инструменты RuStore Remote Config Подключение IOS приложений в Remote Config
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * Подключение IOS приложений в Remote Config
+
+# Подключение IOS приложений в Remote Config
+
+В системе Remote Config доступны А/В эксперименты и удалённое управление
+конфигами для платформы IOS.
+
+примечание
+
+Инструкции ниже подходят только для IOS приложений.
+
+**В этом разделе:**
+
+[Добавление IOS приложения](/help/developers/tools/remote-config/ios-apps/add-
+ios-apps)
+
+[Подключение MyTracker](/help/developers/tools/remote-config/ios-apps/enable-
+mytracker)
+
+[Подключение SDK](/help/developers/tools/remote-config/ios-apps/enable-sdk)
+
+]
+

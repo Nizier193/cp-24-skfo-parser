@@ -1,0 +1,12 @@
+url: https://www.rustore.ru/help/sdk/payments/defold
+title: Платежи in-app и подписки Defold
+
+[## [🟦 История обновлений](/help/sdk/payments/defold/history)## [🟦
+5.1.1](/help/sdk/payments/defold/5-1-1)## [🟦
+5.0.1](/help/sdk/payments/defold/5-0-1)## [🟦
+5.0.0](/help/sdk/payments/defold/5-0-0), ## [🟦 История
+обновлений](/help/sdk/payments/defold/history), ## [🟦
+5.1.1](/help/sdk/payments/defold/5-1-1), ## [🟦
+5.0.1](/help/sdk/payments/defold/5-0-1), ## [🟦
+5.0.0](/help/sdk/payments/defold/5-0-0)]
+

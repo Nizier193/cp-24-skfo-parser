@@ -1,0 +1,28 @@
+url: https://www.rustore.ru/help/users/authorization/login-alfa-id
+title: Авторизация в RuStore Как авторизоваться через Альфа Банк
+
+[
+
+  * [](/help/)
+  * [Авторизация в RuStore](/help/users/authorization)
+  * Как авторизоваться через Альфа Банк
+
+# Как авторизоваться через Альфа Банк
+
+Вы можете авторизоваться в RuStore через Альфа-Банк:
+
+  1. Нажмите ![icon](https://www.rustore.ru//help/rustore-icon.svg) на домашнем экране вашего устройства.
+  2. Выберите «Войти в аккаунт».
+  3. Нажмите ![img](https://www.rustore.ru/data:image/webp;base64,UklGRpQFAABXRUJQVlA4IIgFAACQJwCdASrhAOEAPkUij0UioiGSziQEKAREtLdwuZcADOzrn/T7+X9lX9i/I61MfXH8d+WnIjvA/5X/ivmA4wnln9V/zP5JcyfbX8YNHB/pPSm/zv8t5uPzD/Af8b/CfAL/I/6R/uvzm7qv7b+wz+tAnOOsY942CgjyJCaVcdYx7xsFBHkSE0q46xj3jYKCPIkJpVwEYLe1O7JLSxMduL0T75Ca/oXxJUCCvyuKUk47/L3U5xGr9ocgjftUs1Jct+hFmMt92pjexD6ue/dprHjh+OuUQm8OVHi1XOnF/xf9rH6t86ifEMMH3bqb7RuQMUfBMfDDr3gGCl3qSKX3FvA1wc+usmVrqB95pNt4NVM5IpRNiRPr3UQQCjnI/rJCZ4iQmlXHWMe8bBQR5EhNKuOsY942CgjyJCaVcdYx7xsFBHkSE0IAAP76mwAADf/yTj3gbXfxJ20285/PA18ph+Ot498G14WycylaZP+O5/h8cMbsWglDgQOfeyUwgY0d4BMfsViaDOE7AHnV37UNeNAux90WjP262tSquUuEuVBoHdNFjuPlyIOEYNtdqlhKKltzhB2mqBGLwBbuVIDNk/ZP/6UY9Ta5qWbKHa7s7UMEDAIauXXtAneG78Djm8t4iRmUwz/QymqzOCHZ/g5vUq+0VjpjBNcXT6M7ybm6UR8D3mpYQjiKBcGWfDk7ffrTknVyRUZicqagJokAqV6q89PmJFNigRdzSYGWEM4uYgpO4jn1X2+tFxQ1D4kHpMNW8NEZk8bNTcnRjWBprKk4BUzkVrFcfEP/jkC4mXvPRVPfESc8QGm99DwMBjFnBkzXwyIeQKfK0xUdZIr5RWdIUuqHvoqqtwK0uSiLxS7GZvtcqEUGhMAJhc1rZ6aJUrvWiumFPo1ITCRVXPeW/uQAa9/5TlC8evTmqGUSRnG/JDi3tQuhbY4W2JNIA2s3Tf/f6sf5W88i88JF+AGAf9et1xd1bGrkgBzrjjbO/i8qGNqkn3hEo8sUL5rWcnssXKSLGkI7YECUpWWSBLOia6DrC8D93VFW3sJTgWhOR5usmukFEbIBWJAhcxLNhw6hWT/cyoRlZXiTH/9NoMVyMKWSrdJq5V6fj5bdn9tZV4iREQaBBxh5ESwcCYbnXwZ8VQCR6ef+GDU44xr/iTlxtvscmwFITy9zfjd/g4cvfj8uApMqj0wDm6B5Vmzs9XA6iBjjQax1fxu+YW3sEppP7I5S7y1nKHVUDgelLKRbmRBKcTB2AAub+OQU9XdHg2DWld4SI+Jk1Px1ynIs6VE/w+nvlQfIxn5QUNfrz6asnhoUBKWUSpyqszTU9Z+tdrh/FWQUf3VM7nT0rk1ItI1oElLqnGZuBiN6qdFJwJhCF1xa9sWQbtMiSy6jzTI5lfx19rhXx12ZX+IA/DXqUl219QkYJ+/3dOv/67k/9N418nmKsE3KVITJqznb9FHkgyL0Q+WPC7UKcUGUSXPOE3S/IQASiDfMn/fHbuv8lCK3tZ400k6gw7uobeFFUaI21tLsGeCNpjFhN+k1vjOY7p9aTel1dR9Hno4IV2sNraMd+WuopYH1Wu2+pGIARWSti6/N1a/goUhRNIdgdpd5d0ZbgkozKhWVTWGfE9KGse1DbT2iDtQMaok8Wg23wVgJYIASvOV3AIAattfIxV8hNekaR4jQ/ni1xcoQr5cDuVMYNt0WljUvn9DThQZbQaltFL4RY3pzuZXpwbTNnIZi0fppI0423ZK7+5FNADv2sfLLzaB1P5QhYwI/Y/fSX5ZUCo04SCD+ayCR1A28OrwPPpDHtF7t+Hkn7Gtx6VkLG0+axTJjSOwi1QcBNVU3NjENQ4JukE3im835novS7+WLCKeo1/nomaHHHi0AAAAAAAA=) и выберите **Alfa ID**.
+
+![img](https://www.rustore.ru//help/assets/images/alfa1-5724c43530d8c7ff95383ffeca5e53db.webp)
+
+Откроется страница авторизации Альфа-Банка в браузере или приложении.
+
+![img](https://www.rustore.ru//help/assets/images/alfa2-81a713ca3830404ff1216fa1f6b9ae6c.webp)
+
+  4. Введите номер телефона и нажмите «Продолжить». На ваш номер придёт SMS с кодом подтверждения.
+  5. Введите код и войдите в систему.
+
+]
+

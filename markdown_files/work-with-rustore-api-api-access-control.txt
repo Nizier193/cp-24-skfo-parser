@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-access-control
+title: Работа с доступами пользователей с помощью RuStore API
+
+[## [🟦 Отзыв доступа](/help/work-with-rustore-api/api-access-control/revoke-
+access)## [🟦 Получение информации о выданных доступах по
+приложению](/help/work-with-rustore-api/api-access-control/access-details), ##
+[🟦 Отзыв доступа](/help/work-with-rustore-api/api-access-control/revoke-
+access), ## [🟦 Получение информации о выданных доступах по
+приложению](/help/work-with-rustore-api/api-access-control/access-details)]
+

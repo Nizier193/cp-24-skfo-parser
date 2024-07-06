@@ -1,0 +1,16 @@
+url: https://www.rustore.ru/help/sdk/payments
+title: Платежи in-app и подписки
+
+[## [🟦 Список зависимостей](/help/sdk/payments/dependencies)## [🗃️
+Kotlin/Java](/help/sdk/payments/kotlin-java)## [🗃️
+Unity](/help/sdk/payments/unity)## [🗃️ Godot](/help/sdk/payments/godot)## [🗃️
+React Native](/help/sdk/payments/react)## [🗃️
+Flutter](/help/sdk/payments/flutter)## [🗃️ Unreal
+Engine](/help/sdk/payments/unreal)## [🗃️ Defold](/help/sdk/payments/defold),
+## [🟦 Список зависимостей](/help/sdk/payments/dependencies), ## [🗃️
+Kotlin/Java](/help/sdk/payments/kotlin-java), ## [🗃️
+Unity](/help/sdk/payments/unity), ## [🗃️ Godot](/help/sdk/payments/godot), ##
+[🗃️ React Native](/help/sdk/payments/react), ## [🗃️
+Flutter](/help/sdk/payments/flutter), ## [🗃️ Unreal
+Engine](/help/sdk/payments/unreal), ## [🗃️ Defold](/help/sdk/payments/defold)]
+

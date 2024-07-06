@@ -1,0 +1,109 @@
+url: https://www.rustore.ru/help/sdk/install-referrer/kotlin/6-0-0
+title: Install Referrer Kotlin 6.0.0
+
+[
+
+  * [](/help/)
+  * [Install Referrer](/help/sdk/install-referrer)
+  * [Kotlin](/help/sdk/install-referrer/kotlin)
+  * 6.0.0
+
+Содержание этой страницы
+
+# SDK Install Referrer для Kotlin (версия 6.0.0)
+
+SDK Install referrer — инструмент атрибуции для рекламных и аналитических
+систем. Он позволяет отслеживать количество установок вашего приложения,
+загруженных из RuStore по рекламным ссылкам.
+
+RuStore принимает ссылки вида
+`https://apps.rustore.ru/app/com.packagename.yourapp?referrerId=<referrer>`.
+
+Когда пользователь переходит по рекламной ссылке и запускает установку
+приложения, RuStore сохраняет значение `referrer` из этой ссылки. SDK
+обращается к RuStore, запрашивает значение `referrer` и передаёт его в ваше
+приложение в параметре `InstallReferrer`. Таким образом приложение получает
+информацию о том, что при переходе по определённой рекламной ссылке была
+выполнена установка.
+
+После того как RuStore передаёт SDK значение `referrer`, оно удаляется из
+RuStore. Даже если SDK не запросил `referrer`, это значение хранится в RuStore
+только 10 дней, после чего удаляется.
+
+## Подключение в проект​
+
+### Добавление репозитория​
+
+build.gradle
+
+    
+    
+    repositories {  
+        maven {  
+            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+        }  
+    }  
+    
+
+### Подключение зависимости​
+
+build.gradle
+
+    
+    
+    dependencies {  
+        implementation("ru.rustore.sdk:installreferrer:6.0.0")  
+    }  
+    
+
+## Создание InstallReferrerClient​
+
+Для работы с `referrer` создайте `InstallReferrerClient` при помощи
+конструктора класса:
+
+Инициализация
+
+    
+    
+    val client = InstallReferrerClient(context)  
+    
+
+## Получение объекта InstallReferrer​
+
+Вызовите `getInstallReferrer()`, чтобы получить `InstallReferrer`:
+
+    
+    
+    client.getInstallReferrer().addOnCompleteListener(object : OnCompleteListener<InstallReferrer> {  
+        override fun onFailure(throwable: Throwable) {  
+            // Handle error  
+        }  
+       
+        override fun onSuccess(result: InstallReferrer) {  
+            // Save InstallReferrer      
+        }  
+    })  
+    
+
+  * При ответе `onSuccess` сохраните значение `InstallReferrer` в вашем приложении, если вы планируете его использовать. При повторном запросе вместо значения `InstallReferrer` вернётся `null`.
+
+примечание
+
+`InstallReferrer` принимает значение `null`, если:
+
+    * приложение было установлено без передачи `referrer`;
+    * `InstallReferrer` уже запрашивался ранее;
+    * с того момента, как RuStore получил `referrer`, прошло 10 или более суток.
+
+  * При ответе `onFailure` обработайте ошибку в соответствии с логикой вашего приложения. Все возможные ошибки описаны ниже.
+
+## Возможные ошибки​
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore.
+
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает SDK Install Referrer.
+
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки.
+
+]
+

@@ -1,0 +1,21 @@
+url: https://www.rustore.ru/help/users/authorization/how-to-get-out
+title: Авторизация в RuStore Как выйти из аккаунта в RuStore
+
+[
+
+  * [](/help/)
+  * [Авторизация в RuStore](/help/users/authorization)
+  * Как выйти из аккаунта в RuStore
+
+# Простая инструкция по выходу из аккаунта
+
+  1. Нажмите ![icon](https://www.rustore.ru//help/rustore-icon.svg) на домашнем экране вашего устройства.
+  2. Нажмите ![icon](https://www.rustore.ru//help/profile-icon.svg) в нижнем меню.
+  3. Нажмите на название своего аккаунта.
+  4. Нажмите «Выйти из аккаунта».
+
+![img](https://www.rustore.ru//help/assets/images/logout-
+ed4c6dbdb5a5ce21237d8fdb2dd090b1.webp)
+
+]
+

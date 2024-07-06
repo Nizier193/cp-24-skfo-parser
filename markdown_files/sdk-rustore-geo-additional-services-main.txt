@@ -1,0 +1,30 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/additional-services/main
+title: Карты и геосервисы Дополнительные сервисы Список дополнительных сервисов
+
+[
+
+  * [](/help/)
+  * [Карты и геосервисы](/help/sdk/rustore-geo)
+  * [Дополнительные сервисы](/help/sdk/rustore-geo/additional-services)
+  * Список дополнительных сервисов
+
+# Список дополнительных сервисов
+
+На странице собраны дополнительные сервисы, которые необходимы для получения
+дополнительной нестандартной информации.
+
+Точка вызова| Описание  
+---|---  
+[/elevation](/help/sdk/rustore-geo/additional-services/height-determination)|
+Определение высоты в точке или профиля высот по маршруту.  
+[/ip2geo](/help/sdk/rustore-geo/additional-services/location-determination-by-
+ip)| Определение местоположения по IP-адресу.  
+[/timezone](/help/sdk/rustore-geo/additional-services/determining-the-time-
+zone)| Определение часового пояса в любой точке земли, а также смещения
+времени относительно UTC.  
+[/postcode](/help/sdk/rustore-geo/additional-services/search-for-a-zip-code)|
+Определение почтового индекса по адресу и адресов, использующих индекс. Для
+России доступен поиск почтового отделения по индексу.  
+  
+]
+

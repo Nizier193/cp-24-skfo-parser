@@ -1,0 +1,77 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-feedback-process/feedback-answer
+title: Работа с отзывами с помощью RuStore API Оставить ответ на отзыв
+
+[
+
+  * [](/help/)
+  * [Работа с отзывами с помощью RuStore API](/help/work-with-rustore-api/api-feedback-process)
+  * Оставить ответ на отзыв
+
+Содержание этой страницы
+
+# Оставить ответ на отзыв
+
+Метод позволяет оставить ответ на отзыв.
+
+## Параметры взаимодействия​
+
+`POST`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/feedback?commentId={commentId}`
+
+Атрибут| Тип| Обязателен| Расположение| Описание| Пример  
+---|---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к API RuStore](/help/work-
+with-rustore-api/api-authorization-token).| N/A  
+`packageName`| string| Да| path| Наименование пакета приложения. Максимальная
+длина – 50 символов.| `com.myapp.example`  
+`commentId`| number| Да| query| `id` отзыва пользователя.| `748223`  
+`message`| string| Да| body| Текст ответа на отзыв. В сообщении может быть от
+1 до 500 символов.| `Спасибо, за ваш отзыв. Он очень важен для нас.`  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа. В сообщении может быть от 1
+до 500 символов.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+`body{}`| object| Да| N/A| N/A  
+  
+### body​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`id`| number| Да| `id` ответа на отзыв.| `748479`  
+  
+## Пример​
+
+    
+    
+    curl --location 'https://public-api.rustore.ru/public/v1/application/ru.voonsh.push/feedback?commentId=2142370751' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Public-Token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAtMjU2In0.ziOR4J-_3A36M55IMdJqxck4Lktk9GFe6vvdRFBkIICA6z4WLLUxdEyHNdMWYomBs9MkJecCaCStOQ5YtmHvFIRK8aoj4c386WwUBXmTDXN_BJg2puwuLivMJWuAhgveZpC7afZCwM6m5RgLi538BAjFV_gE8XvbSUKlhWhkEvIzgrK2zk211SRUVXaAdrWEz5NNSSrQhyEv1fiMgQNmV9Sehp8fxP7G_9HkAWVtfNvgEiTbFHMTO-qpWtdh5Ts440Du9MC7PL59IUmXts1Khx6xbuUWLQe3WHPQCBmKezpxtI-l9Ms4F-iopZy-bXzUaUMFsaQu8Jh4kFvztFenYg.UPvgd5jKQcFO-MRE.zHHu-P5GSwUTvEMae-bu337jxpq25TbftTC7oF8r0APCfUqdx55CbO-PuIeGdjN08K4IC8GsWhLmKr9mqEeV9L-Dh5QSqA6M7GsLH8LAqrR1UX0Z849pyhrOt_Pz4SJ3YeHdu-ITfTL5Ysr0kECMXWIMcE24X8U.zHXeYuxDJf-Wtl9Vn0betw' \  
+    --data '{  
+      "message": "Thank you"  
+    }'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": {  
+            "id": 2149775551  
+        },  
+        "timestamp": "2023-06-02T16:36:57.847391009+03:00"  
+    }  
+    
+
+]
+

@@ -1,0 +1,27 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/ab-testing
+title: Инструменты RuStore Remote Config A/B-тестирование
+
+[## [🗃️ Результаты эксперимента](/help/developers/tools/remote-config/ab-
+testing/experiment-result)## [🟦 Подключение
+MyTracker](/help/developers/tools/remote-config/ab-testing/mytracker-
+connection)## [🟦 A/B эксперименты](/help/developers/tools/remote-config/ab-
+testing/experiments)## [🟦 Создание
+эксперимента](/help/developers/tools/remote-config/ab-testing/experiment-
+create)## [🟦 Работа с экспериментом](/help/developers/tools/remote-config/ab-
+testing/experiment-actions)## [🟦 Метрики](/help/developers/tools/remote-
+config/ab-testing/metrics)## [🟦 Создание
+метрики](/help/developers/tools/remote-config/ab-testing/metric-create)## [🟦
+Действия с метрикой](/help/developers/tools/remote-config/ab-testing/metric-
+actions), ## [🗃️ Результаты эксперимента](/help/developers/tools/remote-
+config/ab-testing/experiment-result), ## [🟦 Подключение
+MyTracker](/help/developers/tools/remote-config/ab-testing/mytracker-
+connection), ## [🟦 A/B эксперименты](/help/developers/tools/remote-config/ab-
+testing/experiments), ## [🟦 Создание
+эксперимента](/help/developers/tools/remote-config/ab-testing/experiment-
+create), ## [🟦 Работа с экспериментом](/help/developers/tools/remote-
+config/ab-testing/experiment-actions), ## [🟦
+Метрики](/help/developers/tools/remote-config/ab-testing/metrics), ## [🟦
+Создание метрики](/help/developers/tools/remote-config/ab-testing/metric-
+create), ## [🟦 Действия с метрикой](/help/developers/tools/remote-config/ab-
+testing/metric-actions)]
+

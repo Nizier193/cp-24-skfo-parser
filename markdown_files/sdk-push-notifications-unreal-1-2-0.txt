@@ -1,0 +1,826 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/unreal/1-2-0
+title: Push-уведомления Unreal Engine 1.2.0
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Unreal Engine](/help/sdk/push-notifications/unreal)
+  * 1.2.0
+
+Содержание этой страницы
+
+# SDK push-уведомлений для Unreal Engine (версия 1.2.0)
+
+## Условия корректной работы SDK​
+
+Для работы RuStore push-уведомлений необходимо соблюдение следующих условий:
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore должно поддерживать функциональность push-уведомлений.
+  * Приложению RuStore разрешен доступ к работе в фоновом режиме.
+  * Пользователь авторизован в RuStore.
+  * Отпечаток подписи приложения должен совпадать с отпечатком, добавленным в [Консоль RuStore](https://dev.rustore.ru/).
+  * Версия Unreal Engine 4.26 или выше.
+
+## Пример реализации​
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/rustore-unreal-engine-push-
+example), чтобы узнать, как правильно интегрировать SDK push-уведомлений.
+
+## Подключение в проект​
+
+  1. Скопируйте содержимое каталога `Plugins` из официального репозитория RuStore на [GitFlic](https://gitflic.ru/project/rustore/rustore-unreal-engine-push-example) в каталог `Plugins` внутри своего проекта.
+
+  2. Перезапустите Unreal Engine.
+
+  3. В списке плагинов (Edit → Plugins → Mobile) отметьте плагины «RuStorePush» и «RuStoreCore».
+
+  4. В файле `YourProject.Build.cs` в списке `PublicDependencyModuleNames` подключите модули `RuStoreCore` и `RuStorePush`.
+
+  5. В настройках проекта (Edit → Project Settings → Android) установите параметры:
+
+     * `Minimum SDK Version` — не ниже `24`;
+     * `Target SDK Version` — не ниже `31`.
+
+### Редактирование манифеста приложения​
+
+Плагин `RuStorePush` объявит службу `RuStoreUnityMessagingService`:
+
+AndroidManifest.xml
+
+    
+    
+    <service  
+        android:name="ru.rustore.unitysdk.pushclient.RuStoreUnityMessagingService"  
+        android:exported="true"  
+        tools:ignore="ExportedService">  
+        <intent-filter>  
+            <action android:name="ru.rustore.sdk.pushclient.MESSAGING_EVENT" />  
+        </intent-filter>  
+    </service>  
+    
+
+Если нужно изменить иконку или цвет стандартной нотификации, добавьте:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_icon"  
+        android:resource="@drawable/ic_baseline_android_24" />  
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_color"  
+        android:resource="@color/your_favorite_color" />  
+    
+
+Если нужно переопределить канал уведомлений, добавьте:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_channel_id"  
+        android:value="@string/pushes_notification_channel_id" />  
+    
+
+При добавлении канала push-уведомлений вы должны создать канал самостоятельно.
+
+### Запрос разрешения на показ уведомлений в Android 13+​
+
+В версии Android 13 появилось новое разрешение для отображения push-
+уведомлений. Это затронет все приложения, которые работают на Android 13 или
+выше и используют RuStore Push SDK.
+
+По умолчанию RuStore Push SDK версии 1.4.0 и выше включает разрешение
+`POST_NOTIFICATIONS`, определённое в манифесте. Однако приложению также нужно
+запросить это разрешение во время выполнения через константу
+`android.permission.POST_NOTIFICATIONS`. Приложение сможет показывать push-
+уведомления, только когда пользователь предоставит на это разрешение.
+
+Запрос разрешения на показ push-уведомлений:
+
+Activity/Fragment
+
+    
+    
+    // Declare the launcher at the top of your Activity/Fragment:  
+    private final ActivityResultLauncher<String> requestPermissionLauncher =  
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {  
+                if (isGranted) {  
+                    // RuStore Push SDK (and your app) can post notifications.  
+                } else {  
+                    // TODO: Inform user that your app will not show notifications.  
+                }  
+            });  
+      
+    private void askNotificationPermission() {  
+        // This is only necessary for API level>= 33 (TIRAMISU)  
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {  
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==  
+                    PackageManager.PERMISSION_GRANTED) {  
+                // RuStore Push SDK (and your app) can post notifications.  
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {  
+                // TODO: display an educational UI explaining to the user the features that will be enabled  
+                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user  
+                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.  
+                //       If the user selects "No thanks," allow the user to continue without notifications.  
+            } else {  
+                // Directly ask for the permission  
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);  
+            }  
+        }  
+    }  
+    
+
+## Инициализация​
+
+Для инициализации понадобится идентификатор проекта из [RuStore
+Консоль](https://console.rustore.ru/waiting). Чтобы получить его, на странице
+приложения перейдите в раздел «Push-уведомления» — «Проекты» и скопируйте
+значение в поле «ID проекта».
+
+![img](https://www.rustore.ru//help/assets/images/project-
+id-c3f7d16c6ea4bb0472a203c945461513.webp)
+
+Для доступа к методам push sdk из C++ выполните инициализацию плагина,
+используя метод `Init`.
+
+Вызов метода Init
+
+    
+    
+    FURuStorePushClientConfig config;  
+    config.allowNativeErrorHandling = true;  
+    config.messagingServiceListener = pushMessagingServiceListener;  
+    config.logListener = pushLogListener;  
+       
+    URuStorePushClient::Instance()->Init(сonfig);  
+    
+
+Все операции с объектом `URuStorePushClient` также доступны из Blueprints.
+Ниже преставлен пример инициализации.
+
+![img](https://www.rustore.ru//help/assets/images/unreal-01-ae3020d1abb1386abc1bf9d1744f88a5.webp)
+
+Метод `Init` принимает в качестве входного параметра структуру
+`FURuStorePushClientConfig`. Структура содержит поля:
+
+  * `allowNativeErrorHandling` — разрешение на обработку ошибок в нативном SDK.
+
+  * `messagingServiceListener` — объект класса, реализующего интерфейс `IRuStoreMessagingServiceListenerInterface`.
+
+  * `logListener` — объект класса, реализующего интерфейс `IRuStoreLogListenerInterface`. Этот параметр должен быть задан при установке `RuStoreUnrealLoggerMode.CUSTOM` в методе инициализации на стороне Java.
+
+Объекты `URuStoreMessagingServiceListener::Instance()` и
+`URuStoreLogListener::Instance()` реализуют интерфейсы
+`IRuStoreMessagingServiceListenerInterface` и `IRuStoreLogListenerInterface`
+соответственно. Их применение позволяет обрабатывать события интерфейсов
+непосредственно из C++ и Blueprint.
+
+Инициализация `URuStoreMessagingServiceListener` и `URuStoreLogListener`
+совместно с `URuStorePushClient`:
+
+![img](https://www.rustore.ru//help/assets/images/unreal-02-f85784f4a99357aa16b0575aea4cd912.webp)
+
+### Деинициализация​
+
+Вызов метода `Init` для `URuStorePushClient`,
+`URuStoreMessagingServiceListener`, `URuStoreLogListener` привязывает объекты
+к корню сцены. Если дальнейшая работа с объектами больше не планируется, для
+освобождения памяти необходимо выполнить метод `Dispose`. Вызов `Dispose`
+отвяжет объект от корня и безопасно завершит все отправленные запросы.
+
+Вызов метода Dispose
+
+    
+    
+    URuStorePushClient::Instance()->Dispose();  
+    URuStoreMessagingServiceListener::Instance()->Dispose();  
+    URuStoreLogListener::Instance()->Dispose();  
+    
+
+![img](https://www.rustore.ru//help/assets/images/unreal-03-2663b6640de70140622808500ec75d61.webp)
+
+### Логирование событий​
+
+Вы можете реализовать собственный класс для логгирования событий, используя
+интерфейс `IRuStoreLogListenerInterface`.
+
+Интерфейс IRuStoreLogListenerInterface
+
+    
+    
+    class RUSTOREPUSH_API IRuStoreLogListenerInterface  
+    {  
+        GENERATED_BODY()  
+       
+    public:  
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Log Listener Interface")  
+        void LogVerboseResponse(int64 requestId, FString& message, FURuStoreError& error);  
+      
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Log Listener Interface")  
+        void LogDebugResponse(int64 requestId, FString& message, FURuStoreError& error);  
+      
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Log Listener Interface")  
+        void LogInfoResponse(int64 requestId, FString& message, FURuStoreError& error);  
+      
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Log Listener Interface")  
+        void LogWarnResponse(int64 requestId, FString& message, FURuStoreError& error);  
+      
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Log Listener Interface")  
+        void LogErrorResponse(int64 requestId, FString& message, FURuStoreError& error);  
+    };  
+    
+
+Методы интерфейса:
+
+  * `LogVerboseResponse` — подробные записи для отладки или анализа.
+  * `LogDebugResponse` — записи для отладки.
+  * `LogInfoResponse` — информационные записи.
+  * `LogWarnResponse` — предупреждения.
+  * `LogErrorResponse` — критические ошибки.
+
+Параметры методов:
+
+  * `requestId` — id запроса.
+  * `message` — сообщение лога.
+  * `error` — описание ошибки.
+
+Все возможные ошибки описаны в разделе Обр аботка ошибок.
+
+### Работа с сегментами пользователей​
+
+Сегмент — это группа пользователей, которых вы выбираете по определенным
+параметрам. Например, пользователи, которые приносят наибольший доход, или
+пользователи со старой версией Android. Подробности о сегментах — в
+документации [MyTracker](https://docs.tracker.my.com/reports/segments).
+
+Чтобы начать работу с сегментами, укажите `clientIdType` и `clientIdValue` при
+инициализации SDK:
+
+Инициализация
+
+    
+    
+    import com.epicgames.ue4.GameApplication;  
+    import ru.rustore.unreal.pushclient.RuStoreUnrealLoggerMode;  
+    import ru.rustore.unreal.pushclient.RuStoreUnrealPushClient;  
+    import ru.rustore.unreal.pushclient.UnrealClientIdType;  
+      
+    public class RuStorePushApplication extends GameApplication {  
+      
+        private final String PROJECT_ID = "6RUviJhYqgNXDXAIL5wqkAP1Rdnd4JmY";  
+    	private final RuStoreUnrealLoggerMode LOGGER_MODE = RuStoreUnrealLoggerMode.CUSTOM;  
+    	  
+    	private final UnrealClientIdType CLIENT_ID_TYPE = UnrealClientIdType.GAID;  
+        private final String CLIENT_ID_VALUE = "your_client_id";  
+      
+        @Override  
+        public void onCreate() {  
+            super.onCreate();  
+      
+            RuStoreUnrealPushClient.INSTANCE.init(  
+                this,  
+                PROJECT_ID,  
+                LOGGER_MODE,  
+                CLIENT_ID_TYPE,  
+                CLIENT_ID_VALUE  
+            );  
+        }  
+    }  
+    
+
+  * `CLIENT_ID_TYPE` — тип идентификатора:
+    * `UnrealClientIdType.GAID` — рекламный идентификатор Google.
+    * `UnrealClientIdType.OAID` — рекламный идентификатор Huawei.
+  * `CLIENT_ID_VALUE` — значение идентификатора.
+
+## Проверка возможности получать push-уведомления​
+
+Условия работы push-уведомлений перечислены в разделе Условия корректной
+работы SDK.
+
+Для проверки того, что приложение RuStore установлено на устройстве
+пользователя, используйте метод `CheckPushAvailability`.  
+Каждый запрос `CheckPushAvailability` возвращает `requestId`, который уникален
+в рамках одного запуска приложения. Каждое событие возвращает `requestId` того
+запроса, который запустил это событие.
+
+Вызов метода CheckPushAvailability
+
+    
+    
+    long requestId = URuStorePushClient::Instance()->CheckPushAvailability(  
+        [](long requestId, TSharedPtr<FUFeatureAvailabilityResult, ESPMode::ThreadSafe> response) {  
+            // Process response  
+        },  
+        [](long requestId, TSharedPtr<FURuStoreError, ESPMode::ThreadSafe> error) {  
+            // Process error  
+        }  
+    );  
+    
+
+![img](https://www.rustore.ru//help/assets/images/unreal-check-
+availability-7875a0501f82bf93a1bdf9575f0f7b7a.webp)
+
+Обратный вызов (callback) `Success` возвращает структуру
+`FURuStoreFeatureAvailabilityResult` в параметре `Response`.
+
+Структура FURuStoreFeatureAvailabilityResult
+
+    
+    
+    USTRUCT(BlueprintType)  
+    struct RUSTORECORE_API FURuStoreFeatureAvailabilityResult  
+    {  
+        GENERATED_USTRUCT_BODY()  
+       
+        FURuStoreFeatureAvailabilityResult()  
+        {  
+            isAvailable = false;  
+        }  
+       
+        UPROPERTY(BlueprintReadWrite)  
+        bool isAvailable;  
+           
+        UPROPERTY(BlueprintReadWrite)  
+        FURuStoreError cause;  
+    };  
+    
+
+  * `isAvailable` — выполнение условий выполнения платежей.
+  * `cause` — информация об ошибке. Все возможные ошибки `cause` описаны в разделе Обработка ошибок.
+
+Обратный вызов (callback) `Failure` возвращает структуру `FURuStoreError` с
+информацией об ошибке в параметре `Error`. Структура ошибки описана в разделе
+Обработка ошибок.
+
+## Методы для работы с push-токеном​
+
+### Получение push-токена пользователя​
+
+предупреждение
+
+Если у пользователя нет push-токена, метод создаст и вернёт новый push-токен.
+
+После инициализации библиотеки вы можете использовать метод `GetToken`, чтобы
+получить текущий push-токен пользователя.  
+Каждый запрос `GetToken` возвращает `requestId`, который уникален в рамках
+одного запуска приложения. Каждое событие возвращает `requestId` того запроса,
+который запустил это событие.
+
+Пример реализации RuStorePushClient.GetToken
+
+    
+    
+    long requestId = URuStorePushClient::Instance()->GetToken(  
+        [](long requestId, FString response) {  
+            // Process response  
+        },  
+        [](long requestId, TSharedPtr<FURuStoreError, ESPMode::ThreadSafe> error) {  
+            // Process error  
+        }  
+    );  
+    
+
+![img](https://www.rustore.ru//help/assets/images/unreal-push-
+token-b03ff8a089b3c4d1f1244923aefd8645.webp)
+
+Обратный вызов (callback) `Success` возвращает токен в виде строки `FString` в
+параметре `Response`:
+
+  * `response` — текущий push-токен.
+
+Обратный вызов (callback) `Failure` возвращает структуру `FURuStoreError` с
+информацией об ошибке в параметре `Error`. Структура ошибки описана в разделе
+Обработка ошибок.
+
+### Удаление push-токена пользователя​
+
+После инициализации библиотеки вы можете использовать метод `DeleteToken`,
+чтобы удалить текущий push-токен пользователя.  
+Каждый запрос `DeleteToken` возв ращает `requestId`, который уникален в рамках
+одного запуска приложения. Каждое событие возвращает `requestId` того запроса,
+который запустил это событие.
+
+Вызов метода DeleteToken
+
+    
+    
+    long requestId = URuStorePushClient::Instance()->DeleteToken(  
+        [](long requestId) {  
+            // Process success  
+        },  
+        [](long requestId, TSharedPtr<FURuStoreError, ESPMode::ThreadSafe> error) {  
+            // Process error  
+        }  
+    );  
+    
+
+![img](https://www.rustore.ru//help/assets/images/unreal-push-
+token02-a51c295c47c8a0ccab10a7fbaccc385f.webp)
+
+Обратный вызов (callback) `Success` сигнализирует об успешном выполнении
+операции.
+
+Обратный вызов (callback) `Failure` возвращает структуру `FURuStoreError` с
+информацией об ошибке в параметре `Error`. Структу ра ошибки описана в разделе
+Обработка ошибок.
+
+## Методы для работы с push-топиком​
+
+### Подписка на push-уведомления по топику​
+
+После инициализации библиотеки вы можете использовать метод `SubscribeToTopic`
+для подписки на топик.
+
+  
+Каждый запрос `SubscribeToTopic` возвращает `requestId`, который уникален в
+рамках одного запуска приложения. Каждое событие возвращает `requestId` того
+запроса, который запустил это событие.
+
+Вызов метода SubscribeToTopic
+
+    
+    
+    long requestId = URuStorePushClient::Instance()->SubscribeToTopic(  
+        topicName,  
+        [](long requestId) {  
+          // Process error  
+        },  
+        [](long requestId, TSharedPtr<FURuStoreError, ESPMode::ThreadSafe> error) {  
+          // Process error  
+        }  
+    );  
+    
+
+![img](https://www.rustore.ru//help/assets/images/unreal-push-
+topic-01-9c20dd4b1ad4a3758020ef5bf3386167.webp)
+
+Обратный вызов (callback) `Success` сигнализирует об успешном выполнении
+операции.
+
+Обратный вызов (callback) `Failure` возвращает структуру `FURuStoreError` с
+информацией об ошибке в параметре `Error`. Структура ошибки описана в разделе
+Обработка ошибок.
+
+### Отписка от push-уведомлений по топику​
+
+После инициализации библиотеки вы можете использовать метод
+`UnsubscribeToTopic` для отписки от топика.
+
+  
+Каждый запрос `UnsubscribeToTopic` возвращает `requestId`, который уникален в
+рамках одного зап уска приложения. Каждое событие возвращает `requestId` того
+запроса, который запустил это событие.
+
+Пример реализации RuStorePushClient.DeleteToken
+
+    
+    
+    long responseId = URuStorePushClient::Instance()->UnsubscribeFromTopic(  
+        [](long responseId) {  
+            // Process success  
+        },  
+        [](long responseId, TSharedPtr<FURuStoreError, ESPMode::ThreadSafe> error) {  
+            // Process error  
+        }  
+    );  
+    
+
+![img](https://www.rustore.ru//help/assets/images/unreal-push-
+topic-02-3652d22f074b99c34af2be528e1d351a.webp)
+
+Обратный вызов (callback) `Success` сигнализирует об успешном выполнении
+операции.
+
+Обратный вызов (callback) `Failure` возвращает структуру `FURuStoreError` с
+информацией об ошибке в параметре `Error`. Структура ошибки описана в разделе
+Обработка ошибок.
+
+## Получение данных от RuStore SDK​
+
+Объект `URuStoreMessagingServiceListener::Instance()` реализует интерфейс
+`IRuStoreMessagingServiceListenerInterface`. Подготовка
+`URuStoreMessagingServiceListener` к работе описана в разделе Инициализация.
+
+Интерфейс IRuStoreMessagingServiceListenerInterface
+
+    
+    
+    class RUSTOREPUSH_API IRuStoreMessagingServiceListenerInterface  
+    {  
+        GENERATED_BODY()  
+           
+    public:  
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Messaging Service Listener Interface")  
+        void NewTokenResponse(int64 requestId, FString& token);  
+       
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Messaging Service Listener Interface")  
+        void MessageReceivedResponse(int64 requestId, FURuStoreRemoteMessage& message);  
+       
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Messaging Service Listener Interface")  
+        void DeletedMessagesResponse(int64 requestId);  
+       
+        UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "RuStore Messaging Service Listener Interface")  
+        void ErrorResponse(int64 requestId, TArray<FURuStoreError>& errors);  
+    };  
+    
+
+Название метода| Описание  
+---|---  
+`NewTokenResponse`| Метод вызывается при получении нового push-токена. После
+вызова этого метода ваше приложение становится ответственно за передачу нового
+push-токена на свой сервер. Метод возвращает значение нового токена.  
+`MessageReceivedResponse`| Метод вызывается при получении нового push-
+уведомления. < p/> Если в объекте `notification` есть данные, RuStore SDK
+самостоятельно отображает уведомление. Если вы не хотите этого, используйте
+объект `data`, а `notification` оставьте пустым. Метод вызывается в любом
+случае. < p/> Получить payload push-уведомления TMap<FString, FString> можно
+из поля `message.data`.  
+`DeletedMessagesResponse`| Метод вызывается, если один или несколько push-
+уведомлений не доставлены на устройство. Например, если время жизни
+уведомления истекло до момента доставки. < p/> При вызове этого метода
+рекомендуется синхронизироваться со своим сервером, чтобы не пропустить
+данные.  
+`ErrorResponse`| Метод вызывается, если в момент инициализации возникает
+ошибка. Он возвращает массив объектов с ошибками. < p/> Возможные ошибки:
+
+  * `UnauthorizedException` — пользователь не авторизован в RuStore.
+  * `HostAppNotInstalledException` — RuStore отсутствует на устройстве пользователя.
+  * `HostAppBackgroundWorkPermissionNotGranted` — у RuStore нет разрешения на работу в фоне.
+
+Все возможные ошибки описаны в разделе Обработка ошибок.  
+  
+### Структура уведомления​
+
+Структура FURuStoreRemoteMessage
+
+    
+    
+    USTRUCT(BlueprintType)  
+    struct RUSTOREPUSH_API FURuStoreRemoteMessage  
+    {  
+        GENERATED_USTRUCT_BODY()  
+      
+    public:  
+        UPROPERTY()  
+        FString collapseKey;  
+           
+        UPROPERTY()  
+        TMap<FString, FString> data;  
+           
+        UPROPERTY()  
+        FString messageId;  
+           
+        UPROPERTY()  
+        FURuStoreNotification notification;  
+           
+        UPROPERTY()  
+        int priority;  
+           
+        char* rawData;  
+           
+        UPROPERTY()  
+        int ttl;  
+    };  
+    
+
+  * `collapseKey` — идентификатор группы уведомлений (на данный момент не учитывается).
+
+  * `data` — словарь, в который можно передать дополнительные данные для уведомления.
+
+  * `messageId` — уникальный ID сообщения. Является идентификатором каждого сообщения.
+
+  * `notification` — объект уведомления.
+
+  * `priority` — возвращает значение приоритетности (на данный момент не учитывается).
+
+Сейчас заложены следующие варианты:
+
+    * `0` — `UNKNOWN`.
+    * `1` — `HIGH`.
+    * `2` — `NORMAL`.
+
+< p/>
+
+  * `rawData` — словарь `data` в виде массива байтов.
+
+  * `ttl` — время жизни push-уведомления типа `Int` в секундах.
+
+Структура FURuStoreNotification
+
+    
+    
+    USTRUCT(Blueprintable)  
+    struct RUSTOREPUSH_API FURuStoreNotification  
+    {  
+        GENERATED_USTRUCT_BODY()  
+       
+    public:  
+        FURuStoreNotification()  
+        {  
+            title = "0";  
+            body = "0";  
+            channelId = "0";  
+            imageUrl = "0";  
+            color = "0";  
+            icon = "0";  
+            clickAction = "0";  
+        }  
+       
+        UPROPERTY()  
+        FString title;  
+       
+        UPROPERTY()  
+        FString body;  
+       
+        UPROPERTY()  
+        FString channelId;  
+       
+        UPROPERTY()  
+        FString imageUrl;  
+       
+        UPROPERTY()  
+        FString color;  
+       
+        UPROPERTY()  
+        FString icon;  
+       
+        UPROPERTY()  
+        FString clickAction;  
+    };  
+    
+
+  * `title` — заголовок уведомления.
+
+  * `body` — тело уведомления
+  * `channelId` — возможность задать канал, в который отправится уведомление. Актуально для Android 8.0 и выше.
+
+  * `imageUrl` — прямая ссылка на изображение для вставки в уведомление. Изображение должно быть не более 1 Мбайт.
+
+  * `color` — цвет уведомления в HEX-формате, строкой. Например, `#0077FF`.
+
+  * `icon` — значок уведомления из `res/drawable` в формате строки, которая совпадает с названием ресурса. < p/> Например, в `res/drawable` есть значок `small_icon.xml`, который доступен в коде через `R.drawable.small_icon`. Чтобы значок отображался в уведомлении, сервер должен указать в параметре `icon` значение `small_icon`. < p/>
+
+  * `clickAction` — `intent action`, с помощью которого будет открыта активити при клике на уведомление.
+
+### Создание канала для отправки уведомления​
+
+Для канала, в который отправляется уведомление, действует следующий приоритет:
+
+  * Если в push-уведомлении есть поле `channelId`, RuStore SDK отправит уведомление в указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, но ваше приложение указало параметр с каналом в `AndroidManifest.xml`, используется указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, и канал по умолчанию не задан в `AndroidManifest.xml`, RuStore SDK создаст канал и отправит уведомление в него. В дальнейшем все уведомления без явного указания канала будут отправляться в этот канал.
+
+### Открытие activity при нажатии на уведомление  ​
+
+По умолчанию, если нажать на уведомление, RuStore SDK откроет activity с
+`action` `android.intent.action.MAIN`. Если есть поле `clickAction`, RuStore
+SDK откроет activity, которая попадает под `Intent filter` с указанным
+`action`.
+
+Добавьте строку `<category android:name="android.intent.category.DEFAULT" />`
+в манифесте приложения в соответствующем элементе `<intent-filter>` у
+activity. Это нужно, чтобы при нажатии на уведомление по умолчанию открывалась
+activity. Без этой строки в RuStore SDK activity не откроется.
+
+Чтобы после нажатия на push-уведомление SDK смог открыть game activity без
+перезагрузки игры, нужно очистить `intent` при переходе в приложение.
+
+Для этого плагин добавит в манифест дополнительную activity типа
+`com.Plugins.RuStorePush.RuStorePushActivity`. `RuStorePushActivity` очистит
+`intent` и запустит `com.epicgames.ue4.GameActivity` или
+`com.epicgames.unreal.GameActivity` в зависимости от версии Unreal Engine.
+
+RuStorePush_UPL_Android.xml
+
+    
+    
+    <addElements tag="application">  
+    	<activity android:name="com.Plugins.RuStorePush.RuStorePushActivity" android:exported="true" android:label="@string/app_name" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:configChanges="mcc|mnc|uiMode|density|screenSize|smallestScreenSize|screenLayout|orientation|keyboardHidden|keyboard|navigation|touchscreen|locale|fontScale|layoutDirection" android:resizeableActivity="false" android:launchMode="singleTask" android:screenOrientation="sensor" android:debuggable="false">  
+    		<intent-filter>  
+    			<action android:name="android.intent.action.MAIN" />  
+    			<category android:name="android.intent.category.LAUNCHER" />  
+    			<category android:name="android.intent.category.DEFAULT" />  
+    		</intent-filter>  
+    	</activity>  
+    </addElements>  
+    
+
+Реализация RuStorePushActivity.java
+
+    
+    
+    import android.content.Intent;  
+    import android.os.Bundle;  
+    import androidx.appcompat.app.AppCompatActivity;  
+    import com.Plugins.RuStorePush.RuStoreLaunchHandler;  
+      
+    public class RuStorePushActivity extends AppCompatActivity {  
+      
+        private static final String ue4 = "com.epicgames.ue4.GameActivity";  
+        private static final String ue5 = "com.epicgames.unreal.GameActivity";  
+      
+    	@Override  
+        protected void onCreate(Bundle savedInstanceState) {  
+            super.onCreate(savedInstanceState);  
+      
+            Class<?> gameActivityClass = null;  
+            try {  
+                gameActivityClass = Class.forName(ue4);  
+            } catch (ClassNotFoundException ex1)  
+            {  
+                try {  
+                    gameActivityClass = Class.forName(ue5);  
+                } catch (ClassNotFoundException ex2) { }  
+            }  
+      
+            if (gameActivityClass != null)  
+            {  
+                RuStoreLaunchHandler.OnNewIntent(getIntent());  
+      
+                Intent newIntent = new Intent(this, gameActivityClass);  
+                startActivity(newIntent);  
+            }  
+      
+            finish();  
+        }  
+    }  
+    
+
+## Обработка ошибок​
+
+Если вы получили в ответ `Failure`, не рекомендуется отображать ошибку
+пользователю. Отображение ошибки может негативно повлиять на пользовательский
+опыт.
+
+Структура FURuStoreError
+
+    
+    
+    USTRUCT(BlueprintType)  
+    struct RUSTORECORE_API FURuStoreError  
+    {  
+        GENERATED_USTRUCT_BODY()  
+       
+        FURuStoreError()  
+        {  
+            name = "";  
+            description = "";  
+        }  
+       
+        UPROPERTY(BlueprintReadOnly)  
+        FString name;  
+       
+        UPROPERTY(BlueprintReadOnly)  
+        FString description;  
+    };  
+    
+
+  * `name` — имя ошибки. Содержит имя `simpleName` класса ошибки.
+  * `description` — описание ошибки.
+
+Классы ошибок:
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore.
+
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает push-уведомления.
+
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore.
+
+  * `RuStoreFeatureUnavailableException` — RuStore не имеет разрешения на работу в фоне.
+
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки.
+
+Если при инициализации SDK вы передали параметр `allowNativeErrorHandling ==
+true`, в случае ошибки:
+
+  * Вызовется соответствующий обработчик `onFailure`.
+
+  * Ошибка передастся в метод `resolveForPush` нативного SDK. Это нужно, чтобы показать пользователю диалог с ошибкой.
+
+Чтобы отключить передачу ошибки в нативный SDK, установите значение `false`
+для свойства `AllowNativeErrorHandling`.
+
+Запрет нативной обработки ошибок
+
+    
+    
+    URuStorePushClient::Instance()->SetAllowNativeErrorHandling(false);  
+    
+
+## См. также​
+
+  * [Отправка push-уведомлений (API)](/help/sdk/push-notifications/send-push-notifications)
+  * [Отправка push-уведомлений по топикам (API)](/help/sdk/push-notifications/topic-notifications)
+  * [Работа с сегментами пользователей (API)](/help/sdk/push-notifications/work-with-segments-push-api)
+
+]
+

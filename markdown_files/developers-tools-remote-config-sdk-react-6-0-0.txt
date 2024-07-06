@@ -1,0 +1,393 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/sdk/react/6-0-0
+title: Инструменты RuStore Remote Config SDK и конфигурация приложения React Native 6.0.0
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * [SDK и конфигурация приложения](/help/developers/tools/remote-config/sdk)
+  * [React Native](/help/developers/tools/remote-config/sdk/react)
+  * 6.0.0
+
+Содержание этой страницы
+
+# SDK Remote Config для React Native (версия 6.0.0)
+
+SDK Remote Config – это облачный сервис, который позволяет изменять поведение
+и внешний вид вашего приложения, не требуя от пользователей загрузки
+обновления приложения. Плагин инкапсулирует в себе запрос конфигурации с
+сервера, кэширование, фоновое обновление. Имеет удобное API для получения
+данных.
+
+## Пример реализации​
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/rustore-react-native-
+remoteconfig), чтобы узнать, как правильно интегрировать SDK Remote Config.
+
+## Ключевые особенности​
+
+  * Выбор наиболее удобного механизма обновления конфигурации.
+  * Возможность указывать процент распространения конфигурации на аудиторию.
+  * Возможность передавать дополнительную информацию для построения воронки конкретной конфигурации. Формировать конфигурацию можно даже для конкретных пользователей.
+  * Набор callback, который можно использовать для аналитики.
+  * Минимальное количество внешних зависимостей.
+
+## Подключение в проект​
+
+Для подключения пакета к проекту выполните следующую команду.
+
+    
+    
+    // HTTPS  
+    npm install git+https://git@gitflic.ru/project/rustore/rustore-react-native-remoteconfig.git  
+      
+    // SSH  
+    npm install git+ssh://git@gitflic.ru/project/rustore/rustore-react-native-remoteconfig.git  
+    
+
+## Инициализация​
+
+### Создание RemoteConfigClient​
+
+Инициализация `RemoteConfigClient` должна происходить в момент
+`Application.onCreate()`, так как при запуске фоновой синхронизации SDK должна
+быть проинициализирована.
+
+    
+    
+    RemoteConfigClient.createRemoteConfig: (appId: string, updateInterval: number, updateBehaviour: UpdateBehaviour, params?: RemoteConfigClientParams) => void;  
+    
+
+  * `appId` — уникальный идентификатор инструмента remote config. Доступен в [консоли разработчика RuStore](https://console.rustore.ru/toolbox/tools) на странице [создания параметров](https://www.rustore.ru/help/developers/tools/remote-config/parameters) remote config;
+  * `updateInterval` — интервал таймера обновления в минутах;
+  * `updateBehaviour` — параметр, определяющий поведение SDK. См. также Различия в значениях UpdateBehaviour.
+  * `params` — опциональные параметры, использующиеся для получения конкретной конфигурации.
+
+Пример вызова RemoteConfigClient.createRemoteConfig
+
+    
+    
+    RemoteConfigClient.createRemoteConfig(  
+        "1111111-111111-11111-11111-1111111111",  
+        15,  
+        UpdateBehaviour.ACTUAL,  
+        new RemoteConfigClientParams({deviceModel: "DeviceModel", deviceId: "11111", environment: Environment.BETA})  
+    );  
+    
+
+Через `RemoteConfigClientBuilder` можно установить опциональные параметры для
+получения конкретной конфигурации.
+
+предупреждение
+
+Повторный вызов `createRemoteConfig.createRemoteConfig()` вызовет ошибку
+RemoteConfigClientAlreadyExist .
+
+После вызова метода `RemoteConfigClient.createRemoteConfig()` на стороне SDK
+создается экземпляр `RemoteConfigClient` и записывается синглтон.
+
+### Опциональные параметры RemoteConfigClientBuilder​
+
+Установить опциональные параметры инициализации можно через класс
+`RemoteConfigClientParams`.
+
+Класс RemoteConfigClientParams
+
+    
+    
+    class RemoteConfigClientParams {  
+       deviceModel?: string ;  
+       osVersion?: string;  
+       deviceId?: string;  
+       appVersion?: string;  
+       appBuild?: string;  
+       environment?: Environment;  
+      
+    constructor(params: {deviceModel?: string, osVersion?: string, deviceId?: string, appVersion?: string, appBuild?: string, environment?: Environment}) {  
+       this.deviceModel = params.deviceModel;  
+       this.osVersion = params.osVersion;  
+       this.deviceId = params.deviceId;  
+       this.appVersion = params.appVersion;  
+       this.appBuild = params.appBuild;  
+       this.environment = params.environment;  
+      }  
+    }  
+    
+
+Через методы `setAccount` и `setLanguage` можно установить дополнительные
+параметры, которые могут быть использованы для получения конкретной
+конфигурации.
+
+Методы `setAccount` и `setLanguage` могут быть вызваны в любое время.
+
+Инициализация с опциональными параметрами
+
+    
+    
+    const account = "MyAccount";  
+    const language = "ru";  
+      
+    RemoteConfigClientParams params;  
+      
+    /* Ваша инициализация params */  
+      
+    RemoteConfigClient.setAccount(account);  
+    RemoteConfigClient.setLanguage(language)  
+    RemoteConfigClient.createRemoteConfig(  
+        "1111111-111111-11111-11111-1111111111",  
+        15,  
+        UpdateBehaviour.ACTUAL,  
+        params,  
+    );  
+    
+
+Параметр| Описание  
+---|---  
+`OsVersion`| **Условие в конфигураторе: Os Version**  
+Позволят сравнивать `OsVersion` со значением, установленным в интерфейсе. По
+умолчанию `OsVersion` не передается, в этом случае возвращается конфиг по
+умолчанию.  
+`DeviceModel`| **Условие в конфигураторе: Device Model**  
+Позволят сравнивать `DeviceModel` со значением, установленным в интерфейсе. По
+умолчанию `DeviceModel` не передается, у этом случае возвращается конфиг по
+умолчанию.  
+`Language`| **Условие в конфигураторе: Language**  
+Позволят сравнивать `Language` со значением, установленным в интерфейсе. По
+умолчанию `Language` не передается, у этом случае возвращается конфиг по
+умолчанию.  
+Для передачи `Language` необходимо реализовать
+`ConfigRequestParameterProvider`.  
+`Account`| **Условие в конфигураторе: Account**  
+Позволят сравнивать `account` со значением, установленным в интерфейсе.  
+**Условие в конфигураторе: Account Percentile**  
+Позволят раздавать конфиг по значению `account` на определенный процент.  
+**Условие в конфигураторе: Interval Account Percentile**  
+Позволят раздавать конфиг по значению `account` на определенный процент и в
+определенный день.  
+Для передачи `Account` необходимо реализовать
+`ConfigRequestParameterProvider`.  
+`DeviceId`| **Условие в конфигураторе: DeviceID**  
+Позволят сравнивать `DeviceId` со значением, установленным в интерфейсе.  
+**Условие в конфигураторе: DeviceID Percentile**  
+Позволят раздавать конфиг по значению `DeviceId` на определенный процент.  
+**Условие в конфигураторе: Interval DeviceID Percentile**  
+Позволят раздават ь конфиг по значению `DeviceId` на определенный процент и в
+определенный день.  
+`AppVersion`| **Условие в конфигураторе: App Version**  
+Позволят сравнивать `AppVersion` со значением, установленным в интерфейсе.  
+`Environment`| **Условие в конфигураторе: App Environment**  
+Позволят сравнивать `Environment` со значением, установленным в интерфейсе  
+`Environment` может принимать значения: `Alpha`, `Beta`, `Release`.  
+Этот параметр удобно использовать для тестирования конфигурации на различных
+сборках приложения.  
+`AppBuild`| **Условие в конфигураторе: App Build**  
+Позволят сравнивать `AppBuild` со значением, установленным в интерфейсе.  
+  
+### UpdateBehaviour​
+
+`UpdateBehaviour` — это параметр, определяющий поведение SDK. При создании
+экземпляра `RemoteConfigClientBuilder`, по умолчанию используется значение
+`UpdateBehaviour.Default` с интервалом синхронизации 15 минут.
+
+**Различия в значениях`UpdateBehaviour`**
+
+UpdateBehaviour| Описание  
+---|---  
+`Actual`| При инициализации **каждый** запрос конфигурации выполняется через
+запрос к серверу.**Значение`Actual` гарантирует получение самой актуальной
+конфигурации, но скорость выполнения запроса зависит от скорости сети.**Этот
+тип инициализации отменяет процесс фонового обновления.  
+`Default`| При инициализации запрос конфигурации выполняется из локального
+постоянного хранилища, которое обновляется в указанный интервал.Если
+инициализация выполняется первый раз и локальное постоянное хранилище пустое,
+запрос отправляется на сервер. Скорость выполнения запроса зависит от объема
+данных и скорости сети. Доступ к конфигурации будет ожидать завершения
+инициализации.**Значение`Default` не гарантирует, что в рамках жизни процесса
+запрос конфигурации будет отдавать одинаковый результат, так как синхронизация
+данных может выполниться в фоне.**Этот тип инициализации запускает процесс
+фонового обновления.  
+`Snapshot`| При инициализации запрос конфигурации выполняется из локального
+inMemory-хранилища. inMemory-хранилище заполняется результатом первого запроса
+из постоянного хранилища и сохраняется в таком виде до конца жизни
+процесса.Если инициализация выполняется первый раз и локальное постоянное
+хранилище пустое, запрос отправляется на сервер. Скорость выполнения запроса
+зависит от объема данных и скорости сети. Доступ к конфигурации будет ожидать
+завершения инициализации.**Значение`Snapshot` гарантирует, что в рамках жизни
+процесса запросы конфигурации будут отдавать одинаковый результат.**Этот тип
+инициализации запускает процесс фонового обновления.  
+  
+### RemoteConfigClientEventListener​
+
+Список обратных вызовов (сallbacks):
+
+Подписка на следующие события `ReactRemoteConfigListener` дает возможность
+получать обратные вызовы о работе SDK, такие как завершение инициализации и
+обновление постоянного хранилища и т.п.:
+
+И нтерфейс ReactRemoteConfigListener на стороне SDK
+
+    
+    
+    interface ReactRemoteConfigListener {  
+      fun backgroundJobErrors(exception: RemoteConfigException.BackgroundConfigUpdateError)  
+      fun firstLoadComplete()  
+      fun initComplete()  
+      fun memoryCacheUpdated()  
+      fun persistentStorageUpdated()  
+      fun remoteConfigNetworkRequestFailure(throwable: Throwable)  
+    }  
+    
+
+Вы можете подписаться на события, которые вас интересуют.
+
+_**Чтобы подписаться на события, используйте
+метод`eventEmitter.addListener`.**_
+
+    
+    
+    const backgroundJobErrorsListener = useRef<EmitterSubscription>();  
+    const firstLoadCompleteListener = useRef<EmitterSubscription>();  
+    const initCompleteListener = useRef<EmitterSubscription>();  
+    const memoryCacheUpdatedListener = useRef<EmitterSubscription>();  
+    const persistentStorageUpdatedListener = useRef<EmitterSubscription>();  
+    const remoteConfigNetworkRequestFailureListener = useRef<EmitterSubscription>();  
+      
+      
+    backgroundJobErrorsListener.current = eventEmitter.addListener(RemoteConfigEvents.BACKGROUND_JOB_ERRORS, (exception: string) => {  
+         // эвент BACKGROUND_JOB_ERRORS  
+         console.log("exception", exception)  
+        });  
+      
+    firstLoadCompleteListener.current = eventEmitter.addListener(RemoteConfigEvents.FIRST_LOAD_COMPLETE, () => {  
+         // эвент FIRST_LOAD_COMPLETE  
+        });  
+      
+    initCompleteListener.current = eventEmitter.addListener(RemoteConfigEvents.INIT_COMPLETE, () => {  
+         // эвент INIT_COMPLETE  
+        });  
+      
+    memoryCacheUpdatedListener.current = eventEmitter.addListener(RemoteConfigEvents.MEMORY_CACHE_UPDATED, () => {  
+         // эвент MEMORY_CACHE_UPDATED  
+        });  
+      
+    persistentStorageUpdatedListener.current = eventEmitter.addListener(RemoteConfigEvents.PERSISTENT_STORAGE_UPDATED, () => {  
+         // эвент PERSISTENT_STORAGE_UPDATED  
+        });  
+      
+    remoteConfigNetworkRequestFailureListener.current = eventEmitter.addListener(RemoteConfigEvents.REMOTE_CONFIG_NETWORK_REQUEST_FAILURE, (throwable: string) => {  
+         // эвент REMOTE_CONFIG_NETWORK_REQUEST_FAILURE  
+         console.log("throwable", throwable)  
+        });  
+    
+
+Структура RemoteConfigEvents
+
+    
+    
+    enum RemoteConfigEvents {  
+    * BACKGROUND_JOB_ERRORS — возвращает ошибку фоновой работы.  
+    * FIRST_LOAD_COMPLETE — вызывается при окончании первой загрузки.  
+    * INIT_COMPLETE — вызывается при окончании инициализации.  
+    * MEMORY_CACHE_UPDATED — вызывается при изменении кэша в памяти.  
+    * PERSISTENT_STORAGE_UPDATED — вызывается при изменении постоянного хранилища.  
+    * REMOTE_CONFIG_NETWORK_REQUEST_FAILURE — вызывается при ошибке сетевого запроса Remote Config.  
+    }  
+    
+
+### Инициализация RemoteConfigClient​
+
+Инициализация `RemoteConfigClient` выполняется асинхронно, результат
+инициализации можно отслеживать через метод `init`, в случае успеха вернет
+`true`, в случае неудачи - ошибку. Так же можно отследить через слушатель.
+
+    
+    
+    try {  
+      const hasInit = await RemoteConfigClient.init();  
+    } catch (err: any) {  
+      console.log(err);  
+    }  
+    
+
+## Получение конфигурации​
+
+Получение конфигурации происходит через вызов метода
+`RemoteConfigClient.getRemoteConfig()`.
+
+    
+    
+    try {  
+       let config = await RemoteConfigClient.getRemoteConfig();  
+       console.log(JSON.stringify(config));  
+    } catch (err: any) {  
+       console.log(err);  
+    }  
+    
+
+Метод `RemoteConfigClient.getRemoteConfig()` возвращает строку JSON с набором
+доступных параметров в виде коллекции ключ-значение. Коллекция имеет весь
+набор ключей и значений, которые были переданы с сервера. Этот набор зависит
+от динамически задаваемых параметров и от параметров, указанных при
+инициализации.
+
+### Проверка доступности ключа​
+
+    
+    
+    RemoteConfigClient.containsKey("my-key")  
+    
+
+Метод проверяет наличие ключа в текущем экземпляре `RemoteConfig`.
+
+### Получение типизированных данных​
+
+`RemoteConfigClient` имеет методы получения данных и приведения его к
+определенным типам.
+
+  * `getBoolean(key: string): boolean`
+  * `getString(key: string): string`
+  * `getNumber(key: string): number`
+
+Методы могут вернуть ошибку RemoteConfigCastException, если тип данных не
+соответствует выбранному методу или отсутствует значение по передаваемому
+ключу.
+
+## Фоновая синхронизация конфигурации​
+
+Фоновая синхронизация конфигурации используется при некоторых типах политики
+обновления.
+
+Результатом фоновой синхронизации конфигурации является обновление постоянного
+хранилища конфигураций актуальными данными для последующего использования в
+зависимости от выбранной политики обновления.
+
+Минимальный допустимый интервал между фоновыми синхронизациями составляет 15
+минут.
+
+## Возможные ошибки​
+
+Все ошибки SDK Remote Config наследуются от суперкласса
+`RemoteConfigException`.
+
+Ошибка| Описание  
+---|---  
+`BackgroundConfigUpdateError`| Появляется при ошибке в работе фоновой
+синхронизации.  
+`FailedToReceiveRemoteConfig`| Появляется в случае ошибки при вызове метода
+получения конфигурации.  
+`RemoteConfigCastException`| Появляется в случае некорректного получения
+данных по ключу из класса `RemoteConfig`. Ошибка может быть свя зана с
+невозможностью приведения к типу, либо значение по передаваемому ключу
+отсутствует.  
+`RemoteConfigClientAlreadyExist`| Появляется в случае повторного создания
+`RemoteConfigClient` в рамках жизни процесса.  
+`RemoteConfigClientNotCreated`| Появляется в случае доступа к
+`RemoteConfigClient` через статическое поле `instance` до создания
+`RemoteConfigClient`.  
+`RemoteConfigCommonException`| Общая непредвиденная ошибка.  
+`RemoteConfigNetworkException`| Появляется при сетевой ошибке.  
+  
+]
+

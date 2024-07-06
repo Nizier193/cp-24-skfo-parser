@@ -1,0 +1,157 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/routing-services/decoding-polyline-route
+title: Карты и геосервисы Сервисы маршрутизации Декодирование ломаной маршрута
+
+[
+
+  * [](/help/)
+  * [Карты и геосервисы](/help/sdk/rustore-geo)
+  * [Сервисы маршрутизации](/help/sdk/rustore-geo/routing-services)
+  * Декодирование ломаной маршрута
+
+Содержание этой страницы
+
+# Декодирование ломаной маршрута
+
+Cервис построения маршрутов использует кодированный формат полилинии для
+хранения серии координат широты и долготы в виде одной строки. Полилинейное
+кодирование значительно уменьшает размер ответа.
+
+Для декодирования полилинии в серию координат вы можете использовать
+приведённые ниже примеры.
+
+## JavaScript​
+
+    
+    
+    polyline.decode =  function (str, precision) {  
+        var index = 0,  
+            lat = 0,  
+            lng = 0,  
+            coordinates = [],  
+            shift = 0,  
+            result = 0,  
+            byte =  null ,  
+            latitude_change,  
+            longitude_change,  
+            factor = Math.pow(10, precision || 6);  
+        // Coordinates have variable length when encoded, so just keep  
+        // track of whether we've hit the end of the string. In each  
+        // loop iteration, a single coordinate is decoded.  
+        while (index < str.length) {  
+            // Reset shift, result, and byte  
+            byte =  null ;  
+            shift = 0;  
+            result = 0;  
+            do {  
+                byte = str.charCodeAt(index++) - 63;  
+                result |= (byte & 0x1f) << shift;  
+                shift += 5;  
+           }  while (byte >= 0x20);  
+            latitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));  
+            shift = result = 0;  
+            do {  
+                byte = str.charCodeAt(index++) - 63;  
+                result |= (byte & 0x1f) << shift;  
+                shift += 5;  
+           }  while (byte >= 0x20);  
+            longitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));  
+            lat += latitude_change;  
+            lng += longitude_change;  
+            coordinates.push([lat / factor, lng / factor]);  
+       }  
+        return coordinates;  
+    };  
+    
+
+## C++ 11​
+
+    
+    
+    #include <vector>  
+    constexpr  double kPolylinePrecision = 1E6;  
+    constexpr  double kInvPolylinePrecision = 1.0 / kPolylinePrecision;  
+    struct PointLL {  
+      float lat;  
+      float lon;  
+    };  
+    std::vector<PointLL> decode( const std::string& encoded) {  
+      size_t i = 0;      // what byte are we looking at  
+      // Handy lambda to turn a few bytes of an encoded string into an integer  
+      auto deserialize = [&encoded, &i]( const int previous) {  
+        // Grab each 5 bits and mask it in where it belongs using the shift  
+        int byte, shift = 0, result = 0;  
+        do {  
+          byte =  static_cast<int>(encoded[i++]) - 63;  
+          result |= (byte & 0x1f) << shift;  
+          shift += 5;  
+       } while (byte>= 0x20);  
+        // Undo the left shift from above or the bit flipping and add to previous  
+        // since its an offset  
+        return previous + (result & 1 ? ~(result>> 1) : (result>> 1));  
+     };  
+      // Iterate over all characters in the encoded string  
+      std::vector<PointLL> shape;  
+      int last_lon = 0, last_lat = 0;  
+      while (i<encoded.length()) {  
+        // Decode the coordinates, lat first for some reason  
+        int lat = deserialize(last_lat);  
+        int lon = deserialize(last_lon);  
+        // Shift the decimal point 5 places to the left  
+        shape.emplace_back( static_cast<float>( static_cast<double>(lat) *  
+                                              kInvPolylinePrecision),  
+                           static_cast<float>( static_cast<double>(lon) *  
+                                              kInvPolylinePrecision));  
+        // Remember the last one we encountered  
+        last_lon = lon;  
+        last_lat = lat;  
+     }  
+      return shape;  
+    }  
+    
+
+## Python​
+
+    
+    
+    #!/usr/bin/env python  
+    import sys  
+    #six degrees of precision in valhalla  
+    inv = 1.0 / 1e6 ;  
+    def decode(encoded):  
+        """Decodes route polyline which is returned by rose."""  
+        decoded = []  
+        i = 0  
+        previous_coords = {'lat': 0, 'lon': 0}  
+        while i <  len (encoded):  
+            coords = dict ()  
+            for coord_name in ('lat', 'lon'):  
+                coord = 0  
+                shift = 0  
+                byte = 0x20  
+                # Keep decoding bytes until you have this coord.  
+                while byte > = 0x20 :  
+                    byte = ord (encoded[i]) - 63  
+                    i  + = 1  
+                    coord | = (byte & 0x1f) << shift  
+                    shift + = 5  
+                # Get the final value adding the previous offset and  
+                # remember it for the next.  
+                coords[coord_name] = previous_coords[coord_name] + (  
+                    ~(coord >> 1)  
+                    if coord & 1  
+                    else (coord >> 1)  
+               )  
+            # Scale by the precision and chop off long coords.  
+            # Also flip the positions so its the far more standard  
+            # (lon, lat) instead of (lat, lon).  
+            decoded.append([  
+                float (f "{coords['lon'] * inv:.6f}"),  
+                float (f "{coords['lat'] * inv:.6f}"),  
+            ])  
+            previous_coords = coords  
+        return decoded  
+    print decode(sys.argv[1])  
+    
+
+]
+

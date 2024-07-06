@@ -1,0 +1,31 @@
+url: https://www.rustore.ru/help/users/purchases-and-returns
+title: Покупки и возвраты
+
+[## [🟦 Как привязать банковскую карту](/help/users/purchases-and-returns/link-
+bank-card)## [🟦 Как подключить карты VK ID](/help/users/purchases-and-
+returns/vk-connect)## [🟦 Как подключить карты Сбер ID](/help/users/purchases-
+and-returns/sber-id-connect)## [🗃️ Как настроить способы
+оплаты](/help/users/purchases-and-returns/payment-method)## [🟦 Платные
+приложения](/help/users/purchases-and-returns/paid-apps)## [🟦 Как оформить
+подписку](/help/users/purchases-and-returns/subscribe)## [🟦 Как управлять
+подписками](/help/users/purchases-and-returns/subscription-management)## [🟦
+История платежей](/help/users/purchases-and-returns/payment-history)## [🟦
+Оплата покупок в иностранных приложениях](/help/users/purchases-and-
+returns/foreign-apps)## [🟦 Покупки без установки
+RuStore](/help/users/purchases-and-returns/without-rustore-app)## [🟦 Как
+настроить способы оплаты](/help/users/purchases-and-returns/payment-method),
+## [🟦 Как привязать банковскую карту](/help/users/purchases-and-returns/link-
+bank-card), ## [🟦 Как подключить карты VK ID](/help/users/purchases-and-
+returns/vk-connect), ## [🟦 Как подключить карты Сбер
+ID](/help/users/purchases-and-returns/sber-id-connect), ## [🗃️ Как настроить
+способы оплаты](/help/users/purchases-and-returns/payment-method), ## [🟦
+Платные приложения](/help/users/purchases-and-returns/paid-apps), ## [🟦 Как
+оформить подписку](/help/users/purchases-and-returns/subscribe), ## [🟦 Как
+управлять подписками](/help/users/purchases-and-returns/subscription-
+management), ## [🟦 История платежей](/help/users/purchases-and-
+returns/payment-history), ## [🟦 Оплата покупок в иностранных
+приложениях](/help/users/purchases-and-returns/foreign-apps), ## [🟦 Покупки
+без установки RuStore](/help/users/purchases-and-returns/without-rustore-app),
+## [🟦 Как настроить способы оплаты](/help/users/purchases-and-returns/payment-
+method)]
+

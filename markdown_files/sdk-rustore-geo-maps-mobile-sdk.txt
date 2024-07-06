@@ -1,0 +1,8 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/maps-mobile-sdk
+title: Карты и геосервисы Maps Mobile SDK
+
+[## [🟦 Android](/help/sdk/rustore-geo/maps-mobile-sdk/mobile-sdk-android)## [🟦
+iOS](/help/sdk/rustore-geo/maps-mobile-sdk/mobile-sdk-ios), ## [🟦
+Android](/help/sdk/rustore-geo/maps-mobile-sdk/mobile-sdk-android), ## [🟦
+iOS](/help/sdk/rustore-geo/maps-mobile-sdk/mobile-sdk-ios)]
+

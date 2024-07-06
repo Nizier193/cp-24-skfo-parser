@@ -1,0 +1,46 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings/kotlin-java/history
+title: Подключение отзывов и оценок Kotlin/Java История обновлений
+
+[
+
+  * [](/help/)
+  * [Подключение отзывов и оценок](/help/sdk/reviews-ratings)
+  * [Kotlin/Java](/help/sdk/reviews-ratings/kotlin-java)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия SDK 2.0.0​
+
+Внутреннее обновление SDK.
+
+## Версия SDK 1.0.0​
+
+Внутреннее обновление SDK.
+
+## Версия SDK 0.2.0​
+
+Пакеты классов приведены к единому виду `ru.rustore.*`.
+
+## Версия SDK 0.1.6​
+
+Исправлена работа метода `await()` для [Task API](/help/sdk/task-api/).
+
+## Версия SDK 0.1.5​
+
+Исправлена уязвимость `Intent Redirection vulnerability` не позволяющая
+опубликовать приложение в Google Play.
+
+## Версия SDK 0.1.4​
+
+Внутреннее обновление SDK.
+
+## Версия SDK 0.1.3​
+
+Метод `launchReviewFlow(activity, reviewInfo)` помечен как `deprecated`.
+Используйте `launchReviewFlow(reviewInfo)`.
+
+]
+

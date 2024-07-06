@@ -1,0 +1,13 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/work-with-segments-push-api
+title: Push-уведомления Работа с сегментами пользователей (API)
+
+[## [🟦 Сегменты пользователей](/help/sdk/push-notifications/user-
+segments/work-with-segments-push-api)## [🟦 Подключение MyTracker и создание
+сегментов](/help/sdk/push-notifications/user-segments/segments-mytracker)## [🟦
+Работа с сегментами (API)](/help/sdk/push-notifications/user-
+segments/segments-api), ## [🟦 Сегменты пользователей](/help/sdk/push-
+notifications/user-segments/work-with-segments-push-api), ## [🟦 Подключение
+MyTracker и создание сегментов](/help/sdk/push-notifications/user-
+segments/segments-mytracker), ## [🟦 Работа с сегментами (API)](/help/sdk/push-
+notifications/user-segments/segments-api)]
+

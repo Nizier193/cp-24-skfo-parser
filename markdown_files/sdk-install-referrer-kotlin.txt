@@ -1,0 +1,8 @@
+url: https://www.rustore.ru/help/sdk/install-referrer/kotlin
+title: Install Referrer Kotlin
+
+[## [🟦 История обновлений](/help/sdk/install-referrer/kotlin/history)## [🟦
+6.0.0](/help/sdk/install-referrer/kotlin/6-0-0), ## [🟦 История
+обновлений](/help/sdk/install-referrer/kotlin/history), ## [🟦
+6.0.0](/help/sdk/install-referrer/kotlin/6-0-0)]
+

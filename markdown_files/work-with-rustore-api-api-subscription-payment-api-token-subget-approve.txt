@@ -1,0 +1,100 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-subscription-payment/api-token-subget-approve
+title: Получение данных платежа и подписки с помощью API Подтверждение получения подписки
+
+[
+
+  * [](/help/)
+  * [Получение данных платежа и подписки с помощью API](/help/work-with-rustore-api/api-subscription-payment)
+  * Подтверждение получения подписки
+
+Содержание этой страницы
+
+# Подтверждение получения подписки
+
+Метод позволяет подтвердить выдачу пользователю контента по подписке по токену
+подписки.
+
+Подтверждение получения подписки не является обязательным для работы подписок.
+
+подсказка
+
+Сценарий работы с платежами описан в [гайде](/help/guides/payments). Изучите
+его перед началом работы.
+
+## Параметры взаимодействия​
+
+Для реальных подписок:
+
+POST
+
+    
+    
+    https://public-api.rustore.ru/public/glike/subscription/{packageName}/{subscriptionId}/{subscriptionToken}:acknowledge  
+    
+
+Для [тестовых подписок](/help/developers/monetization/sandbox):
+
+POST
+
+    
+    
+    https://public-api.rustore.ru/public/sandbox/glike/subscription/{packageName}/{subscriptionId}/{subscriptionToken}:acknowledge  
+    
+
+Для работы с тестовыми платежами и подписками вам понадобится [новый
+ключ](/help/work-with-rustore-api/api-authorization-process), при создании
+которого нужно указать методы для тестирования.
+
+Атрибут| Тип| Описание| Обязательность| Расположение| Пример  
+---|---|---|---|---|---  
+`Public-Token`| string| Jwe-токен авторизации в Public API Rustore.  
+[Как получить токен авторизации](/help/work-with-rustore-api/api-
+authorization-token/).| Да| header| N/A  
+`packageName`| string| Наименование пакета приложения.| Да| path|
+`com.MashaAndTheBear.HairSalon`  
+`subscriptionId`| string| Код продукта-подписки.  
+Указывается разработчиком при создании продукта в [RuStore
+Консоли](https://console.rustore.ru/sign-in).  
+  
+[Как создать подписку на приложение](/help/developers/monetization/create-app-
+subscription).| Да| path| `daily_sub`  
+`subscriptionToken`| string| Как получить токен подписки, см. [документацию по
+SDK платежей](/help/sdk/payments).| Да| path| `111.123`  
+  
+## Параметры успешного ответа​
+
+При успешном ответе `response body` пустой.
+
+## Параметры ошибки​
+
+Атрибут| Тип| Описание| Обязательность| Пример  
+---|---|---|---|---  
+`code`| string| Код ответа.| Да| `ERROR`  
+`message`| string| Расшифровка кода ответа.| Нет| `Jwe token is expired`  
+`body{}`| object| Тело ответа.| Нет| N/A  
+`timestamp`| string| Время ответа.| Да| `2024-01-21T13:34:31.067240345+03:00`  
+  
+## Пример ответа с ошибкой​
+
+    
+    
+    {  
+    "code": "ERROR",  
+        "message": "Jwe token is expired",  
+        "body": null,  
+        "timestamp": "2024-01-21T13:51:59.654427798+03:00"  
+    }  
+    
+
+## Валидация запроса​
+
+При получении запроса проверяется токен авторизации, полученный методом
+[получения токена авторизации](/help/work-with-rustore-api/api-authorization-
+token):
+
+  * владелец и/или приложение не должны быть заблокированы;
+  * токен должен быть действительным;
+  * подписка приобретена в приложении, владельцем которого является компания, получившая токен доступа к Public API.
+
+]
+

@@ -1,0 +1,48 @@
+url: https://www.rustore.ru/help/users/start/app-page
+title: Начало работы с RuStore Страница приложения в RuStore
+
+[
+
+  * [](/help/)
+  * [Начало работы с RuStore](/help/users/start)
+  * Страница приложения в RuStore
+
+# Страница приложения в RuStore: Все о приложении в одном месте
+
+Выберите в [интерфейсе RuStore](/help/users/start/interface) приложение и
+нажмите на него.
+
+Откроется окно с информацией о приложении:
+
+  * иконка;
+  * название;
+  * разработчик;
+  * возрастное ограничение;
+  * размер приложения;
+  * кнопка для установки/обновления приложения на мобильное устройство;
+  * категории;
+  * видео и скриншоты, доступные для смартфонов/планшетов;
+  * полное описание приложения;
+  * описание последней версии приложения;
+  * история версий;
+  * общий рейтинг приложения;
+  * список последних отзывов к приложению.
+
+![img](https://www.rustore.ru//help/assets/images/fd70a2f05382a39465a6a78875f9a17a-c3ba8d3f6f7d8458af9f47c34360094e.webp)
+
+![img](https://www.rustore.ru//help/assets/images/6da8e476f55c7ca1072223e03a67f2bd-e43c27721e83f7589d6216a4a8737d5f.webp)
+
+**Читайте также:**
+
+  * [Как обновить RuStore](/help/users/start/update-rustore-app)
+
+  * [Как найти приложение в RuStore](/help/users/app-management/app-search)
+
+  * [Как настроить родительский контроль в RuStore](/help/users/start/change-theme)
+
+  * [Как изменить тему в приложении RuStore](/help/users/start/parental-control)
+
+  * [Как установить платное приложение из RuStore](/help/users/purchases-and-returns/paid-apps)
+
+]
+

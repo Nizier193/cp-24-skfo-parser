@@ -1,0 +1,20 @@
+url: https://www.rustore.ru/help/sdk/payments/react/history
+title: Платежи in-app и подписки React Native История обновлений
+
+[
+
+  * [](/help/)
+  * [Платежи in-app и подписки](/help/sdk/payments)
+  * [React Native](/help/sdk/payments/react)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 3.1.0​
+
+Релизная версия.
+
+]
+

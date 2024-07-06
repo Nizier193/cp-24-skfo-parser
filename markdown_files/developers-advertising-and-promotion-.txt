@@ -1,0 +1,21 @@
+url: https://www.rustore.ru/help/developers/advertising-and-promotion/
+title: Реклама и продвижение
+
+[## [🟦 Добавление кнопки «Скачайте из RuStore»](/help/developers/advertising-
+and-promotion/rustore-button)## [🟦 VK реклама в
+RuStore](/help/developers/advertising-and-promotion/vk-marketing)## [🟦 Ссылка
+на приложение из RuStore в группе ВКонтакте](/help/developers/advertising-and-
+promotion/vk-link)## [🟦 Рекомендации по
+фичерингу](/help/developers/advertising-and-promotion/featuring)## [🟦 Заявки
+на события](/help/developers/advertising-and-promotion/events)## [🟦
+Встраивание подборок в сторонние ресурсы](/help/developers/advertising-and-
+promotion/iframe), ## [🟦 Добавление кнопки «Скачайте из
+RuStore»](/help/developers/advertising-and-promotion/rustore-button), ## [🟦 VK
+реклама в RuStore](/help/developers/advertising-and-promotion/vk-marketing),
+## [🟦 Ссылка на приложение из RuStore в группе
+ВКонтакте](/help/developers/advertising-and-promotion/vk-link), ## [🟦
+Рекомендации по фичерингу](/help/developers/advertising-and-
+promotion/featuring), ## [🟦 Заявки на события](/help/developers/advertising-
+and-promotion/events), ## [🟦 Встраивание подборок в сторонние
+ресурсы](/help/developers/advertising-and-promotion/iframe)]
+

@@ -1,0 +1,56 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/app-category-list
+title: Загрузка и публикация приложений с помощью API RuStore Список категорий приложений
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * Список категорий приложений
+
+# Список категорий приложений
+
+Название категории| Перевод| Тип версии приложения  
+---|---|---  
+`business`| Бизнес-сервисы| `MAIN`  
+`state`| Государственные| `MAIN`  
+`foodAndDrink`| Еда и напитки| `MAIN`  
+`health`| Здоровье| `MAIN`  
+`books`| Книги| `MAIN`  
+`news`| Новости и события| `MAIN`  
+`lifestyle`| Образ жизни| `MAIN`  
+`education`| Образование| `MAIN`  
+`social`| Общение| `MAIN`  
+`adsAndServices`| Объявления и услуги| `MAIN`  
+`pets`| Питомцы| `MAIN`  
+`purchases`| Покупки| `MAIN`  
+`tools`| Полезные инструменты| `MAIN`  
+`travelling`| Путешествия| `MAIN`  
+`entertainment`| Развлечения| `MAIN`  
+`parenting`| Родителям| `MAIN`  
+`sport`| Спорт| `MAIN`  
+`gambling`| Ставки и лотереи| `MAIN`  
+`transport`| Транспорт и навигация| `MAIN`  
+`finance`| Финансы| `MAIN`  
+`arcade`| Аркады| `GAMES`  
+`quiz`| Викторины| `GAMES`  
+`puzzle`| Головоломки| `GAMES`  
+`race`| Гонки| `GAMES`  
+`children`| Дети| `GAMES`  
+`ar`| Игры с AR| `GAMES`  
+`indie`| Инди| `GAMES`  
+`casino`| Казино| `GAMES`  
+`casual`| Казуальные| `GAMES`  
+`card`| Карточные| `GAMES`  
+`music`| Музыка| `GAMES`  
+`board`| Настольные игры| `GAMES`  
+`adventure`| Приключения| `GAMES`  
+`rolePlaying`| Ролевые| `GAMES`  
+`family`| Семейные| `GAMES`  
+`simulator`| Симуляторы| `GAMES`  
+`word`| Словесные игры| `GAMES`  
+`sports`| Спортивные игры| `GAMES`  
+`strategy`| Стратегии| `GAMES`  
+`action`| Экшен| `GAMES`  
+  
+]
+

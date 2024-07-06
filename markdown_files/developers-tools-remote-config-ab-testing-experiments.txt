@@ -1,0 +1,38 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/ab-testing/experiments
+title: Инструменты RuStore Remote Config A/B-тестирование A/B эксперименты
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * [A/B-тестирование](/help/developers/tools/remote-config/ab-testing)
+  * A/B эксперименты
+
+Содержание этой страницы
+
+# A/B эксперименты в Remote config
+
+Для просмотра результатов экспериментов и управлениям параметрами в [Remote
+Config](https://remote-config.rustore.ru) доступен раздел «A/B эксперименты»:
+
+  * Просмотрите список созданных экспериментов. Список удобно фильтровать по статусу или дате, или ввести название эксперимента в поле «Поиск».
+  * Узнайте количество участников и результаты эксперимента.
+  * Создайте новый или редактируйте созданный ранее эксперимент.
+
+![](https://www.rustore.ru//help/assets/images/experiments-
+list-12647c2106e4191d2bc133800ff03d43.png)
+
+## Читайте также:​
+
+[Создание эксперимента](/help/developers/tools/remote-config/ab-
+testing/experiment-create)
+
+[Работа с экспериментом](/help/developers/tools/remote-config/ab-
+testing/experiment-actions)
+
+[Результаты эксперимента](/help/developers/tools/remote-config/ab-
+testing/experiment-result)
+
+]
+

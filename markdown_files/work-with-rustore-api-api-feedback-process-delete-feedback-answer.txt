@@ -1,0 +1,64 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-feedback-process/delete-feedback-answer
+title: Работа с отзывами с помощью RuStore API Удаление ответа на отзыв
+
+[
+
+  * [](/help/)
+  * [Работа с отзывами с помощью RuStore API](/help/work-with-rustore-api/api-feedback-process)
+  * Удаление ответа на отзыв
+
+Содержание этой страницы
+
+# Удаление ответа на отзыв
+
+Метод позволяет удалить ответ на отзыв.
+
+## Параметры взаимодействия​
+
+`DELETE`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/feedback/{feedbackId}`
+
+Атрибут| Тип| Обязателен| Расположение| Описание| Пример  
+---|---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к API RuStore](/help/work-
+with-rustore-api/api-authorization-token).| N/A  
+`packageName`| string| Да| path| Наименование пакета приложения. Максимальная
+длина – 50 символов.| `com.myapp.example`  
+`feedbackId`| number| Да| path| `id` ответа на отзыв, который необходимо
+удалить.| `743103`  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+  
+## Пример запроса​
+
+    
+    
+    curl --location --request DELETE 'https://public-api.rustore.ru/public/v1/application/ru.voonsh.push/feedback/2149807039' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Public-Token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAtMjU2In0.1r3cxOdxuNpypJSWXMQ4oAVYhqh6_3RlqKfItkhthhTzisiRYnboOkZpw_r5J9w0S5G8u-BexQeganyoG3MbCJ5QP2X6945wQMxlPkl81UKewkZuFrjsH36USk6dnnMbjT8Yw8nA4Yr0n8Oinspj3zkw66kZd-57EJvoMfneCEyTBY1mYEoc2DnfUa99syX1kIgX7Jfipn4yRm3pxWad5aesCK3eQFlP57CBirm8qGecDzkKcV1DeBx-qXK1S72FaXId11zN-rbe14U1z8jCCiEHhYrTIT9ci7OKF7OqF2kgRRVdCoO3eRWl4JWF-JfGAeYcv7rEpNLC32pEm5FOCA.khXZSeTodz2mVoNd.fKVjmkHUEM9AW7S_mYf-LFO4T26Lqf4RNSyjyNmFfsxZybDKahZgnaJ4lXYq-MPVN-o39eg1jISmoJcBonqS-0rIFe1P3CAM5cbNiSsTCX1r-cVdf4ei998KKGMg8bZL24-uLfxgcJSBBTgmUkyvf_KqH_dcxmQ.DwbK_08RLgHibat3h5dvkQ'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+      
+     "code": "OK",  
+     "message": null,  
+     "body": null,  
+     "timestamp": "2023-05-30T20:07:22.365025849+03:00"  
+    }  
+    
+
+]
+

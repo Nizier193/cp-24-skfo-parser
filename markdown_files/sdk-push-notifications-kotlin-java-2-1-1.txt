@@ -1,0 +1,1162 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/kotlin-java/2-1-1
+title: Push-уведомления Kotlin/Java 2.1.1
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Kotlin/Java](/help/sdk/push-notifications/kotlin-java)
+  * 2.1.1
+
+Содержание этой страницы
+
+# SDK push-уведомлений для Kotlin и Java (версия 2.1.1)
+
+Условия работы push-уведомлений:
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore должно поддерживать функциональность push-уведомлений.
+  * Приложению RuStore разрешен доступ к работе в фоновом режиме.
+  * Пользователь авторизован в RuStore.
+  * Отпечаток подписи приложения должен совпадать с отпечатком, добавленным в [Консоль RuStore](https://dev.rustore.ru/).
+
+## Пример реализации​
+
+Ознакомьтесь с приложением-примером, чтобы узнать, как правильно интегрировать
+SDK push-уведомлений:
+
+  * [Kotlin](https://gitflic.ru/project/rustore/rustore-sdk-push-example)
+  * [Java](https://gitflic.ru/project/rustore/rustore-java-push-example)
+
+## Подключение в проект​
+
+### Добавление репозитория​
+
+build.gradle
+
+    
+    
+    repositories {  
+        maven {  
+            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+        }  
+    }  
+    
+
+### Подключение зависимости​
+
+build.gradle
+
+    
+    
+    dependencies {  
+        implementation("ru.rustore.sdk:pushclient:2.1.1")  
+    }  
+    
+
+### Редактирование манифеста приложения​
+
+Объявите службу, расширяющую `RuStoreMessagingService`:
+
+AndroidManifest.xml
+
+    
+    
+    <service  
+        android:name=".MyRuStoreMessagingService"  
+        android:exported="true"  
+        tools:ignore="ExportedService">  
+        <intent-filter>  
+            <action android:name="ru.rustore.sdk.pushclient.MESSAGING_EVENT" />  
+        </intent-filter>  
+    </service>  
+    
+
+Если нужно изменить иконку или цвет стандартной нотификации, добавьте:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_icon"  
+        android:resource="@drawable/ic_baseline_android_24" />  
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_color"  
+        android:resource="@color/your_favorite_color" />  
+    
+
+Если нужно переопределить канал уведомлений, добавьте:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.default_notification_channel_id"  
+        android:value="@string/pushes_notification_channel_id" />  
+    
+
+При добавлении канала push-уведомлений вы должны создать канал самостоятельно.
+
+### Запрос разрешения на показ уведомлений в Android 13+​
+
+  * Kotlin
+  * Java
+
+В версии Android 13 появилось новое разрешение для отображения push-
+уведомлений. Это затронет все приложения, которые работают на Android 13 или
+выше и используют RuStore Push SDK.
+
+По умолчанию RuStore Push SDK версии 1.4.0 и выше включает разрешение
+`POST_NOTIFICATIONS`, определённое в манифесте. Однако приложению также нужно
+запросить это разрешение во время выполнения через константу
+`android.permission.POST_NOTIFICATIONS`. Приложение сможет показывать push-
+уведомления, только когда пользователь предоставит на это разрешение.
+
+Запрос разрешения на показ push-уведомлений:
+
+Activity/Fragment
+
+    
+    
+    // Declare the launcher at the top of your Activity/Fragment:  
+    private val requestPermissionLauncher = registerForActivityResult(  
+        ActivityResultContracts.RequestPermission(),  
+    ) { isGranted: Boolean ->  
+        if (isGranted) {  
+          // RuStore Push SDK (and your app) can post notifications.  
+        } else {  
+          // TODO: Inform user that your app will not show notifications.  
+        }  
+    }  
+      
+    private fun askNotificationPermission() {  
+      // This is only necessary for API level>= 33 (TIRAMISU)  
+      if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {  
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==  
+        PackageManager.PERMISSION_GRANTED  
+        ) {  
+            // RuStore Push SDK (and your app) can post notifications.  
+          } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {  
+            // TODO: display an educational UI explaining to the user the features that will be enabled  
+            //       by them granting the POST_NOTIFICATION permission. This UI should provide the user  
+            //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.  
+            //       If the user selects "No thanks," allow the user to continue without notifications.  
+          } else {  
+            // Directly ask for the permission  
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)  
+        }  
+      }  
+    }  
+    
+
+В версии Android 13 появилось новое разрешение для отображения push-
+уведомлений. Это затронет все приложения, которые работают на Android 13 или
+выше и используют RuStore Push SDK.
+
+По умолчанию RuStore Push SDK версии 1.4.0 и выше включает разрешение
+`POST_NOTIFICATIONS`, определённое в манифесте. Однако приложению также нужно
+запросить это разрешение во время выполнения через константу
+`android.permission.POST_NOTIFICATIONS`. Приложение сможет показывать push-
+уведомления, только когда пользователь предоставит на это разрешение.
+
+Запрос разрешения на показ push-уведомлений:
+
+Activity/Fragment
+
+    
+    
+    // Declare the launcher at the top of your Activity/Fragment:  
+    private final ActivityResultLauncher<String> requestPermissionLauncher =  
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {  
+                if (isGranted) {  
+                    // RuStore Push SDK (and your app) can post notifications.  
+                } else {  
+                    // TODO: Inform user that your app will not show notifications.  
+                }  
+            });  
+      
+    private void askNotificationPermission() {  
+        // This is only necessary for API level>= 33 (TIRAMISU)  
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU) {  
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==  
+                    PackageManager.PERMISSION_GRANTED) {  
+                // RuStore Push SDK (and your app) can post notifications.  
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {  
+                // TODO: display an educational UI explaining to the user the features that will be enabled  
+                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user  
+                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.  
+                //       If the user selects "No thanks," allow the user to continue without notifications.  
+            } else {  
+                // Directly ask for the permission  
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);  
+            }  
+        }  
+    }  
+    
+
+## Инициализация​
+
+Для инициализации понадобится идентификатор проекта из [RuStore
+Консоль](https://console.rustore.ru/waiting). Чтобы получить его, на странице
+приложения перейдите в раздел «Push-уведомления» — «Проекты» и скопируйте
+значение в поле «ID проекта».
+
+![img](https://www.rustore.ru//help/assets/images/project-
+id-c3f7d16c6ea4bb0472a203c945461513.webp)
+
+### Ручная инициализация в Application​
+
+  * Kotlin
+  * Java
+
+Для инициализации добавьте в `Application` вашего проекта следующий код:
+
+Инициализация
+
+    
+    
+    class App : Application() {  
+       
+        override fun onCreate() {  
+            super.onCreate()  
+            RuStorePushClient.init(  
+                application = this,  
+                projectId = "i5UTx96jw6c1C9LvdlE4cdNrWHMNyRBt",  
+                logger = DefaultLogger()  
+            )  
+        }  
+    }  
+    
+
+  * `application` — экземпляр класса `Application`.
+  * `projectId` — идентификатор вашего проекта из RuStore Консоль.
+  * (опционально) `logger` — логгер, по умолчанию используется вывод в `logcat`.
+
+Для инициализации добавьте в `Application` вашего проекта следующий код:
+
+Инициализация
+
+    
+    
+    class App : Application() {  
+        @Override  
+        public void onCreate() {  
+            super .onCreate()           
+            RuStorePushClient.INSTANCE.init(  
+                    this ,  
+                    "i5UTx96jw6c1C9LvdlE4cdNrWHMNyRBt" ,  
+                    DefaultLogger()  
+            );       
+        }  
+    }  
+    
+
+  * `application` — экземпляр класса `Application`.
+  * `projectId` — идентификатор вашего проекта из RuStore Консоль.
+  * (опционально) `logger` — логгер, по умолчанию используется вывод в `logcat`.
+
+### Автоматическая инициализация​
+
+  * Kotlin
+  * Java
+
+Для автоматической инициализации добавьте в `AndroidManifest.xml` следующий
+код:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.project_id"  
+        android:value="i5UTx96jw6c1C9LvdlE4cdNrWHMNyRBt" />  
+      
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.params_class"  
+        android:value="com.example.RuStorePushClientParams" />           
+    
+
+  * `projectId` — идентификатор вашего проекта из RuStore Консоль.
+  * (опционально) `com.example.RuStorePushClientParams` — полное имя класса своей реализации `AbstractRuStorePushClientParams` или `SimpleRuStorePushClientParams`. Нужен для указания дополнительных параметров инициализации push-клиента.
+
+Пример реализации `AbstractRuStorePushClientParams`:
+
+RuStorePushClientParams
+
+    
+    
+    class RuStorePushClientParams(context: Context)   
+      : AbstractRuStorePushClientParams(context) {  
+      
+        override fun getLogger(): Logger = DefaultLogger("your_tag")  
+      
+        override fun getTestModeEnabled(): Boolean = false  
+      
+        override fun getClientIdCallback(): ClientIdCallback =  
+            ClientIdCallback { ClientId("your_gaid_or_oaid", ClientIdType.GAID) }  
+    }        
+    
+
+предупреждение
+
+В реализации класса `AbstractRuStorePushClientParams` должен быть только один
+конструктор с одним аргументом `Context`.
+
+Ручной вызов `RuStorePushClient.init()` после автоматической инициализации
+будет проигнорирован.
+
+Для автоматической инициализации добавьте в `AndroidManifest.xml` следующий
+код:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.project_id"  
+        android:value="i5UTx96jw6c1C9LvdlE4cdNrWHMNyRBt" />  
+      
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.params_class"  
+        android:value="com.example.RuStorePushClientParams" />           
+    
+
+  * `projectId` — идентификатор вашего проекта из RuStore Консоль.
+  * (опционально) `com.example.RuStorePushClientParams` — полное имя класса своей реализации `AbstractRuStorePushClientParams` или `SimpleRuStorePushClientParams`. Нужен для указания дополнительных параметров инициализации push-клиента.
+
+Пример реализации `AbstractRuStorePushClientParams`:
+
+RuStorePushClientParams
+
+    
+    
+    public class RuStorePushClientParams extends AbstractRuStorePushClientParams {  
+        public RuStorePushClientParams(@NonNull Context context) {  
+            super(context);  
+        }  
+      
+        @NonNull  
+        @Override  
+        public Logger getLogger() {  
+            return new DefaultLogger("your_tag");  
+        }  
+      
+        @Override  
+        public boolean getTestModeEnabled() {  
+            return false;  
+        }  
+      
+        @Nullable  
+        @Override  
+        public ClientIdCallback getClientIdCallback() {  
+            return () -> new ClientId("your_gaid_or_oaid", ClientIdType.GAID);  
+        }  
+    }       
+    
+
+предупреждение
+
+В реализации класса `AbstractRuStorePushClientParams` должен быть только один
+конструктор с одним аргументом `Context`.
+
+Ручной вызов `RuStorePushClient.init()` после автоматической инициализации
+будет проигнорирован.
+
+### Логирование событий​
+
+  * Kotlin
+  * Java
+
+Если вы хотите логировать события библиотеки push-уведомлений, добавьте в
+вызов `RuStorePushClient.init` параметр `logger`. Этот параметр необязателен
+для инициализации.
+
+Создайте интерфейс `Logger`:
+
+Интерфейс Logger
+
+    
+    
+    interface Logger {  
+       
+        fun verbose(message: String, throwable: Throwable? = null)  
+        fun debug(message: String, throwable: Throwable? = null)  
+        fun info(message: String, throwable: Throwable? = null)  
+        fun warn(message: String, throwable: Throwable? = null)  
+        fun error(message: String, throwable: Throwable? = null)  
+       
+        fun createLogger(tag: String): Logger  
+    }  
+    
+
+Если не передать `Logger`, SDK использует реализацию по умолчанию с
+`AndroidLog`:
+
+Пример реализации логгера
+
+    
+    
+    public class DefaultLogger(  
+        private val tag: String? = null,  
+    ) : Logger {  
+        override fun verbose(message: String, throwable: Throwable?) {  
+            Log.v(tag, message, throwable)  
+        }  
+       
+        override fun debug(message: String, throwable: Throwable?) {  
+            Log.d(tag, message, throwable)  
+        }  
+       
+        override fun info(message: String, throwable: Throwable?) {  
+            Log.i(tag, message, throwable)  
+        }  
+       
+        override fun warn(message: String, throwable: Throwable?) {  
+            Log.w(tag, message, throwable)  
+        }  
+       
+        override fun error(message: String, throwable: Throwable?) {  
+            Log.e(tag, message, throwable)  
+        }  
+       
+        override fun createLogger(tag: String): Logger {  
+            val newTag = if (this.tag != null) {  
+                "${this.tag}:$tag"  
+            } else {  
+                tag  
+            }  
+            return DefaultLogger(newTag)  
+        }  
+    }  
+    `  
+    
+
+Если вы хотите логировать события библиотеки push-уведомлений, добавьте в
+вызов `RuStorePushClient.init` параметр `logger`. Этот параметр необязателен
+для инициализации.
+
+Создайте интерфейс `Logger`:
+
+Интерфейс Logger
+
+    
+    
+    public interface Logger {  
+        void verbose(String message, Throwable throwable);  
+        void debug(String message, Throwable throwable);  
+        void info(String message, Throwable throwable);  
+        void warn(String message, Throwable throwable);  
+        void error(String message, Throwable throwable);  
+        Logger createLogger(String tag);  
+    }  
+    
+
+Если не передать `Logger`, SDK использует реализацию по умолчанию с
+`AndroidLog`:
+
+    
+    
+    public class PushLogger implements Logger {  
+        private final String tag;  
+        public PushLogger(String tag) {  
+            this.tag = tag;  
+        }  
+        @Override  
+        public void debug( @NonNull String message, Throwable throwable) {  
+            Log.d(tag, message, throwable);  
+        }  
+        @Override  
+        public void error( @NonNull String message, Throwable throwable) {  
+            Log.e(tag, message, throwable);  
+        }  
+        @Override  
+        public void info( @NonNull String message,  @Nullable Throwable throwable) {  
+            Log.i(tag, message, throwable);  
+        }  
+        @Override  
+        public void verbose( @NonNull String message,  @Nullable Throwable throwable) {  
+            Log.v(tag, message, throwable);  
+        }  
+        @Override  
+        public void warn( @NonNull String message,  @Nullable Throwable throwable) {  
+            Log.w(tag, message, throwable);  
+        }  
+        @NonNull  
+        @Override  
+        public Logger createLogger( @NonNull String newTag) {  
+            String combinedTag = (tag != null ) ? tag +  ":" + newTag : newTag;  
+            return new PushLogger(combinedTag);  
+        }  
+    }  
+    
+
+## Проверка возможности получать push-уведомления​
+
+Условия работы push-уведомлений:
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore должно поддерживать функциональность push-уведомлений.
+  * Приложению RuStore разрешен доступ к работе в фоновом режиме.
+  * Пользователь авторизован в RuStore.
+  * Отпечаток подписи приложения должен совпадать с отпечатком, добавленным в [Консоль RuStore](https://dev.rustore.ru/).
+
+  * Kotlin
+  * Java
+
+Для проверки того, что приложение RuStore установлено на устройстве
+пользователя, используйте метод `RuStorePushClient.checkPushAvailability`.
+
+Пример реализации RuStorePushClient.checkPushAvailability
+
+    
+    
+    RuStorePushClient.checkPushAvailability()  
+        .addOnSuccessListener { result ->  
+            when (result) {  
+                FeatureAvailabilityResult.Available -> {  
+                    // Process push available  
+                }  
+      
+                is FeatureAvailabilityResult.Unavailable -> {  
+                    result.cause.resolveForPush(requireContext())  
+                }  
+            }  
+        }  
+        .addOnFailureListener { throwable ->  
+            // Process error  
+        }  
+    
+
+Для проверки того, что приложение RuStore установлено на устройстве
+пользователя, используйте метод
+`RuStorePushClient.INSTANCE.checkPushAvailability`.
+
+Пример реализации RuStorePushClient.checkPushAvailability
+
+    
+    
+    RuStorePushClient.INSTANCE.checkPushAvailability()  
+        .addOnSuccessListener(result -> {  
+                    // Process result  
+                }  
+        ).addOnFailureListener(throwable -> {  
+                    // Process error  
+                }  
+        );  
+    
+
+## Методы для работы с push-токеном​
+
+### Получение push-токена пользователя​
+
+  * Kotlin
+  * Java
+
+предупреждение
+
+Если у пользователя нет push-токена, метод создаст и вернёт новый push-токен.
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.getToken()`, чтобы получить текущий push-токен
+пользователя.
+
+Пример реализации RuStorePushClient.getToken
+
+    
+    
+    RuStorePushClient.getToken()  
+        .addOnSuccessListener { result ->  
+            // Process success  
+        }  
+        .addOnFailureListener { throwable ->  
+            // Process error  
+        }  
+    
+
+предупреждение
+
+Если у пользователя нет push-токена, метод создаст и вернёт новый push-токен.
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.INSTANCE.getToken()`, чтобы получить текущий push-токен
+пользователя.
+
+Пример реализации RuStorePushClient.INSTANCE.getToken
+
+    
+    
+    RuStorePushClient.INSTANCE.getToken()  
+        .addOnSuccessListener(result -> {  
+                     // Process success  
+                 }  
+        ).addOnFailureListener(throwable -> {  
+                     // Process error  
+                 }  
+        );  
+    
+
+### Удаление push-токена пользователя​
+
+  * Kotlin
+  * Java
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.deleteToken()`, чтобы удалить текущий push-токен
+пользователя.
+
+Пример реализации RuStorePushClient.deleteToken
+
+    
+    
+    RuStorePushClient.deleteToken()  
+        .addOnSuccessListener(result -> {  
+                    // Process success  
+                }  
+        ).addOnFailureListener(throwable -> {  
+                    // Process error  
+                }  
+        );  
+    
+
+После инициализации библиотеки вы  можете использовать метод
+`RuStorePushClient.deleteToken()`, чтобы удалить текущий push-токен
+пользователя.
+
+Пример реализации RuStorePushClient.INSTANCE.deleteToken
+
+    
+    
+    RuStorePushClient.INSTANCE.deleteToken()  
+        .addOnSuccessListener(result -> {  
+                    // Process success  
+                }  
+        ).addOnFailureListener(throwable -> {  
+                    // Process error  
+                }  
+        );  
+    
+
+## Методы для работы с push-топиком​
+
+### Подписка на push-уведомления по топику​
+
+  * Kotlin
+  * Java
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.subscribeToTopic(your_topic_name)` для подписки на топик.
+
+Пример реализации RuStorePushClient.subscribeToTopic(your_topic_name)
+
+    
+    
+    RuStorePushClient.subscribeToTopic("your_topic_name")  
+        .addOnSuccessListener { result ->  
+            // Process subscribe success  
+        }  
+        .addOnFailureListener { throwable ->  
+            // Process subscribe error  
+        }  
+    
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.subscribeToTopic(your_topic_name)` для подписки на топик.
+
+Пример реализации RuStorePushClient.INSTANCE.subscribeToTopic(
+
+    
+    
+    RuStorePushClient.INSTANCE.subscribeToTopic("your_topic_name")  
+        .addOnSuccessListener(result -> {  
+                    // Process subscribe success  
+                }  
+        ).addOnFailureListener(throwable -> {  
+                    // Process subscribe error  
+                }  
+        );  
+    
+
+### Отписка от push-уведомлений по топику​
+
+  * Kotlin
+  * Java
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.unsubscribeFromTopic(your_topic_name)` для отписки от
+топика.
+
+Пример реализации RuStorePushClient.unsubscribeFromTopic(your_topic_name)
+
+    
+    
+    RuStorePushClient.unsubscribeFromTopic("your_topic_name")  
+        .addOnSuccessListener { result ->  
+            // Process unsubscribe success  
+        }  
+        .addOnFailureListener { throwable ->  
+            // Process unsubscribe error  
+        }  
+    
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.unsubscribeFromTopic(your_topic_name)` для отписки от
+топика.
+
+Пример реализации
+RuStorePushClient.INSTANCE.unsubscribeFromTopic(your_topic_name)
+
+    
+    
+    RuStorePushClient.INSTANCE.unsubscribeFromTopic("your_topic_name")  
+        .addOnSuccessListener(result -> {  
+                    // Process unsubscribe success  
+                }  
+        ).addOnFailureListener(throwable -> {  
+                    // Process unsubscribe error  
+                }  
+        );  
+    
+
+## Получение данных от RuStore SDK​
+
+  * Kotlin
+  * Java
+
+Чтобы получить данные от RuStore SDK, создайте свой сервис, который
+наследуется от `RuStoreMessagingService`.
+
+RuStoreMessagingService
+
+    
+    
+    class MessagingService: RuStoreMessagingService() {  
+           
+            override fun onNewToken(token: String) {  
+            }  
+           
+            override fun onMessageReceived(message: RemoteMessage) {  
+            }  
+           
+            override fun onDeletedMessages() {  
+            }  
+       
+            override fun onError(errors: List<RuStorePushClientException>) {  
+            }  
+        }  
+    
+
+Название метода| Описание  
+---|---  
+`onNewToken`| Метод вызывается при получении нового push-токена. После вызова
+этого метода ваше приложение становится ответственно за передачу нового push-
+токена на свой сервер. Метод возвращает значение нового токена.  
+`onMessageReceived`| Метод вызывается при получении нового push-уведомления. <
+p/> Если в объекте `notification` есть данные, RuStore SDK самостоятельно
+отображает уведомление. Если вы не хотите этого, используйте объект `data`, а
+`notification` оставьте п устым. Метод вызывается в любом случае. < p/>
+Получить payload push-уведомления Map<String, String> можно из поля
+`message.data`.  
+`DeletedMessagesResponse`| Метод вызывается, если один или несколько push-
+уведомлений не доставлены на устройство. Например, если время жизни
+уведомления истекло до момента доставки. < p/> При вызове этого метода
+рекомендуется синхронизироваться со своим сервером, чтобы не пропустить
+данные.  
+`ErrorResponse`| Метод вызывается, если в момент инициализации возникает
+ошибка. Он возвращает массив объектов с ошибками. < p/> Возможные ошибки:
+
+  * `UnauthorizedException` — пользователь не авторизован в RuStore.
+  * `HostAppNotInstalledException` — RuStore отсутствует на устройстве пользователя.
+  * `HostAppBackgroundWorkPermissionNotGranted` — у RuStore нет разрешения на работу в фоне.
+
+Все возможные ошибки описаны в разделе Обработка ошибок.  
+  
+Все перечисленные методы вызываются в фоновом потоке.
+
+RuStoreMessagingService
+
+    
+    
+    public class MessagingService extends RuStoreMessagingService {  
+        @Override  
+        public void onNewToken(String token) {  
+        }  
+        @Override  
+        public void onMessageReceived(RemoteMessage message) {  
+        }  
+        @Override  
+        public void onDeletedMessages() {  
+        }  
+        @Override  
+        public void onError(List<RuStorePushClientException> errors) {  
+        }  
+    }  
+    
+
+Название метода| Описание  
+---|---  
+`onNewToken`| Метод вызывается при получении нового push-токена. После вызова
+этого метода ваше приложение становится ответственно за передачу нового push-
+токена на свой сервер. Метод возвращает значение нового токена.  
+`onMessageReceived`| Метод вызывается при получении нового push-уведомления. <
+p/> Если в объекте `notification` есть данные, RuStore SDK самостоятельно
+отображает уведомление. Если вы не хотите этого, используйте объект `data`, а
+`notification` оставьте пустым. Метод вызывается в любом случае. < p/>
+Получить payload push-уведомления Map<String, String> можно из поля
+`message.data`.  
+`DeletedMessagesResponse`| Метод вызывается, если один или несколько push-
+уведомлений не доставлены на устройство. Например, если время жизни
+уведомления истекло до момента доставки. < p/> При вызове этого метода
+рекомендуется синхронизироваться со своим сервером, чтобы не пропустить
+данные.  
+`ErrorResponse`| Метод вызывается, если в момент инициализации возникает
+ошибка. Он возвращает массив объектов с ошибками. < p/> Возможные ошибки:
+
+  * `UnauthorizedException` — пользователь не авторизован в RuStore.
+  * `HostAppNotInstalledException` — RuStore отсутствует на устройстве пользователя.
+  * `HostAppBackgroundWorkPermissionNotGranted` — у RuStore нет разрешения на работу в фоне.
+
+Все возможные ошибки описаны в разделе Обработка ошибок.  
+  
+Все перечисленные методы вызываются в фоновом потоке.
+
+### Структура уведомления​
+
+  * Kotlin
+  * Java
+
+Структура полного уведомления
+
+    
+    
+    public data class RemoteMessage(  
+        val messageId: String?,  
+        val priority: Int,  
+        val ttl: Int,  
+        val from: String,  
+        val collapseKey: String?,  
+        val data: Map<String, String>,  
+        val rawData: ByteArray?,  
+        val notification: Notification?  
+    )  
+    
+
+  * `messageId` — уникальный ID сообщения. Является идентификатором каждого сообщения.
+
+  * `priority` — возвращает значение приоритетности (на данный момент не учитывается).
+
+Сейчас заложены следующие варианты:
+
+    * `0` — `UNKNOWN`.
+    * `1` — `HIGH`.
+    * `2` — `NORMAL`.
+
+< p/>
+
+  * `ttl` — время жизни push-уведомления типа `Int` в секундах.
+
+  * `from` — поле, по которому можно понять, откуда пришло уведомление: < p/>
+
+    * Для уведомлений, отправленных в топик, в поле отображается имя топика.
+    * В других случаях — часть вашего сервисного токена.
+
+< p/>
+
+  * `collapseKey` — идентификатор группы уведомлений (на данный момент не учитывается).
+
+  * `data` — словарь, в который можно передать дополнительные данные для уведомления.
+
+  * `rawData` — словарь `data` в виде массива байтов.
+
+  * `notification` — объект уведомления.
+
+Структура объекта notification
+
+    
+    
+    public data class Notification(  
+        val title: String?,  
+        val body: String?,  
+        val channelId: String?,  
+        val imageUrl: Uri?,  
+        val color: String?,  
+        val icon: String?,  
+        val clickAction: String?,  
+        val clickActionType: ClickActionType?  
+      )  
+    
+
+  * `title` — заголовок уведомления.
+
+  * `body` — тело уведомления
+  * `channelId` — возможность задать канал, в который отправится уведомление. Актуально для Android 8.0 и выше.
+
+  * `imageUrl` — прямая ссылка на изображение для вставки в уведомление. Изображение должно быть не более 1 Мбайт.
+
+  * `color` — цвет уведомления в HEX-формате, строкой. Например, `#0077FF`.
+
+  * `icon` — значок уведомления из `res/drawable` в формате строки, которая совпадает с названием ресурса. < p/> Например, в `res/drawable` есть значок `small_icon.xml`, который доступен в коде через `R.drawable.small_icon`. Чтобы значок отображался в уведомлении, сервер должен указать в параметре `icon` значение `small_icon`. < p/>
+
+  * `clickAction` — поле с помощью которого будет сформировано действие при клике на уведомление.
+
+  * `clickActionType` — тип поля `clickAction`.
+
+Структура объекта ClickActionType
+
+    
+    
+    enum class ClickActionType {  
+        DEFAULT,  
+        DEEP_LINK  
+    }  
+    
+
+  * `DEFAULT` — тип поля `clickAction` при котором `clickAction` будет использоваться как `intent action` для открытия активити по клику на уведомление. Подробнее смотри [документацию](https://developer.android.com/reference/android/content/Intent#intent-structure).
+
+  * `DEEP_LINK` — тип поля `clickAction` при котором `clickAction` будет использоваться как `deep link` для открытия активити по клику на уведомление. Подробнее смотри [документацию](https://developer.android.com/training/app-links/deep-linking).
+
+Структура полного уведомления
+
+    
+    
+    public final class RemoteMessage {  
+        public String getMessageId();  
+        public int getPriority();  
+        public int getTtl();  
+        public String getFrom();  
+        public String getCollapseKey();  
+        public Map<String, String> getData();  
+        public byte [] getRawData();  
+        public Notification getNotification();  
+    }  
+    
+
+  * `messageId` — уникальный ID сообщения. Является идентификатором каждого сообщения.
+
+  * `priority` — возвращает значение приоритетности (на данный момент не учитывается).
+
+Сейчас заложены следующие варианты:
+
+    * `0` — `UNKNOWN`.
+    * `1` — `HIGH`.
+    * `2` — `NORMAL`.
+
+< p/>
+
+  * `ttl` — время жизни push-уведомления типа `Int` в секундах.
+
+  * `from` — поле, по которому можно понять, откуда пришло уведомление: < p/>
+
+    * Для уведомлений, отправленных в топик, в поле отображается имя топика.
+    * В других случаях — часть вашего сервисного токена.
+
+< p/>
+
+  * `collapseKey` — идентификатор группы уведомлений (на данный момент не учитывается).
+
+  * `data` — словарь, в который можно пере дать дополнительные данные для уведомления.
+
+  * `rawData` — словарь `data` в виде массива байтов.
+
+  * `notification` — объект уведомления.
+
+Структура объекта Notification
+
+    
+    
+    public final class Notification {  
+        public String getTitle();  
+        public String getBody();  
+        public String getChannelId();  
+        public Uri getImageUrl();  
+        public String getColor();  
+        public String getIcon();  
+        public String getClickAction();  
+        public ClickActionType getClickActionType();  
+    }  
+    
+
+  * `title` — заголовок уведомления.
+
+  * `body` — тело уведомления
+  * `channelId` — возможность задать канал, в который отправится уведомление. Актуально для Android 8.0 и выше.
+
+  * `imageUrl` — прямая ссылка на изображение для вставки в уведомление. Изображение должно быть не более 1 Мбайт.
+
+  * `color` — цвет уведомления в HEX-формате, строкой. Например, `#0077FF`.
+
+  * `icon` — значок уведомления из `res/drawable` в формате строки, которая совпадает с названием ресурса. < p/> Например, в `res/drawable` есть значок `small_icon.xml`, который доступен в коде через `R.drawable.small_icon`. Чтобы значок отображался в уведомлении, сервер должен указать в параметре `icon` значение `small_icon`. < p/>
+
+  * `clickAction` — поле с помощью которого будет сформировано действие при клике на уведомление.
+
+  * `clickActionType` — тип поля `clickAction`.
+
+Структура объекта ClickActionType
+
+    
+    
+    enum ClickActionType {  
+        DEFAULT,  
+        DEEP_LINK  
+    }  
+    
+
+  * `DEFAULT` — тип поля `clickAction` при котором `clickAction` будет использоваться как `intent action` для открытия активити по клику на уведомление. Подробнее смотри [документацию](https://developer.android.com/reference/android/content/Intent#intent-structure).
+
+  * `DEEP_LINK` — тип поля `clickAction` при котором `clickAction` будет использоваться как `deep link` для открытия активити по клику на уведомление. Подробнее смотри [документацию](https://developer.android.com/training/app-links/deep-linking).
+
+### Создание канала для отправки уведомления​
+
+Для канала, в который отправляется уведомление, действует следующий приоритет:
+
+  * Если в push-уведомлении есть поле `channelId`, RuStore SDK отправит уведомление в указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, но ваше приложение указало параметр с каналом в `AndroidManifest.xml`, используется указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, и канал по умолчанию не задан в `AndroidManifest.xml`, RuStore SDK создаст канал и отправит уведомление в него. В дальнейшем все уведомления без явного указания канала будут отправляться в этот канал.
+
+## Обработка ошибок​
+
+  * Kotlin
+  * Java
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore.
+
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает push-уведомления.
+
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore.
+
+  * `RuStoreFeatureUnavailableException` — RuStore не имеет разрешения на работу в фоне.
+
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки.
+
+Если вы хотите использовать UI-интерфейс для работы с ошибками, используйте
+метод `resolveForPush`.
+
+Пример реализации resolveForPush
+
+    
+    
+    fun RuStoreException.resolveForPush(context: Context)  
+    
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore.
+
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает push-уведомления.
+
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore.
+
+  * `RuStoreFeatureUnavailableException` — RuStore не имеет разрешения на работу в фоне.
+
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки.
+
+Если вы хотите использовать UI-интерфейс для работы с ошибками, используйте
+метод `resolveForPush()`.
+
+Пример реализации resolveForPush
+
+    
+    
+    public void PushRuStoreExceptionExtKt.resolveForPush(context);  
+    
+
+## Тестирование интеграции SDK​
+
+Условия работы push-уведомлений:
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore должно поддерживать функциональность push-уведомлений.
+  * Приложению RuStore разрешен доступ к работе в фоновом режиме.
+  * Пользователь авторизован в RuStore.
+  * Отпечаток подписи приложения должен совпадать с отпечатком, добавленным в [Консоль RuStore](https://dev.rustore.ru/).
+
+  * Kotlin
+  * Java
+
+Чтобы начать тестирование SDK, включите тестовый режим:
+
+Пример включения тестового режима
+
+    
+    
+    RuStorePushClient.init(  
+        application = this ,  
+        projectId = "your_push_project_id" ,  
+        testModeEnabled = true  
+    )  
+    
+
+В этом режиме формируется тестовый push-токен и работает доставка только
+тестовых push-уведомлений. Они отправляются следующим методом:
+
+Пример отправки тестового push-уведомления
+
+    
+    
+    val testNotificationPayload = TestNotificationPayload(  
+         title = "Test notification title",  
+         body = "Test notification message",  
+         imgUrl = "some_image_http_url",  
+         data = mapOf("some_key" to "some_value")  
+    )  
+       
+    RuStorePushClient.sendTestNotification(testNotificationPayload).addOnCompleteListener(object : OnCompleteListener<Unit> {  
+        override fun onFailure(throwable: Throwable) {  
+            // Process send test push error  
+        }  
+       
+        override fun onSuccess(result: Unit) {  
+            // Process send test push success  
+        }  
+    })  
+    
+
+Чтобы начать тестирование SDK, включите тестовый режим:
+
+Пример включения тестового режима
+
+    
+    
+    RuStorePushClient.INSTANCE.init(  
+        this ,  
+        "your_push_project_id" ,  
+        true  
+    )  
+    
+
+В этом режиме формируется тестовый push-токен и работает доставка только
+тестовых push-уведомлений. Они отправляются следующим методом:
+
+Пример отправки тестового push-уведомления
+
+    
+    
+    TestNotificationPayload testNotificationPayload = new TestNotificationPayload(  
+        "Test notification title" ,  
+        "Test notification message" ,  
+        "some_image_http_url" ,  
+        data  
+    );  
+    RuStorePushClient.INSTANCE.sendTestNotification(testNotificationPayload)  
+        .addOnCompleteListener( new OnCompleteListener<Void>() {  
+            @Override  
+            public void onComplete(Task<Void> task) {  
+                if (task.isSuccessful()) {  
+                    // Process send test push success  
+                }  else {  
+                    Exception exception = task.getException();  
+                    // Process send test push error  
+                }  
+            }  
+        });  
+    
+
+## См. также​
+
+  * [Отправка push-уведомлений (API)](/help/sdk/push-notifications/send-push-notifications)
+  * [Отправка push-уведомлений по топикам (API)](/help/sdk/push-notifications/topic-notifications)
+  * [Работа с сегментами пользователей (API)](/help/sdk/push-notifications/work-with-segments-push-api)
+
+]
+

@@ -1,0 +1,16 @@
+url: https://www.rustore.ru/help/users/policies
+title: Политики и правила RuStore
+
+[## [🟦 Как защитить свое устройство](/help/users/policies/protect-device)## [🟦
+Зачем разрешать устройству установку из неизвестного
+источника](/help/users/policies/installation-from-an-unknown-source)## [🟦
+Зачем разрешать RuStore работу в фоновом режиме](/help/users/policies/work-in-
+background)## [🟦 Почему мой отзыв не прошел
+модерацию](/help/users/policies/review-moderation), ## [🟦 Как защитить свое
+устройство](/help/users/policies/protect-device), ## [🟦 Зачем разрешать
+устройству установку из неизвестного
+источника](/help/users/policies/installation-from-an-unknown-source), ## [🟦
+Зачем разрешать RuStore работу в фоновом режиме](/help/users/policies/work-in-
+background), ## [🟦 Почему мой отзыв не прошел
+модерацию](/help/users/policies/review-moderation)]
+

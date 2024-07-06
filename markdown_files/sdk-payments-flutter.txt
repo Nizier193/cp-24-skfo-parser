@@ -1,0 +1,16 @@
+url: https://www.rustore.ru/help/sdk/payments/flutter
+title: Платежи in-app и подписки Flutter
+
+[## [🟦 История обновлений](/help/sdk/payments/flutter/history)## [🟦
+6.0.0](/help/sdk/payments/flutter/6-0-0)## [🟦
+5.0.2](/help/sdk/payments/flutter/5-0-2)## [🟦
+5.0.0](/help/sdk/payments/flutter/5-0-0)## [🟦
+4.0.0](/help/sdk/payments/flutter/4-0-0)## [🟦
+3.0.0](/help/sdk/payments/flutter/3-0-0), ## [🟦 История
+обновлений](/help/sdk/payments/flutter/history), ## [🟦
+6.0.0](/help/sdk/payments/flutter/6-0-0), ## [🟦
+5.0.2](/help/sdk/payments/flutter/5-0-2), ## [🟦
+5.0.0](/help/sdk/payments/flutter/5-0-0), ## [🟦
+4.0.0](/help/sdk/payments/flutter/4-0-0), ## [🟦
+3.0.0](/help/sdk/payments/flutter/3-0-0)]
+

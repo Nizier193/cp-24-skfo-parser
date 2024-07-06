@@ -1,0 +1,61 @@
+url: https://www.rustore.ru/help/developers/tools/app-tracer/android/modules/disk-usage
+title: Инструменты Tracer Android Модули Tracer Disk Usage
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [Tracer](/help/developers/tools/app-tracer/)
+  * [Android](/help/developers/tools/app-tracer/android)
+  * [Модули Tracer](/help/developers/tools/app-tracer/android/modules)
+  * Disk Usage
+
+Содержание этой страницы
+
+# Эффективный мониторинг Disk Usage с Tracer SDK
+
+## Подключение зависимостей к проекту​
+
+В вашем проекте: `<project>/<app-module>/build.gradle`.
+
+    
+    
+    dependencies {  
+        implementation  "ru.ok.tracer:tracer-disk-usage:0.2.7"  
+    }  
+    
+
+Более подробное описание зависимостей приведено на странице [Быстрый
+старт](/help/developers/tools/app-tracer/android/start/quick-start).
+
+## Описание `DiskUsageConfiguration`​
+
+В вашем `Application.kt`.
+
+    
+    
+    class MyApplication : Application(), HasTracerConfiguration {  
+        override val tracerConfiguration: List<TracerConfiguration>  
+            get() = listOf(  
+                DiskUsageConfiguration.build {  
+                    // ваши опции  
+                },  
+            )  
+    }  
+    
+
+Ниже представлены опции `DiskUsageConfiguration.Builder`.
+
+  * `setEnabled` — включить/выключить плагин. По умолчанию включён.
+  * `setProbability` — вероятность(1/n) того, что раз в день у этого пользователя в фоне будет произведена проверка использования дискового места. По умолчанию 0, что равноценно включению плагина.
+  * `setInterestingSize` — лимит занимаемого места, при превышении которого SDK будет сигнализировать о проблеме и отправлять отчет в Tracer. Измеряется в байтах. По умолчанию 10 Гбайт.
+  * `setExcludePath` — пути с заранее известными большими файлами которые должны быть исключены из проверки. Принимает только пути сформированные через `GlobalDirs`.
+
+Ниже представлено описание `GlobalDirs`.
+
+  * `GlobalDirs.INTERNAL_DATA.excludePath("foo/bar")` — внутреннее хранилище приложения.
+  * `GlobalDirs.EXTERNAL_DATA.excludePath("foo/bar")` — файлы приложения на SD-карте.
+  * `GlobalDirs.SRC.excludePath("foo/bar")` — файлы самого приложения.
+
+]
+

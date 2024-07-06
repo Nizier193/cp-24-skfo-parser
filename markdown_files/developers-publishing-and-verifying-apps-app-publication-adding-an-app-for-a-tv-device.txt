@@ -1,0 +1,124 @@
+url: https://www.rustore.ru/help/developers/publishing-and-verifying-apps/app-publication/adding-an-app-for-a-tv-device
+title: Публикация и проверка приложений Публикация приложений Добавление приложения для устройства ТВ
+
+[
+
+  * [](/help/)
+  * [Публикация и проверка приложений](/help/developers/publishing-and-verifying-apps/)
+  * [Публикация приложений](/help/developers/publishing-and-verifying-apps/app-publication/)
+  * Добавление приложения для устройства ТВ
+
+# Добавление приложения для устройства ТВ в RuStore: подробная инструкция
+
+При публикации приложения необходимо указать тип устройства, на котором
+приложение будет использоваться.
+
+  1. Откройте систему [Консоль RuStore](https://console.rustore.ru/sign-in).
+
+  2. Перейдите на вкладку «Приложения» и нажмите «Добавить приложение».
+
+![](https://www.rustore.ru//help/assets/images/first_app-6ca7de998c48cbdb5a6ce4388370bd70.png)
+
+  3. В новом окне выберите тип приложения: «Универсальный» или «Только для ТВ».
+
+Выберите «Универсальный» тип, если APK вашего приложения подходит для
+телефона, планшета и ТВ.
+
+![](https://www.rustore.ru//help/assets/images/tv_modal-
+dbdc75389a3e9c22e6a9e08f2dff085d.png)
+
+примечание
+
+Для ТВ доступны только бесплатные приложения: если загружен apk-файл для ТВ,
+создание платного универсального приложения невозможно.
+
+  4. Введите название приложения и нажмите «Добавить».
+
+**Ограничения:**
+
+  1. Если загружены разные версии, `package_name` для публикации на ТВ должен отличаться от `package_name` приложения для мобильных устройств.
+  2. APK приложения можно загружать сразу для мобильной и ТВ-версии с одним названием `package_name` в рамках одной версии.
+
+Для загрузки новой версии приложения во вкладке «Версии» нажмите «Загрузить
+версию» и заполните следующую информацию:
+
+**Загрузите файл APK приложения и оставьте комментарий для модератора при
+необходимости:**
+
+  * Объем файла APK: не более 2,5 ГБ;
+
+  * Допустимый формат: `.apk`;
+
+  * Подпись apk должна соответствовать подписи, используемой в других магазинах приложений (например, в Google Play). Это позволит пользователям обновить установленные на устройстве приложения, для которых в RuStore доступна более новая версия. Вы можете указать новый ключ подписи, но тогда его нужно заменить во всех магазинах. [Как обновить подпись в Google Play?](https://support.google.com/googleplay/android-developer/answer/9842756?visit_id=638150905149654896-2147605919&rd=1#upgrade)
+
+  * Имя пакета должно быть уникальным.
+
+![](https://www.rustore.ru//help/assets/images/files-
+bf6b3ff75def94a8bdf80273b876617c.png)
+
+**Заполните информацию о приложении:**
+
+  1. Укажите наименование приложения:
+
+     * не более 50 символов;
+     * наименование приложения должно быть уникальным.
+  2. Выберите категорию из предложенного списка. [Как это сделать?](/help/developers/publishing-and-verifying-apps/category)
+
+  3. Выберите возрастное ограничение из предложенного списка. [Как правильно выбрать возрастное ограничение?](/help/developers/publishing-and-verifying-apps/age-restrictions)
+
+  4. Введите краткое описание приложения (до 80 символов).
+
+  5. Введите подробное описание приложения (до 4000 символов).
+
+![](https://www.rustore.ru//help/assets/images/app_info-120bbcf0371f255288a6a44c2cd30aa3.png)
+
+**Загрузите иконку приложения:**
+
+  * Объем изображения: не более 3 МБ;
+  * Допустимый формат: `.png` или `.jpg`;
+  * Размер изображения: 512x512.
+
+![](https://www.rustore.ru//help/assets/images/baf76df82897881d6e4a379135828a68-e4eba0a42c3de0d329f2bee8ec1007e5.png)
+
+**Загрузите не менее 2 скриншотов приложения:**
+
+  * Формат: JPEG или PNG (24-бит без альфа-канала);
+  * Рекомендуемый размер: 1920 x 1080 пикселей (соотношение 16:9);
+  * Рекомендуемый объем: не более 3 MB;
+  * Разрешение: от 320p до 4k.
+
+примечание
+
+Баннер для ТВ будет **первым** скриншотом при публикации приложения на ТВ.
+
+![](https://www.rustore.ru//help/assets/images/adding-an-app-for-a-tv-
+device-2-2f02a29445e81e429c923919312a5028.png)
+
+**Настройте публикацию приложения: «Автоматически после модерации» или
+«Вручную».**
+
+![](https://www.rustore.ru/data:image/png;base64,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)
+
+Подробная информация о настройке публикации приложения приведена в разделе
+[Автоматическая и ручная публикация приложения](/help/developers/publishing-
+and-verifying-apps/app-publication/setting-up-publication/instant-app-
+publishing).
+
+  1. Нажмите «Отправить на модерацию».
+
+примечание
+
+Перед отправкой приложения на модерацию обязательно проверьте приложение на
+соответствие [требованиям к приложениям](/help/developers/publishing-and-
+verifying-apps/requirement-apps).
+
+Приложение будет отправлено на модерацию. После прохождения модерации статус
+приложения изменится и появится кнопка «Опубликовать».
+
+  2. Нажмите «Опубликовать», и ваше приложение будет доступно на ТВ.
+
+Если возникли вопросы, обратитесь в службу поддержки
+[support@rustore.ru](mailto:support@rustore.ru).
+
+]
+

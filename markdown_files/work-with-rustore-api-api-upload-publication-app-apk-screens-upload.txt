@@ -1,0 +1,75 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/apk-screens-upload
+title: Загрузка и публикация приложений с помощью API RuStore Загрузка скриншотов
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * Загрузка скриншотов
+
+Содержание этой страницы
+
+# Загрузка скриншотов
+
+Метод позволяет загрузить скриншоты приложения.
+
+Ограничения:
+
+  * скриншоты могут быть вертикальными или горизонтальными;
+  * соотношение сторон для скриншотов — 16:9 (вертикальные) и 9:16 (горизонтальные);
+  * стороны загружаемого файла — не менее 320px и не более 3840 px;
+  * формат загружаемого файла — `.jpg` или `.png`;
+  * размер файла — не более 3 МБ;
+  * запрещена загрузка скриншотов разной ориентации. Например, пользователь загрузил вертикальную ориентацию (`PORTRAIT`) и хочет загрузить горизонтальную (`LANDSCAPE`) — запрос вернёт ошибку;
+  * при загрузке более чем 10 скриншотов уже существующие скриншоты станут неактивными. Например, если загрузить два скриншота с параметром `"ordinal" = 7`, активным скриншотом будет последний загруженный.
+
+## Параметры взаимодействия​
+
+`POST`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/version/{versionId}/image/screenshot/{orientation}/{ordinal}`
+
+Атрибут| Тип| Обязателен| Расположение| Описание  
+---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к Public API
+Rustore](/help/work-with-rustore-api/api-authorization-token).  
+`packageName`| number| Да| path| Идентификатор приложения.  
+`versionId`| number| Да| path| Версия приложения.  
+`orientation`| string| Да| path| Ориентация изображения.  
+  
+Возможные варианты:  
+• `LANDSCAPE` — горизонтальная ориентация;  
+• `PORTRAIT` — вертикальная ориентация.  
+`ordinal`| number| Да| path| Порядковый номер скриншота.  
+  
+Возможные значения:  
+от `0` до `9`.  
+  
+## Form data​
+
+Атрибут| Тип| Обязателен| Описание  
+---|---|---|---  
+`file`| multipart/form-data| Да| Файл.  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+  
+## Пример запроса​
+
+    
+    
+    curl --location --request POST 'https://public-api.rustore.ru/public/v1/application/com.package.example/version/123/image/screenshot/landscape/1' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Public-Token: {YOURtoken}' \  
+    --form 'file=@"/Users/User/Downloads/img.jpg"'  
+    
+
+]
+

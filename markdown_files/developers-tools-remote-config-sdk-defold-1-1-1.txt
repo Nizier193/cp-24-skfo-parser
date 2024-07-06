@@ -1,0 +1,426 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/sdk/defold/1-1-1
+title: Инструменты RuStore Remote Config SDK и конфигурация приложения Defold 1.1.1
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * [SDK и конфигурация приложения](/help/developers/tools/remote-config/sdk)
+  * [Defold](/help/developers/tools/remote-config/sdk/defold)
+  * 1.1.1
+
+Содержание этой страницы
+
+# SDK Remote Config для Defold (версия 1.1.1)
+
+SDK Remote Config – это облачный сервис, который позволяет изменять поведение
+и внешний вид вашего приложения, не требуя от пользователей загрузки
+обновления приложения. Плагин инкапсулирует в себе запрос конфигурации с
+сервера, кэширование, фоновое обновление. Имеет удобное API для получения
+данных.
+
+## Пример реализации​
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/rustore-defold-remoteconfig),
+чтобы узнать, как правильно интегрировать SDK Remote Config.
+
+## Подключение в проект​
+
+Соберите плагин и установите его в свой проект:
+
+  1. Скопируйте проекты плагина и приложения-примера из официального репозитория RuStore на [GitFlic](https://gitflic.ru/project/rustore/rustore-defold-remoteconfig).
+
+  2. Скопируйте папки `remoteconfig_example / extension_rustore_remoteconfig`, `remoteconfig_example / extension_rustore_core`, `remoteconfig_example / extension_rustore_application` в корень вашего проекта.
+
+  3. В файле манифеста вашего проекта замените класс `android.support.multidex.MultiDexApplication` на `ru.rustore.defold.remoteconfig.DefoldRemoteConfigApplication`.
+
+Модификация манифеста
+
+    
+    
+    <application  
+            {{#has-icons?}}  
+            android:icon="@drawable/icon"  
+            {{/has-icons?}}  
+            android:label="{{project.title}}" android:hasCode="true"  
+            android:name="ru.rustore.defold.remoteconfig.DefoldRemoteConfigApplication"  
+            android:enableOnBackInvokedCallback="true"  
+            android:debuggable="{{android.debuggable}}">  
+      
+    </application>  
+    
+
+## Ключевые особенности​
+
+  * Выбор наиболее удобного механизма обновления конфигурации.
+  * Возможность указывать процент распространения конфигурации на аудиторию.
+  * Возможность передавать дополнительную информацию для построения воронки конкретной конфигурации. Формировать конфигурацию можно даже для конкретных пользователей.
+  * Набор callback, который можно использовать для аналитики.
+  * Минимальное количество внешних зависимостей.
+
+## Инициализация​
+
+### Создание RemoteConfigClient​
+
+Инициализация `RuStoreDefoldRemoteConfigBuilder` должна происходить в момент
+`Application.onCreate()`, так как при запуске фоновой синхронизации SDK должна
+быть проинициализирована.
+
+Пример DefoldRemoteConfigApplication.java
+
+    
+    
+    package ru.rustore.defold.remoteconfig;  
+      
+    import android.app.Application;  
+    import android.content.Context;  
+    import ru.rustore.defold.remoteconfig.model.DefoldUpdateBehaviour;  
+    import ru.rustore.defold.remoteconfig.RuStoreDefolRemoteConfigBuilder;  
+      
+    public class DefoldRemoteConfigApplication extends Application {  
+    	public final String APP_ID = "a83c91d3-21b4-4891-841e-0ed0fc39a562";  
+    	public final int UPDATE_TIME = 15;  
+    	public final DefoldUpdateBehaviour UPDATE_BEHAVIOUR = DefoldUpdateBehaviour.Actual;  
+    	  
+    	@Override  
+    	public void onCreate() {  
+    		super.onCreate();  
+      
+    		RuStoreDefoldRemoteConfigBuilder.INSTANCE.init(APP_ID, UPDATE_BEHAVIOUR, UPDATE_TIME, null, null, getApplicationContext());  
+    	}  
+    }  
+    
+
+  * `APP_ID` — уникальный идентификатор инструмента remote config. Доступен в консоли разработчика RuStore на странице создания параметров remote config;
+  * `UPDATE_TIME` — интервал таймера обновления в минутах;
+  * `UPDATE_BEHAVIOUR` — параметр, определяющий поведение SDK. См. также Различия в значениях UpdateBehaviour.
+
+Для замены класса `Application` на `DefoldRemoteConfigApplication` в файле
+манифеста вашего проекта измените атрибут `android:name` в теге `application`:
+
+Модификация манифеста
+
+    
+    
+    <application  
+            {{#has-icons?}}  
+            android:icon="@drawable/icon"  
+            {{/has-icons?}}  
+            android:label="{{project.title}}" android:hasCode="true"  
+            android:name="ru.rustore.defold.remoteconfig.DefoldRemoteConfigApplication"  
+            android:enableOnBackInvokedCallback="true"  
+            android:debuggable="{{android.debuggable}}">  
+      
+    </application>  
+    
+
+### UpdateBehaviour​
+
+`UpdateBehaviour` — это параметр, определяющий поведение SDK. При создании
+экземпляра `RemoteConfigClientBuilder`, по умолчанию используется значение
+`UpdateBehaviour.Default` с интервалом синхронизации 15 минут.
+
+**Различия в значениях`UpdateBehaviour`**
+
+UpdateBehaviour| Описание  
+---|---  
+`Actual`| При инициализации **каждый** запрос конфигурации выполняется через
+запрос к серверу.**Значение`Actual` гарантирует получение самой актуальной
+конфигурации, но скорость выполнения запроса зависит от скорости сети.**Этот
+тип инициализации отменяет процесс фонового обновления.  
+`Default`| При инициализации запрос конфигурации выполняется из локального
+постоянного хранилища, которое обновляется в указанный интервал.Если
+инициализация выполняется первый раз и локальное постоянное хранилище пустое,
+запрос отправляется на сервер. Скорость выполнения запроса зависит от объема
+данных и скорости сети. Доступ к конфигурации будет ожидать завершения
+инициализации.**Значение`Default` не гарантирует, что в рамках жизни процесса
+запрос конфигурации будет отдавать одинаковый результат, так как синхронизация
+данных может выполниться в фоне.**Этот тип инициализации запускает процесс
+фонового обновления.  
+`Snapshot`| При инициализации запрос конфигурации выполняется из локального
+inMemory-хранилища. inMemory-хранилище заполняется результатом первого запроса
+из постоянного хранилища и сохраняется в таком виде до конца жизни
+процесса.Если инициализация выполняется первый раз и локальное постоянное
+хранилище пустое, запрос отправляется на сервер. Скорость выполнения запроса
+зависит от объема данных и скорости сети. Доступ к конфигурации будет ожидать
+завершения инициализации.**Значение`Snapshot` гарантирует, что в рамках жизни
+процесса запросы конфигурации будут отдавать одинаковый результат.**Этот тип
+инициализации запускает процесс фонового обновления.  
+  
+### Опциональные параметры RemoteConfigClientBuilder​
+
+Установить опциональные параметры инициализации можно через интерфейс
+`RemoteConfigParameters`.
+
+Интерфейс RemoteConfigParameters
+
+    
+    
+    package ru.rustore.defold.remoteconfig.model;  
+      
+    public interface RemoteConfigParameters {  
+        String getAppBuild();  
+        String getAppVersion();  
+        String getDeviceId();  
+        String getDeviceModel();  
+        String getEnvironment();  
+        String getOsVersion();  
+    }  
+    
+
+Для динамической передачи доступны параметры `Account` и `Language` с помощью
+методов `setAccount` и `setLanguage` соответственно. Методы `setAccount` и
+`setLanguage` могут быть вызваны в любое время.
+
+Инициализация с опциональными параметрами
+
+    
+    
+    import ru.rustore.defold.remoteconfig.model.DefoldUpdateBehaviour;  
+    import ru.rustore.defold.remoteconfig.RuStoreDefoldRemoteConfigBuilder;  
+      
+    public final String APP_ID = "a83c91d3-21b4-4891-841e-0ed0fc39a562";  
+    public final int UPDATE_TIME = 15;  
+    public final DefoldUpdateBehaviour UPDATE_BEHAVIOUR = DefoldUpdateBehaviour.Actual;  
+       
+    public final String ACCOUNT = "MyAccount";  
+    public final String LANGUAGE = "ru";  
+      
+    RemoteConfigClientParametersImpl parameters;  
+       
+    /* Ваша инициализация parameters */  
+      
+    RuStoreDefoldRemoteConfigBuilder.INSTANCE.setAccount(ACCOUNT);  
+    RuStoreDefoldRemoteConfigBuilder.INSTANCE.setLanguage(LANGUAGE);  
+    RuStoreDefoldRemoteConfigBuilder.INSTANCE.init(APP_ID, UPDATE_BEHAVIOUR, UPDATE_TIME, parameters, null, getApplicationContext());  
+    
+
+Получить текущие динамические параметры можно используя методы `getАccount` и
+`getLanguage`:
+
+Вызов методов getАccount и getLanguage
+
+    
+    
+    String account = RuStoreDefoldRemoteConfigBuilder.INSTANCE.getAccount();  
+    String language = RuStoreDefoldRemoteConfigBuilder.INSTANCE.getLanguage();  
+    
+
+Параметр| Описание  
+---|---  
+`OsVersion`| **Условие в конфигураторе: Os Version**  
+Позволят сравнивать `OsVersion` со значением, установленным в интерфейсе. По
+умолчанию `OsVersion` не передается, в этом случае возвращается конфиг по
+умолчанию.  
+`DeviceModel`| **Условие в конфигураторе: Device Model**  
+Позволят сравнивать `DeviceModel` со значением, установленным в интерфейсе. По
+умолчанию `DeviceModel` не передается, у этом случае возвращается конфиг по
+умолчанию.  
+`Language`| **Условие в конфигураторе: Language**  
+Позволят сравнивать `Language` со значением, установленным в интерфейсе. По
+умолчанию `Language` не передается, у этом случае возвращается конфиг по
+умолчанию.  
+Для передачи `Language` необходимо реализовать
+`ConfigRequestParameterProvider`.  
+`Account`| **Условие в конфигураторе: Account**  
+Позволят сравнивать `account` со значением, установленным в интерфейсе.  
+**Условие в конфигураторе: Account Percentile**  
+Позволят раздавать конфиг по значению `account` на определенный процент.  
+**Условие в конфигураторе: Interval Account Percentile**  
+Позволят раздавать конфиг по значению `account` на определенный процент и в
+определенный день.  
+Для передачи `Account` необходимо реализовать
+`ConfigRequestParameterProvider`.  
+`DeviceId`| **Условие в конфигураторе: DeviceID**  
+Позволят сравнивать `DeviceId` со значением, установленным в интерфейсе.  
+**Условие в конфигураторе: DeviceID Percentile**  
+Позволят раздавать конфиг по значению `DeviceId` на определенный процент.  
+**Условие в конфигураторе: Interval DeviceID Percentile**  
+Позволят раздавать конфиг по значению `DeviceId` на определенный процент и в
+определенный день.  
+`AppVersion`| **Условие в конфигураторе: App Version**  
+Позволят сравнивать `AppVersion` со значением, установленным в интерфейсе.  
+`Environment`| **Условие в конфигураторе: App Environment**  
+Позволят сравнивать `Environment` со значением, установленным в интерфейсе  
+`Environment` может принимать значения: `Alpha`, `Beta`, `Release`.  
+Этот параметр удобно использовать для тестирования конфигурации на различных
+сборках приложения.  
+`AppBuild`| **Условие в конфигураторе: App Build**  
+Позволят сравнивать `AppBuild` со значением, установленным в интерфейсе.  
+  
+## Инициализация в Lua​
+
+Инициализация плагина выполняется автоматически при запуске системы плагинов
+Defold. Дополнительных вызов инициализирующих методов не требуется.
+
+## Динамически передаваемые параметры​
+
+Поддерживается возможность динамически передавать параметры на сервер для
+синхронизации конфигурации.
+
+Для динамической передачи доступны параметры `Account` и `Language` с помощью
+методов `setAccount` и `setLanguage` соответственно:
+
+    
+    
+    rustoreremoteconfig.set_account("MyAccount")  
+    rustoreremoteconfig.set_language("ru")  
+    
+
+Получить текущие параметры можно используя методы `get_account` и
+`get_language`:
+
+    
+    
+    local account = rustoreremoteconfig.get_account()  
+    local language = rustoreremoteconfig.get_language()  
+    
+
+## Обратные вызовы о работе SDK​
+
+Подписка на следующие события дает возможность получать обратные вызовы о
+работе SDK, такие как завершение инициализации и обновление постоянного
+хранилища.
+
+  * `rustore_background_job_errors` – возвращает ошибку фоновой работы.
+  * `rustore_first_load_complete` – вызывается при окончании первой загрузки.
+  * `rustore_init_complete` – вызывается при окончании инициализации.
+  * `rustore_memory_cache_updated` – вызывается при изменении кэша в памяти.
+  * `rustore_persistent_storage_updated` – вызывается при изменении постоянного хранилища.
+  * `rustore_remote_config_network_request_failure` – вызывается при ошибке сетевого запроса Remote Config.
+
+Для запуска слушателя перечисленных событий используйте метод
+`init_event_listener`.
+
+Подписка на события
+
+    
+    
+    function init(self)  
+    	rustorecore.connect("rustore_get_remote_config_success", _on_get_remote_config_success)  
+    	rustorecore.connect("rustore_get_remote_config_failure", _on_get_remote_config_failure)  
+    	rustorecore.connect("rustore_rustore_background_job_errors", _on_rustore_background_job_errors)  
+    	rustorecore.connect("rustore_first_load_complete", _on_rustore_first_load_complete)  
+    	rustorecore.connect("rustore_init_complete", _on_rustore_init_complete)  
+    	rustorecore.connect("rustore_memory_cache_updated", _on_rustore_memory_cache_updated)  
+    	rustorecore.connect("rustore_persistent_storage_updated", _on_rustore_persistent_storage_updated)  
+    	rustorecore.connect("rustore_remote_config_network_request_failure", _on_rustore_remote_config_network_request_failure)  
+    	rustoreremoteconfig.init_event_listener()  
+    end  
+      
+    function _on_rustore_background_job_errors(self, channel, value)  
+    	local data = json.decode(value)  
+    end  
+      
+    function _on_rustore_first_load_complete(self, channel, value)  
+    end  
+      
+    function _on_rustore_init_complete(self, channel, value)  
+    end  
+      
+    function _on_rustore_memory_cache_updated(self, channel, value)  
+    end  
+      
+    function _on_rustore_persistent_storage_updated(self, channel, value)  
+    end  
+      
+    function _on_rustore_remote_config_network_request_failure(self, channel, value)  
+    	local data = json.decode(value)  
+    end  
+    
+
+Обратные вызовы (callbacks) `rustore_background_job_errors` и
+`rustore_remote_config_network_request_failure` возвращают строку JSON с
+информацией об ошибке. Структра данных ошибки описана в разделе Возможные
+ошибки.
+
+## Получение конфигурации​
+
+Получение конфигурации происходит через вызов метода `get_remote_config`.
+
+Перед вызовом метода необходимо единожды выполнить полдписку на события:
+
+  * `on_get_remote_config_success`;
+  * `on_get_remote_config_success`.
+
+Подписка на события
+
+    
+    
+    function init(self)  
+    	rustorecore.connect("rustore_get_remote_config_success", _on_get_remote_config_success)  
+    	rustorecore.connect("rustore_get_remote_config_failure", _on_get_remote_config_failure)  
+    end  
+      
+    function _on_get_remote_config_success(self, channel, value)  
+    	local collection = json.decode(value)  
+    	for key, value in pairs(collection.data) do  
+    		local pair = key .. ": " .. value  
+    	end  
+    end  
+      
+    function _on_get_remote_config_failure(self, channel, value)  
+    	local data = json.decode(value)  
+    end  
+    
+
+Вызов метода get_remote_config
+
+    
+    
+    rustoreremoteconfig.get_remote_config()  
+    
+
+Обратный вызов (callback) `rustore_get_remote_config_success` возвращает
+строку JSON  с набором доступных параметров в виде коллекции ключ-значение.
+Коллекция имеет весь набор ключей и значений, которые были переданы с сервера.
+Этот набор зависит от динамически задаваемых параметров и от параметров,
+указанных при инициализации.
+
+Обратный вызов (callback) `rustore_get_remote_config_failure` возвращает
+строку JSON с информацией об ошибке в параметре Error. Структра ошибки описана
+в разделе Возможные ошибки.
+
+## Возможные ошибки​
+
+При получении любого события `*_failure` не рекомендуется самостоятельно
+отображать ошибку пользователю. Отображение ошибки может негативно повлиять на
+пользовательский опыт.
+
+Обработка json ошибки
+
+    
+    
+    function _on_failure(self, channel, value)  
+        local data = json.decode(value)  
+         
+    	local name = data.simpleName     
+        local message = data.detailMessage  
+    end  
+    
+
+  * `simpleName` – имя ошибки.
+  * `detailMessage` – описание ошибки.
+
+Ошибка| Описание  
+---|---  
+`BackgroundConfigUpdateError`| Появляется при ошибке в работе фоновой
+синхронизации.  
+`FailedToReceiveRemoteConfig`| Появляется в случае ошибки при вызове метода
+получения конфигурации.  
+`RemoteConfigCastException`| Появляется в случае некорректного получения
+данных по ключу из класса `RemoteConfig`. Ошибка может быть связана с
+невозможностью приведения к типу, либо значение по передаваемому ключу
+отсутствует.  
+`RemoteConfigClientAlreadyExist`| Появляется в случае повторного создания
+`RemoteConfigClient` в рамках жизни процесса.  
+`RemoteConfigClientNotCreated`| Появляется в случае доступа к
+`RemoteConfigClient` через статическое поле `instance` до создания
+`RemoteConfigClient`.  
+`RemoteConfigCommonException`| Общая непредвиденная ошибка.  
+`RemoteConfigNetworkException`| Появляется при сетевой ошибке.  
+  
+]
+

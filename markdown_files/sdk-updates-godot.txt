@@ -1,0 +1,14 @@
+url: https://www.rustore.ru/help/sdk/updates/godot
+title: Обновление приложения Godot
+
+[## [🟦 История обновлений](/help/sdk/updates/godot/history)## [🟦
+3.0.0](/help/sdk/updates/godot/3-0-0)## [🟦
+2.0.0](/help/sdk/updates/godot/2-0-0)## [🟦
+1.0.1](/help/sdk/updates/godot/1-0-1)## [🟦
+1.0.0](/help/sdk/updates/godot/1-0-0), ## [🟦 История
+обновлений](/help/sdk/updates/godot/history), ## [🟦
+3.0.0](/help/sdk/updates/godot/3-0-0), ## [🟦
+2.0.0](/help/sdk/updates/godot/2-0-0), ## [🟦
+1.0.1](/help/sdk/updates/godot/1-0-1), ## [🟦
+1.0.0](/help/sdk/updates/godot/1-0-0)]
+

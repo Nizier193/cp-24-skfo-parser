@@ -1,0 +1,32 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/sdk/defold/history
+title: Инструменты RuStore Remote Config SDK и конфигурация приложения Defold История обновлений
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * [SDK и конфигурация приложения](/help/developers/tools/remote-config/sdk)
+  * [Defold](/help/developers/tools/remote-config/sdk/defold)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 1.1.1​
+
+  * Версия SDK remoteconfig 1.1.1.
+
+## Версия 1.1.0​
+
+  * Версия SDK remoteconfig 1.1.0.
+  * Добавлено поле `simpleName` в JSON ошибок.
+
+## Версия 1.0.0​
+
+  * Релизная версия.
+  * Версия SDK remoteconfig 1.0.0.
+
+]
+

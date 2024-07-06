@@ -1,0 +1,164 @@
+url: https://www.rustore.ru/help/sdk/general-push-notifications/send-push-notifications/examples
+title: Универсальные push-уведомления Отправка универсальных push-уведомлений Примеры
+
+[
+
+  * [](/help/)
+  * [Универсальные push-уведомления](/help/sdk/general-push-notifications)
+  * [Отправка универсальных push-уведомлений](/help/sdk/general-push-notifications/send-push-notifications)
+  * Примеры
+
+Содержание этой страницы
+
+# Примеры успешных и ошибочных запросов
+
+## Пример успешного запроса​
+
+    
+    
+    POST https: //vkpns-universal.rustore.ru/v1/send HTTP/2  
+    Content-Type: application/json  
+    {  
+        "providers":{  
+            "rustore": {  
+                "auth_token": "AAAbbbCC123" ,  
+                "project_id": "aabbcc"  
+            },  
+            "fcm": {  
+                "auth_token": "321CCbbAAA" ,  
+                "project_id": "ccbbaa"  
+            }  
+        },  
+        "tokens": {  
+            "rustore":["bk3RNwTe3H"],  
+            "fcm":["CI2k_HHwgIpoDKC"]  
+        },  
+        "message":{  
+            "notification":{  
+                "body": "This is a notification message!" ,  
+                "title": "Message"  
+          }  
+       }  
+    }  
+    HTTP/2 200  
+    Content-Type: application/json  
+    {  
+        "Status": "OK"  
+    }  
+    
+
+## Пример невалидного провайдера​
+
+    
+    
+    POST https: //vkpns-universal.rustore.ru/v1/send HTTP/2  
+    Content-Type: application/json  
+    {  
+        "providers":{  
+            "rustore": {  
+                "auth_token": "AAAbbbCC123" ,  
+                "project_id": "aabbcc"  
+            },  
+            "fcm": {  
+            }  
+        },  
+        "tokens": {  
+            "rustore":["bk3RNwTe3H"],  
+            "fcm":["CI2k_HHwgIpoDKC"]  
+        },  
+        "message":{  
+            "notification":{  
+                "body": "This is a notification message!" ,  
+                "title": "Message"  
+          }  
+       }  
+    }  
+    HTTP/2 400  
+    Content-Type: application/json   
+    {  
+        "status": "VALIDATION_ERROR" ,  
+        "code": 400,  
+        "errors": [  
+            "providers.fcm: project_id is a required field" ,  
+            "providers.fcm: auth_token is a required field"  
+       ]  
+    }  
+    
+
+## Пример невалидного сообщения​
+
+    
+    
+    POST https: //vkpns-universal.rustore.ru/v1/send HTTP/2  
+    Content-Type: application/json  
+    {  
+        "providers":{  
+            "rustore": {  
+                "auth_token": "AAAbbbCC123" ,  
+                "project_id": "aabbcc"  
+            },   
+            "fcm": {  
+                "auth_token": "321CCbbAAA" ,  
+                "project_id": "ccbbaa"  
+            }  
+        },  
+        "tokens": {  
+            "rustore":["bk3RNwTe3H"],  
+            "fcm":["CI2k_HHwgIpoDKC"]  
+        },  
+        "message":{  
+            "notification":{  
+          }  
+       }  
+    }  
+    HTTP/2 400  
+    Content-Type: application/json    
+    {  
+        "status": "VALIDATION_ERROR" ,  
+        "code": 400,  
+        "errors": [  
+            "message.notification: title is a required field" ,  
+            "message.notification: body is a required field"  
+       ]  
+    }  
+    
+
+## Пример ошибки провайдера​
+
+    
+    
+    POST https: //vkpns-universal.rustore.ru/v1/send HTTP/2  
+    Content-Type: application/json  
+    {  
+        "providers":{  
+            "rustore": {  
+                "auth_token": "AAAbbbCC123" ,  
+                "project_id": "aabbcc"  
+            },   
+            "fcm": {  
+                "auth_token": "321CCbbAAA" ,  
+                "project_id": "ccbbaa"  
+            }  
+        },  
+        "tokens": {  
+            "rustore":["bk3RNwTe3H"],  
+            "fcm":["CI2k_HHwgIpoDKC"]  
+        },  
+        "message":{  
+            "data":{ "test": "test" }  
+          }  
+       }  
+    }  
+    HTTP/2 400  
+    Content-Type: application/json    
+    {  
+        "status": "PROVIDER_ERROR" ,  
+        "code": 400,  
+        "errors": [  
+            "fcm: invalid auth token"  
+       ]  
+    }  
+    
+
+]
+

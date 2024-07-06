@@ -1,0 +1,36 @@
+url: https://www.rustore.ru/help/sdk/updates/unreal/history
+title: Обновление приложения Unreal Engine История обновлений
+
+[
+
+  * [](/help/)
+  * [Обновление приложения](/help/sdk/updates)
+  * [Unreal Engine](/help/sdk/updates/unreal)
+  * История обновлений
+
+# История обновлений
+
+**Версия плагина 3.0.0**
+
+  * Версия sdk appupdate 3.+.
+  * Обновлены методы установки обновления.
+
+**Версия плагина 2.0.0**
+
+  * Версия sdk appupdate 2.+.
+  * В репозитрий добавлен исходный код *.aar пакетов плагинов.
+
+**Версия плагина 1.0.1**
+
+  * Версия sdk appupdate 1.0.1.
+
+**Версия плагина 1.0.0**
+
+  * Версия sdk appupdate 1.0.0.
+  * Добавлены асинхронные варианты blueprint-методов вместо подписок на события.
+  * Добавлены коды ошибок в перечисление `EURuStoreInstallErrorCode`.
+  * Добавлены коды состояний в перечисление `EURuStoreUpdateFlowResult`.
+  * `RuStoreAppUpdate_UPL_Android.xml` больше не добавляет атрибут `android:exported` к `GameActivity` и `SplashActivity`.
+
+]
+

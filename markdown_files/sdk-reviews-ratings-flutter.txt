@@ -1,0 +1,16 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings/flutter
+title: Подключение отзывов и оценок Flutter
+
+[## [🟦 История обновлений](/help/sdk/reviews-ratings/flutter/history)## [🟦
+6.0.0](/help/sdk/reviews-ratings/flutter/6-0-0)## [🟦 2.0.1](/help/sdk/reviews-
+ratings/flutter/2-0-1)## [🟦 2.0.0](/help/sdk/reviews-ratings/flutter/2-0-0)##
+[🟦 1.0.0](/help/sdk/reviews-ratings/flutter/1-0-0)## [🟦
+0.0.4](/help/sdk/reviews-ratings/flutter/0-0-4)## [🟦 0.0.3](/help/sdk/reviews-
+ratings/flutter/0-0-3), ## [🟦 История обновлений](/help/sdk/reviews-
+ratings/flutter/history), ## [🟦 6.0.0](/help/sdk/reviews-
+ratings/flutter/6-0-0), ## [🟦 2.0.1](/help/sdk/reviews-ratings/flutter/2-0-1),
+## [🟦 2.0.0](/help/sdk/reviews-ratings/flutter/2-0-0), ## [🟦
+1.0.0](/help/sdk/reviews-ratings/flutter/1-0-0), ## [🟦
+0.0.4](/help/sdk/reviews-ratings/flutter/0-0-4), ## [🟦
+0.0.3](/help/sdk/reviews-ratings/flutter/0-0-3)]
+

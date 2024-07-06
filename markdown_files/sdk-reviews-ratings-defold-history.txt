@@ -1,0 +1,24 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings/defold/history
+title: Подключение отзывов и оценок Defold История обновлений
+
+[
+
+  * [](/help/)
+  * [Подключение отзывов и оценок](/help/sdk/reviews-ratings)
+  * [Defold](/help/sdk/reviews-ratings/defold)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия плагина 2.0.0​
+
+  * Версия SDK review 2.0.0
+
+## Версия плагина 1.0.1​
+
+  * Версия SDK review 1.0.1
+
+]
+

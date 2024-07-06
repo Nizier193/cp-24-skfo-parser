@@ -1,0 +1,31 @@
+url: https://www.rustore.ru/help/sdk/payments/defold/history
+title: Платежи in-app и подписки Defold История обновлений
+
+[
+
+  * [](/help/)
+  * [Платежи in-app и подписки](/help/sdk/payments)
+  * [Defold](/help/sdk/payments/defold)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 5.1.1​
+
+  * Версия SDK billing 5.1.1.
+
+## Версия 5.0.1​
+
+  * Версия SDK billing 5.0.1.
+  * Добавлено поле `simpleName` в JSON ошибок.
+  * Исправлен баг с отсутствием ссылок на изображения в JSON продуктов.
+
+## Версия 5.0.0​
+
+  * Релизная версия.
+  * Версия SDK billing 5.0.0.
+
+]
+

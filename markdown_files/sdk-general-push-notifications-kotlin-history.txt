@@ -1,0 +1,36 @@
+url: https://www.rustore.ru/help/sdk/general-push-notifications/kotlin/history
+title: Универсальные push-уведомления Kotlin История обновлений
+
+[
+
+  * [](/help/)
+  * [Универсальные push-уведомления](/help/sdk/general-push-notifications)
+  * [Kotlin](/help/sdk/general-push-notifications/kotlin)
+  * История обновлений
+
+# История изменений
+
+**Версия SDK 2.1.0**
+
+  * В модуле ru.rustore.sdk:universalrustore обновилась зависмость ru.rustore.sdk:pushclient до 2.3.0.
+
+**Версия SDK 2.1.0**
+
+  * В модуле ru.rustore.sdk:universalrustore обновилась зависмость ru.rustore.sdk:pushclient до 2.2.0.
+
+**Версия SDK 2.0.0**
+
+  * В модуле ru.rustore.sdk:universalrustore обновилась зависмость ru.rustore.sdk:pushclient до 2.1.1.
+  * Обновили во всех universal-push модулях внутреннюю зависимость ru.rustore.sdk:core до 2.0.0. Это может привести к несовместимости RuStore Universal Push SDK с некоторыми версиями других RuStore SDK. Совместимость версий смотрите на странице [«Совместимость с остальными SDK»](/help/sdk/sdk-compatibility). В связи с обновлением ru.rustore.sdk:core изменилось Task API. Это может привести к «ломающим» изменениям в вашем коде. Callback `Task.addOnCompleteListener` заменился на `Task.addOnCompletionListener`. Чтобы воспроизвести логику старого метода `Task.addOnCompleteListener`, используейте методы `Task.addOnSuccessListener` и `Task.addOnFailureListener`.
+
+**Версия SDK 1.0.0**
+
+  * Добавлена дедубликация push-уведомлений.
+  * Добавлены callback для:
+    * Обработки уведомлений.
+    * Обработки события `onDeletedMessages`.
+    * Обработки события `onNewToken`.
+    * Обработки ошибок push-провайдеров.
+
+]
+

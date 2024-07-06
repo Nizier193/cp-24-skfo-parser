@@ -1,0 +1,93 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/
+title: RuStore API
+
+[
+
+  * [](/help/)
+  * RuStore API
+
+# RuStore API
+
+примечание
+
+Хост для использования API — public-api.rustore.ru
+
+Название| Описание  
+---|---  
+Получение данных платежа и подписки с помощью API (общие методы)  
+[Получение данных платежа](/help/work-with-rustore-api/api-subscription-
+payment/api-token-payment-method)| Метод позволяет получить информацию о
+платеже.  
+[Получение данных подписки](/help/work-with-rustore-api/api-subscription-
+payment/api-token-subscription-method)| Метод позволяет получить информацию о
+подписке.  
+[Получение статуса подписки](/help/work-with-rustore-api/api-subscription-
+payment/api-token-substatus-method)| Метод позволяет получить информацию о
+статусе подписки.  
+Получение данных платежа и подписки с помощью API (методы приложений)  
+[Получение данных подписки (V2)](/help/work-with-rustore-api/api-subscription-
+payment/api-id-payment-method)| Метод позволяет получить информацию о
+подписке.  
+[Получение данных подписки (V3)](/help/work-with-rustore-api/api-subscription-
+payment/api-id-payment-method-v3)| Метод позволяет получить информацию о
+подписке.  
+[Подтверждение получения подписки](/help/work-with-rustore-api/api-
+subscription-payment/api-token-subget-approve)| Метод позволяет подтвердить
+выдачу пользователю контента по подписке.  
+Загрузка и публикация приложений с помощью API RuStore  
+[Создание черновика версии](/help/work-with-rustore-api/api-upload-
+publication-app/create-draft-version)| Метод позволяет создать черновик версии
+и заполнить его основной информацией.  
+[Загрузка APK/AAB-файлов](/help/work-with-rustore-api/api-upload-publication-
+app/apk-file-upload)| Методы позволяют загрузить файл для публикации с
+расширением `.apk` или `.aab`.  
+[Загрузка иконки приложения](/help/work-with-rustore-api/api-upload-
+publication-app/apk-icon-upload)| Метод позволяет загрузить иконку приложения.  
+[Загрузка скриншотов](/help/work-with-rustore-api/api-upload-publication-
+app/apk-screens-upload)| Метод позволяет загрузить скриншоты приложения.  
+[Изменение настроек публикации](/help/work-with-rustore-api/api-upload-
+publication-app/publishing-change-settings)| Метод позволяет изменить тип
+публикации, дату отложенной публикации и % для частичной публикации версии.  
+[Получение статуса версий приложений](/help/work-with-rustore-api/api-upload-
+publication-app/get-version-status)| Метод позволяет получить базовую
+информацию по версии, а также проверить статус версии.  
+[Отправка на модерацию черновика версии приложения](/help/work-with-rustore-
+api/api-upload-publication-app/send-draft-app-for-moderation)| Метод для
+отправки на модерацию черновика версии приложения  
+[Ручная публикация](/help/work-with-rustore-api/api-upload-publication-
+app/manual-publishing)| Метод позволяет опубликовать версию, прошедшую
+модерацию вручную.  
+[Удаление черновика](/help/work-with-rustore-api/api-upload-publication-
+app/delete-draft)| Метод для удаления созданных ранее черновиков.  
+Работа с отзывами с помощью RuStore API  
+[Получение отзывов приложения](/help/work-with-rustore-api/api-feedback-
+process/get-feedback)| Метод позволяет получить список всех последних отзывов
+для вашего приложения или получить отдельно взятый отзыв.  
+[Получение отзывов в формате .csv](/help/work-with-rustore-api/api-feedback-
+process/get-csv-feedback)| Метод позволяет получить все отзывы в формате .csv
+за определённый промежуток времени.  
+[Оставить ответ на отзыв](/help/work-with-rustore-api/api-feedback-
+process/feedback-answer)| Метод позволяет оставить ответ на отзыв.  
+[Получение статуса ответа на отзыв](/help/work-with-rustore-api/api-feedback-
+process/get-feedback-status)| Метод позволяет получить статус модерации ответа
+на отзыв.  
+[Получение статуса ответов на отзывы](/help/work-with-rustore-api/api-
+feedback-process/get-feedbacks-statuses)| Метод позволяет получить статус
+модерации ответа на отзыв или получить информацию на отдельно взятый ответ на
+отзыв.  
+[Изменение ответа на отзыв](/help/work-with-rustore-api/api-feedback-
+process/change-feedback-answer)| Метод позволяет изменить текст ответа на
+отзыв.  
+[Удаление ответа на отзыв](/help/work-with-rustore-api/api-feedback-
+process/delete-feedback-answer)| Метод позволяет удалить ответ на отзыв.  
+[Получение рейтинга приложения](/help/work-with-rustore-api/api-feedback-
+process/get-app-rating)| Метод позволяет получить рейтинг приложения.  
+Работа с доступами пользователей с помощью RuStore API  
+[Получение информации о выданных доступах по приложению](/help/work-with-
+rustore-api/api-access-control/access-details)| Метод позволяет получить
+список всех выданных доступов по приложению.  
+[Отзыв доступа](/help/work-with-rustore-api/api-access-control/revoke-access)|
+Метод позволяет отозвать доступ у пользователя.  
+  
+]
+

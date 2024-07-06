@@ -1,0 +1,62 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/apk-icon-upload
+title: Загрузка и публикация приложений с помощью API RuStore Загрузка иконки приложения
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * Загрузка иконки приложения
+
+Содержание этой страницы
+
+# Загрузка иконки приложения
+
+Метод позволяет загрузить иконку приложения.
+
+Ограничения:
+
+  * файл только с расширением `.jpeg` и `.png`;
+  * размер файла — не более `3` МБ;
+  * размеры загружаемого изображения — 512×512 рх.
+
+## Параметры взаимодействия​
+
+`POST`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/version/{versionId}/image/icon`
+
+Атрибут| Тип| Обязателен| Расположение| Описание  
+---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к Public API
+Rustore](/help/work-with-rustore-api/api-authorization-token).  
+`packageName`| number| Да| path| Идентификатор приложения.  
+`versionId`| number| Да| path| Версия приложения.  
+  
+## Form data​
+
+Атрибут| Тип| Обязателен| Описание  
+---|---|---|---  
+`file`| multipart/form-data| Да| Файл.  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обяз.| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+  
+## Пример​
+
+    
+    
+    curl --location --request POST 'https://public-api.rustore.ru/public/v1/application/com.package.example/version/123/image/icon' \  
+    --header 'Content-Type: application/json' \  
+    --header 'Public-Token: {YOURtoken}' \  
+    --form 'file=@"/Users/User/Downloads/img.jpg"'  
+    
+
+]
+

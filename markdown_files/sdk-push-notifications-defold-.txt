@@ -1,0 +1,16 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/defold/
+title: Push-уведомления Defold
+
+[## [🟦 История обновлений](/help/sdk/push-notifications/defold/history)## [🟦
+2.3.0](/help/sdk/push-notifications/defold/2-3-0)## [🟦 2.2.0](/help/sdk/push-
+notifications/defold/2-2-0)## [🟦 2.1.1](/help/sdk/push-
+notifications/defold/2-1-1)## [🟦 2.0.0](/help/sdk/push-
+notifications/defold/2-0-0)## [🟦 1.1.0](/help/sdk/push-
+notifications/defold/1-1-0), ## [🟦 История обновлений](/help/sdk/push-
+notifications/defold/history), ## [🟦 2.3.0](/help/sdk/push-
+notifications/defold/2-3-0), ## [🟦 2.2.0](/help/sdk/push-
+notifications/defold/2-2-0), ## [🟦 2.1.1](/help/sdk/push-
+notifications/defold/2-1-1), ## [🟦 2.0.0](/help/sdk/push-
+notifications/defold/2-0-0), ## [🟦 1.1.0](/help/sdk/push-
+notifications/defold/1-1-0)]
+

@@ -1,0 +1,26 @@
+url: https://www.rustore.ru/help/users/start
+title: Начало работы с RuStore
+
+[
+
+  * [](/help/)
+  * Начало работы с RuStore
+
+# RuStore: Начало работы
+
+Узнайте, как установить приложение RuStore и настроить его для удобной работы.
+
+**В этом разделе:**
+
+  * [Как установить RuStore](/help/users/start/app-install)
+
+  * [Как обновить RuStore](/help/users/start/update-rustore-app)
+
+  * [Как настроить родительский контроль в RuStore](/help/users/start/change-theme)
+
+  * [Как изменить тему в приложении RuStore](/help/users/start/parental-control)
+
+  * [Как настроить уведомления в RuStore](/help/users/start/notification)
+
+]
+

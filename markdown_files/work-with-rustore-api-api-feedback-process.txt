@@ -1,0 +1,30 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-feedback-process
+title: Работа с отзывами с помощью RuStore API
+
+[## [🟦 Общий процесс работы с отзывами](/help/work-with-rustore-api/api-
+feedback-process/feedback-process)## [🟦 Получение отзывов
+приложения](/help/work-with-rustore-api/api-feedback-process/get-feedback)##
+[🟦 Получение отзывов в формате .csv](/help/work-with-rustore-api/api-feedback-
+process/get-csv-feedback)## [🟦 Оставить ответ на отзыв](/help/work-with-
+rustore-api/api-feedback-process/feedback-answer)## [🟦 Получение статуса
+ответа на отзыв](/help/work-with-rustore-api/api-feedback-process/get-
+feedback-status)## [🟦 Получение статуса ответов на отзывы](/help/work-with-
+rustore-api/api-feedback-process/get-feedbacks-statuses)## [🟦 Изменение ответа
+на отзыв](/help/work-with-rustore-api/api-feedback-process/change-feedback-
+answer)## [🟦 Удаление ответа на отзыв](/help/work-with-rustore-api/api-
+feedback-process/delete-feedback-answer)## [🟦 Получение рейтинга
+приложения](/help/work-with-rustore-api/api-feedback-process/get-app-rating),
+## [🟦 Общий процесс работы с отзывами](/help/work-with-rustore-api/api-
+feedback-process/feedback-process), ## [🟦 Получение отзывов
+приложения](/help/work-with-rustore-api/api-feedback-process/get-feedback), ##
+[🟦 Получение отзывов в формате .csv](/help/work-with-rustore-api/api-feedback-
+process/get-csv-feedback), ## [🟦 Оставить ответ на отзыв](/help/work-with-
+rustore-api/api-feedback-process/feedback-answer), ## [🟦 Получение статуса
+ответа на отзыв](/help/work-with-rustore-api/api-feedback-process/get-
+feedback-status), ## [🟦 Получение статуса ответов на отзывы](/help/work-with-
+rustore-api/api-feedback-process/get-feedbacks-statuses), ## [🟦 Изменение
+ответа на отзыв](/help/work-with-rustore-api/api-feedback-process/change-
+feedback-answer), ## [🟦 Удаление ответа на отзыв](/help/work-with-rustore-
+api/api-feedback-process/delete-feedback-answer), ## [🟦 Получение рейтинга
+приложения](/help/work-with-rustore-api/api-feedback-process/get-app-rating)]
+

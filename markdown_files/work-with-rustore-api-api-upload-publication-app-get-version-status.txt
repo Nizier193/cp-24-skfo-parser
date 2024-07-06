@@ -1,0 +1,175 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/get-version-status
+title: Загрузка и публикация приложений с помощью API RuStore Получение статуса версий приложений
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * Получение статуса версий приложений
+
+Содержание этой страницы
+
+# Получение статуса версий приложений
+
+Метод позволяет получить базовую информацию по версии, а также проверить
+статус версии
+
+Ограничения:
+
+  * по умолчанию на каждой странице отображается по 20 версий, вы можете отображать до 100 версий на странице, указав значение в параметре `size`;
+  * совместно использовать параметры пагинации и фильтрации по 1 версии — нельзя (либо пагинация с указанием пары параметров `page` и `size` либо `ids`).
+
+## Параметры взаимодействия​
+
+`GET`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/version?ids=704095&page=0&size=2`
+
+Атрибут| Тип| Обяз.| Расположение| Описание| Пример  
+---|---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к Public API
+Rustore](/help/work-with-rustore-api/api-authorization-token).| N/A  
+`packageName`| string| Да| path| Имя пакета приложения.| `com.myapp.example`  
+`ids`| number| Нет| query| `id` конкретной версии.  
+  
+Задается при необходимости получить конкретную версию.| `743103`  
+`page`| number| Нет| query| Номер страницы.  
+Начинается с `0`.| `0`  
+`size`| number| Нет| query| Количество отзывов на странице.  
+• По умолчанию — `20`.  
+• Максимально — `100`.| `100`  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обяз.| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+`body{}`| object| Да| N/A| N/A  
+  
+### body​
+
+Атрибут| Тип| Обяз.| Описание| Пример  
+---|---|---|---|---  
+`content[]`| massive| Да| Массив, содержащий список версий.| N/A  
+`pageNumber`| number| Да| Номер текущей страницы.| `0`  
+`pageSize`| number| Да| Размер страницы.| `2`  
+`totalElements`| number| Да| Всего элементов.| `5`  
+`totalPages`| number| Да| Всего страниц.| `3`  
+  
+### body.content[]​
+
+Атрибут| Тип| Обяз.| Описание| Пример  
+---|---|---|---|---  
+`versionId`| number| Да| `id` версии.| `704372`  
+`appName`| string| Да| Название приложения.| `Тест API`  
+`appType`| string| Да| Тип приложения.| `MAIN` или `GAME`  
+`versionName`| string| Да| Номер версии.| `1.0`  
+`versionCode`| number| Да| Код версии.| `6`  
+`versionStatus`| string| Да| Статус версии.| Возможные занчения:  
+• `ACTIVE` – версия опубликована;  
+• `PARTIAL_ACTIVE` – версия опубликована на заданный процент пользователей;  
+• `READY_FOR_PUBLICATION` – версия одобрена модератором;  
+`PREVIOUS_ACTIVE` – предыдущая активная версия;  
+• `ARCHIVED` – версия находится в архиве,  
+• `REJECTED_BY_MODERATOR` – версия отклонена модератором;  
+• `TAKEN_FOR_MODERATION` – версия находится на модерации;  
+• `MODERATION` – версия ожидает действий от модератора;  
+• `AUTO_CHECK` – автоматическая проверка антивирусом Касперского;  
+• `AUTO_CHECK_FAILED` – автоматическая проверка не пропустила APK;  
+• `DRAFT` – черновик версии;  
+• `DELETED_DRAFT` – черновик удалён;  
+• `REJECTED_BY_SECURITY` – версия отклонена со стороны ИБ.  
+`publishType`| string| Да| Тип публикации.| Возможные значения:  
+• `MANUAL`;  
+• `INSTANTLY`;  
+• `DELAYED`.  
+`publishDateTime`| timestamptz| Да| время отложенной публикации|
+`2023-08-04T09:36:06.431+00:00`  
+`sendDateForModer`| timestamptz| Да| Время отправки на модерацию|
+`2023-08-11T12:03:06.303+00:00`  
+`partialValue`| number| Да| % для частичной публикации.| `-1` = 100%  
+Остальные значения соответвуют  
+`whatsNew`| string| Да| Сведения об изменениях.| `Исправили баги`  
+`priceValue`| number| Да| Цена, если приложение платное.| `0`  
+`paid`| boolean| Да| Платное ли приложение.| `true`/`false`  
+  
+Возможные значения статусов:
+
+  * `ACTIVE` — версия опубликована;
+  * `PARTIAL_ACTIVE` — версия с частичной публикацией на процент пользователей опубликована;
+  * `READY_FOR_PUBLICATION` — версия одобрена модератором;
+  * `PREVIOUS_ACTIVE` — предыдущая активная версия;
+  * `ARCHIEVED` — версия находится в архиве;
+  * `REJECTED_BY_MODERATOR` — версия отклонена модератором;
+  * `TAKEN_FOR_MODERATION` — версия находится на модерации у модератора;
+  * `MODERATION` — ожидает модерацию со стороны модератора;
+  * `AUTO_CHECK` — автоматическая проверка `.apk` Касперским;
+  * `AUTO_CHECK_FAILED` — автоматическая проверка не пропустила `.apk`;
+  * `DRAFT` — черновик версии;
+  * `DELETED_DRAFT` — черновик удалён;
+  * `REJECTED_BY_SECURITY` — версия отклонена со стороны ИБ.
+
+## Пример запроса​
+
+    
+    
+    curl --location 'https://public-api.rustore.ru/public/v1/application/com.example.pblsh_v2/version?page=0&size=2' \  
+    --header 'accept: application/json' \  
+    --header 'Public-Token: {YOURtoken}’  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": {  
+            "content": [  
+                {  
+                    "versionId": 704372,  
+                    "appName": "Тест АПИ",  
+                    "appType": "MAIN",  
+                    "versionName": "1.0",  
+                    "versionCode": 6,  
+                    "versionStatus": "ACTIVE",  
+                    "publishType": "MANUAL",  
+                    "publishDateTime": "2023-08-14T12:34:43.925+00:00",  
+                    "sendDateForModer": "2023-08-11T12:03:06.303+00:00",  
+                    "partialValue": -1,  
+                    "whatsNew": "Исправили баги",  
+                    "priceValue": 0,  
+                    "paid": false  
+                },  
+                {  
+                    "versionId": 704197,  
+                    "appName": "PO test API",  
+                    "appType": "MAIN",  
+                    "versionName": "1.0",  
+                    "versionCode": 1,  
+                    "versionStatus": "PREVIOUS_ACTIVE",  
+                    "publishType": "INSTANTLY",  
+                    "publishDateTime": "2023-08-04T09:36:06.431+00:00",  
+                    "sendDateForModer": "2023-08-04T09:20:23.551+00:00",  
+                    "partialValue": -1,  
+                    "whatsNew": "Первая версия",  
+                    "priceValue": 0,  
+                    "paid": false  
+                }  
+            ],  
+            "pageNumber": 0,  
+            "pageSize": 2,  
+            "totalElements": 2,  
+            "totalPages": 1  
+        },  
+        "timestamp": "2023-08-14T15:38:50.413186769+03:00"  
+    }  
+    
+
+]
+

@@ -1,0 +1,302 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/send-push-notifications
+title: Push-уведомления Отправка push-уведомлений (API)
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * Отправка push-уведомлений (API)
+
+Содержание этой страницы
+
+# Отправка push-уведомлений (API)
+
+## API для отправки push-уведомлений​
+
+API разрабатывалось с целью предоставлять возможность drop-in replacement для
+Firebase.
+
+Для отправки push-уведомления используйте метод POST
+<https://vkpns.rustore.ru/v1/projects/$project_id/messages:send>.
+
+Укажите **ID проекта** и **Сервисный токен** , чтобы отправить push-
+уведомление. Эти значения вы можете получить в [Консоли
+RuStore](https://console.rustore.ru/waiting). Для этого на странице приложения
+перейдите в раздел **Push-уведомления** и выберите **Проекты**.
+
+Сервисный токен нужно указывать в заголовке `Authorization: Bearer {service-
+token}`.
+
+### Тело запроса​
+
+Параметр| Тип| Описание  
+---|---|---  
+`message`| object (message)| Структура push-уведомления.  
+  
+### `message`​
+
+Параметр| Тип| Описание  
+---|---|---  
+`token`| string| Push-токен пользователя, полученный в приложении.  
+`data`| map| Объект, содержащий пары `"key": value`.  
+`notification`| object (message.notification).| Базовый шаблон уведомления для
+использования на всех платформах.  
+`android`| object (message.android)| Специальные параметры Android для
+сообщений.  
+  
+### `message.notification`​
+
+Параметр| Тип| Описание  
+---|---|---  
+`title`| string| Название уведомления.  
+`body`| string| Основной текст уведомления.  
+`image`| string| Содержит URL-адрес изображения, которое будет отображаться в
+уведомлении.  
+  
+### `message.android`​
+
+Параметр| Тип| Описание  
+---|---|---  
+`ttl`| string (duration format)| Как долго (в секундах) сообщение должно
+храниться в хранилище.  
+Пример: `3.5s`.  
+`notification`| object (`message.android.notification`)| Уведомление для
+отправки на устройства Android.  
+  
+### `message.android.notification`​
+
+Параметр| Тип| Описание  
+---|---|---  
+`title`| string| Название уведомления.  
+`body`| string| Основной текст уведомления.  
+`icon`| string| Значок уведомления.  
+`color`| string| Цвет значка уведомления в формате `#rrggbb`.  
+`image`| string| Содержит URL-адрес изображения, которое будет отображаться в
+уведомлении.  
+`channel_id`| string| Идентификатор канала уведомления.  
+`click_action`| string| Действие, связанное с кликом пользователя по
+уведомлению.  
+`click_action_type`| int| Необязательное поле, тип `click_action` (значение по
+умолчанию `0` \- `click_action` будет использоваться как `intent action`, `1`
+\- `click_action` будет использоваться как `deep link`)  
+  
+предупреждение
+
+Обратите внимание, для корректной работы `deep link`(`click_action_type` с
+установленным значением `1`) версия RuStore должна быть не ниже `1.39.0`
+
+к сведению
+
+В структуре `message` на данный момент поддерживаются только представленные
+выше поля.
+
+### Тело успешного ответа​
+
+Параметр| Тип| Описание  
+---|---|---  
+—| —| В случае успешного ответа возвращается сообщение с пустым `payload`.  
+  
+### Тело ответа с ошибкой​
+
+Параметр| Тип| Описание  
+---|---|---  
+`error`| object (`error`)| Ошибка.  
+  
+### `error`​
+
+Параметр| Тип| Описание  
+---|---|---  
+`code`| int| Числовой код ошибки (`404`, `400`, `403`, `401`, ...).  
+`message`| string| Детальное описание ошибки.  
+`status`| string| Код ошибки в текстовом формате (`INVALID_ARGUMENT`,
+`UNREGISTERED`, ...).  
+  
+HTTP status соответствует полю `code`.
+
+### Возможные ошибки при отправке сообщения​
+
+  * `INVALID_ARGUMENT`— неправильно указаны параметры запроса при отправке сообщения.
+  * `INTERNAL`— внутренняя ошибка сервиса.
+  * `TOO_MANY_REQUESTS`— превышено количество попыток отправить сообщение. `
+  * `PERMISSION_DENIED`— неправильно указан сервисный ключ.
+  * `NOT_FOUND` — неправильно указан push-токен пользователя.
+
+### Алгоритм валидации `Message`​
+
+  * Если есть непустой `payload` `message.data` (есть хотя бы одна пара ключ-значение внутри), то сообщение валидно. Секции `message.notification` и `message.android` могут отсутствовать.
+  * Если поля `message.data` нет, то обязательно должен быть `notification`. В этом случае проверяется наличие либо поля `message.notification`, либо `message.android.notification`. Хотя бы одно из этих полей должно присутствовать, но могут присутствовать оба (если присутствуют оба, то некоторые поля перезаписываются).
+
+### Ограничения​
+
+  * Если в push нет поля `ttl` или оно равно `0`, то учитывается значение по умолчанию, равное 4 неделям. Если в push отсутствует секция `message.android`, она добавляется с полем `ttl`.
+  * Максимальный объем сообщения 4096 байт.
+
+## Примеры отправки push-уведомлений​
+
+### Пример успешного запроса​
+
+    
+    
+    POST https://vkpns.rustore.ru/v1/projects/myproject-b5ae1/messages:send HTTP/2  
+    Content-Type: application/json  
+    Authorization: Bearer $ss_token  
+    {  
+       "message" :{  
+          "token" : "bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1..." ,  
+          "notification" :{  
+            "body" : "This is a notification message!" ,  
+            "title" : "Message" ,  
+            "image" : "https://image-hosting.org/284239234.jpeg"  
+          }  
+       }  
+    }  
+    
+
+### Ответ на успешный запрос​
+
+    
+    
+    HTTP/ 2 200  
+    {}  
+    
+
+### Пример запроса с невалидным push-токеном​
+
+    
+    
+    POST https://vkpns.rustore.ru/v1/projects/U95076bdd5KDJ3LjYkNp91o05Y6LkfQk/messages:send HTTP/2  
+    Content-Type: application/json  
+    Authorization: Bearer Fw9FgDx9FQtya6k-7UkSOnzpHYhDq0SQY4-8QKJ6wKZI9OUPiCCYyNmS-CV2-ZQ5  
+    {  
+       "message" : {  
+          "token" :  "bad-push-token" ,  
+          "notification" : {  
+            "body" : "This is a notification message!" ,  
+            "title" : "Message" ,  
+            "image" : "https://image-hosting.org/284239234.jpeg"  
+          }  
+       }  
+    }  
+    
+
+### Ответ на запрос с невалидным push-токеном​
+
+    
+    
+    HTTP/ 2 400  
+    {  
+        "error" : {  
+            "code" :  400 ,  
+            "message" :  "The registration token is not a valid FCM registration token" ,  
+            "status" :  "INVALID_ARGUMENT"  
+        }  
+    }  
+    
+
+### Пример запроса с валидным push-токеном с истекшим сроком действия​
+
+    
+    
+    POST https://vkpns.rustore.ru/v1/projects/U95076bdd5KDJ3LjYkNp91o05Y6LkfQk/messages:send HTTP/2  
+    Content-Type: application/json  
+    Authorization: Bearer Fw9FgDx9FQtya6k-7UkSOnzpHYhDq0SQY4-8QKJ6wKZI9OUPiCCYyNmS-CV2-ZQ5  
+    {  
+       "message" : {  
+          "token" :  "eH4tgqKEfFKqH6cMJ2WLttVibgQO9hfn" ,  
+          "notification" : {  
+            "body" :  "This is a notification message!" ,  
+            "title" :  "Message" ,  
+            "image" :  "https://image-hosting.org/284239234.jpeg"  
+          }  
+       }  
+    }  
+    
+
+### Ответ на запрос с валидным push-токеном с истекшим сроком действия​
+
+    
+    
+    HTTP/ 2 404  
+    {  
+        "error" : {  
+            "code" :  404 ,  
+            "message" :  "Requested entity was not found." ,  
+            "status" :  "NOT_FOUND"  
+        }  
+    }  
+    
+
+### Пример успешного запроса с использованием `deep link`​
+
+    
+    
+    POST https://vkpns.rustore.ru/v1/projects/myproject-b5ae1/messages:send HTTP/2  
+    Content-Type: application/json  
+    Authorization: Bearer $ss_token  
+    {  
+       "message" :{  
+          "token" : "bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1..." ,  
+          "notification" :{  
+            "body" : "This is a notification message!" ,  
+            "title" : "Message" ,  
+            "image" : "https://image-hosting.org/284239234.jpeg"  
+          }  
+          "android": {  
+            "notification": {  
+                "body" : "This is a notification message!" ,  
+                "title" : "Message" ,  
+                "image" : "https://image-hosting.org/284239234.jpeg"  
+                "click_action": "https://sample.com/",  
+                "click_action_type": 1  
+            }  
+          }  
+       }  
+    }  
+    
+
+### Ответ на успешный запрос с использованием `deep link`​
+
+    
+    
+    HTTP/ 2 200  
+    {}  
+    
+
+### Пример успешного запроса с использованием `intent action`​
+
+    
+    
+    POST https://vkpns.rustore.ru/v1/projects/myproject-b5ae1/messages:send HTTP/2  
+    Content-Type: application/json  
+    Authorization: Bearer $ss_token  
+    {  
+       "message" :{  
+          "token" : "bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1..." ,  
+          "notification" :{  
+            "body" : "This is a notification message!" ,  
+            "title" : "Message" ,  
+            "image" : "https://image-hosting.org/284239234.jpeg"  
+          }  
+          "android": {  
+            "notification": {  
+                "body" : "This is a notification message!" ,  
+                "title" : "Message" ,  
+                "image" : "https://image-hosting.org/284239234.jpeg"  
+                "click_action": "some_unique_intent_action",  
+                "click_action_type": 0  
+            }  
+          }  
+       }  
+    }  
+    
+
+### Ответ на успешный запрос с использованием `intent action`​
+
+    
+    
+    HTTP/ 2 200  
+    {}  
+    
+
+]
+

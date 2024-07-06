@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/sdk/payments/react
+title: Платежи in-app и подписки React Native
+
+[## [🟦 История обновлений](/help/sdk/payments/react/history)## [🟦
+5.0.0](/help/sdk/payments/react/5-0-0)## [🟦
+3.1.0](/help/sdk/payments/react/3-1-0), ## [🟦 История
+обновлений](/help/sdk/payments/react/history), ## [🟦
+5.0.0](/help/sdk/payments/react/5-0-0), ## [🟦
+3.1.0](/help/sdk/payments/react/3-1-0)]
+

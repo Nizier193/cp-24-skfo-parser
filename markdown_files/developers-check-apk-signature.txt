@@ -1,0 +1,84 @@
+url: https://www.rustore.ru/help/developers/check-apk-signature
+title: Проверка подписи APK
+
+[
+
+  * [](/help/)
+  * Проверка подписи APK
+
+Содержание этой страницы
+
+# Отпечаток подписи APK: инструкции и инструменты для SDK
+
+Для работы большинства SDK необходимо, чтобы приложение было подписано
+правильной подписью. Чтобы узнать, какой подписью подписан файл APK, нужно
+воспользоваться дополнительными инструментами, которые покажут отпечаток
+подписи.
+
+Информация о подписи указана в файле `build.gradle`. Если не указать подпись
+явно, используется подпись по умолчанию `~/.android/debug.keystore`.
+
+Ниже рассмотрены способы, с помощью которых можно узнать подпись.
+
+## Получение подписи с помощью Android Studio​
+
+    
+    
+    gradle signingreport  
+    
+
+Результат выполнения команды:
+
+![img](https://www.rustore.ru//help/assets/images/view-sha-256-android-
+studio-03d3a513a1737185f2fc05cf72e41df9.webp)
+
+Отпечаток подписи указан в строке SHA-256.
+
+## Получение подписи с помощью apksigner​
+
+    
+    
+    apksigner verify --print-certs -v example.apk  
+    
+
+`example.apk` — ваше приложение.
+
+Результат выполнения команды Mac OS:
+
+![img](https://www.rustore.ru//help/assets/images/view-
+sha-256-apksigner-6819c0458d399f7ccfb8ee851310f933.webp)
+
+Значение Signer #1 certificate SHA-256 digest — это нужный отпечаток подписи.
+
+## Получение подписи с помощью keytool​
+
+    
+    
+    keytool -printcert -jarfile example.apk  
+    
+
+`example.apk` — ваше приложение.
+
+Результат выполнения команды Mac OS:
+
+![img](https://www.rustore.ru//help/assets/images/view-
+sha-256-keytool-a236ef08f6281c00f0047f628e875629.webp)
+
+Отпечаток подписи указан в строке SHA256.
+
+## Проверка для пуш-уведомлений​
+
+Отпечаток подписи, полученный с помощью указанных инструментов, должен
+совпадать с отпечатком, который указан в проекте пуш-уведомлений — поле
+«Отпечаток подписи SHA-256».
+
+![img](https://www.rustore.ru//help/assets/images/view-
+sha-256-c3f7d16c6ea4bb0472a203c945461513.webp)
+
+подсказка
+
+Подробная информация о подписи — в [официальной документации
+Google](https://developer.android.com/studio/publish/app-signing).
+
+]
+

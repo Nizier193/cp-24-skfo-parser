@@ -1,0 +1,119 @@
+url: https://www.rustore.ru/help/users/start/app-install
+title: Начало работы с RuStore Как установить RuStore
+
+[
+
+  * [](/help/)
+  * [Начало работы с RuStore](/help/users/start)
+  * Как установить RuStore
+
+Содержание этой страницы
+
+# Как установить RuStore: Полное руководство по безопасной загрузке и
+установке
+
+Важно скачивать и устанавливать приложения с официального сайта, чтобы
+защитить личные данные и снизить риски столкнуться с приложениями, которые
+могут навредить вашему устройству.
+
+Один из самых безопасных вариантов — установить
+[RuStore](https://www.rustore.ru/). Все приложения в RuStore проходят ручную
+модерацию и проверку с помощью систем безопасности «Лаборатории Касперского».
+
+## Как скачать и установить RuStore на Android​
+
+  1. Перейдите на [официальный сайт](https://www.rustore.ru/) RuStore.
+  2. Нажмите «Скачать RuStore».
+  3. Ознакомьтесь с [инструкцией](https://www.rustore.ru/instruction).
+  4. Нажмите «[Скачать файл](https://www.rustore.ru/download)».
+  5. Нажмите «Все равно скачать», чтобы разрешить загрузку файла.
+
+![img](https://www.rustore.ru//help/assets/images/download-
+install-480a2e5e7e7b066cde7a66f6e6720a5e.webp)
+
+![img](https://www.rustore.ru//help/assets/images/download-install-
+message-031c4592ba97445696c36294ac25c42f.webp)
+
+После загрузки появится уведомление «Установить это приложение?». Нажмите
+«Установить».
+
+## Вопросы и ответы​
+
+Уведомление не появилось
+
+Уведомление об установке приложения может не появиться, потому что ваш
+смартфон воспринимает сайт rustore.ru как сторонний источник. Файл RuStore.apk
+безопасен для вашего смартфона.
+
+Если уведомление не появилось:
+
+  1. Найдите на устройстве папку, куда загрузился файл RuStore.apk.
+  2. Запустите файл.
+
+![img](https://www.rustore.ru/data:image/webp;base64,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)
+
+![img](https://www.rustore.ru//help/assets/images/download-
+blocked-e83c29b3449bbd4b119cabee097d491a.webp)
+
+Если устройство заблокировало установку, перейдите в настройки и разрешите
+устанавливать неизвестные приложения. Или найдите эту настройку вручную.
+
+  1. Перейдите в «Настройки».
+  2. Откройте раздел «Приложения».
+  3. Найдите приложение, с помощью которого открыли RuStore.apk.
+  4. Откройте «Дополнительные настройки».
+  5. Рядом с пунктом «Неизвестные источники» установите переключатель в активное положение.
+
+После настроек ещё раз запустите установку приложения. Как только установка
+завершится, появится соответствующее уведомление.
+
+После установки приложения на устройство иконка RuStore появится на экране
+«Домой» и приложением можно будет пользоваться.
+
+Не могу установить приложение RuStore
+
+  1. Обновите версию Android. Это можно сделать в настройках устройства. Чтобы RuStore работал безопасно, поддерживаем Android 7.0 и новее. Также поддерживаем операционную систему Harmony OS 4.
+
+  2. Очистите память  телефона. Проверьте в настройках, хватает ли вам свободного места для установки приложения.
+
+  3. Проверьте настройки корпоративного телефона. Если на вашем корпоративном телефоне стоит ограничение установки, RuStore не установится.
+
+  4. Убедитесь, что скачиваете RuStore с официального сайта. Если на телефоне стоит версия приложения с неофициального сайта, корректная версия не установится. Скачивайте RuStore только с официального сайта.
+
+Можно ли установить RuStore на iOS?
+
+RuStore — это российский магазин приложений для устройств на Android и на
+Harmony OS 4. К сожалению, магазин недоступен для устройств на iOS.
+
+Если появится возможность публикации RuStore в iOS, то мы обязательно
+рассмотрим этот вариант и сообщим вам.
+
+Можно ли скачивать RuStore за границей?
+
+Вы можете скачать RuStore за границей. Никаких ограничений нет.
+
+Безопасен ли RuStore?
+
+Безопасн ость — основной приоритет RuStore. Все приложения в магазине проходят
+ручную модерацию и проверку с помощью систем безопасности «Лаборатории
+Касперского».
+
+При загрузке файла RuStore.apk ваш смартфон, скорее всего, предупредит об
+опасности скачивания, потому что он воспринимает сайт rustore.ru как сторонний
+источник. Файл RuStore.apk безопасен для вашего смартфона.
+
+Если у вас остались вопросы о безопасности RuStore, [напишите
+нам](mailto:support@rustore.ru).
+
+**Читайте также:**
+
+  * [Как проверить безопасность приложений в RuStore](/help/users/app-management/app-safety)
+
+  * [Как настроить уведомления в RuStore](/help/users/start/notification)
+
+  * [Как обновить RuStore](/help/users/start/update-rustore-app)
+
+  * [Как настроить родительский контроль в RuStore](/help/users/start/change-theme)
+
+]
+

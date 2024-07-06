@@ -1,0 +1,301 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/flutter/6-0-1
+title: Push-уведомления Flutter 6.0.1
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Flutter](/help/sdk/push-notifications/flutter)
+  * 6.0.1
+
+Содержание этой страницы
+
+# SDK push-уведомлений для Flutter (версия 1.0.0)
+
+Условия работы push-уведомлений:
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore должно поддерживать функциональность push-уведомлений.
+  * Приложению RuStore разрешен доступ к работе в фоновом режиме. Без этого разрешения push-уведомления будут приходить, но со значительной задержкой.
+  * Отпечаток подписи приложения должен совпадать с отпечатком, добавленным в [Консоль RuStore](https://dev.rustore.ru/).
+
+## Пример реализации​
+
+Ознакомьтесь с [приложением-
+примером](https://gitflic.ru/project/rustore/flutter-rustore-
+push/file?file=example), чтобы узнать, как правильно интегрировать SDK push-
+уведомлений.
+
+## Подключение в проект​
+
+Для подключения пакета к проекту выполните команду:
+
+    
+    
+    flutter pub add flutter_rustore_push  
+    
+
+Она добавит строчку в файл `pubspec.yaml`:
+
+pubspec.yaml
+
+    
+    
+    dependencies:  
+      flutter_rustore_push: ^6.0.1  
+    
+
+## Инициализация​
+
+Добавьте в AndroidManifest.xml следующий код:
+
+AndroidManifest.xml
+
+    
+    
+    <meta-data  
+        android:name="ru.rustore.sdk.pushclient.project_id"  
+        android:value="i5UTx96jw6c1C9LvdlE4cdNrWHMNyRBt" />  
+    
+
+## Настройки ProGuard​
+
+Для настройки ProGuard добавьте следующее правило:
+
+    
+    
+    -keep public class com.vk.push.** extends android.os.Parcelable  
+    
+
+В файле `android/app/build.gradle` добавьте следующие строки:
+
+android/app/build.gradle
+
+    
+    
+    buildTypes {  
+            release {  
+                // ...  
+                proguardFiles getDefaultProguardFile( 'proguard-android.txt' ),  'proguard-rules.pro'  
+            }  
+            // ...  
+    }  
+    
+
+## Проверка возможности получать push-уведомления​
+
+Для проверки того, что приложение RuStore установлено на устройстве
+пользователя, используйте метод `RustorePushClient.available()`.
+
+    
+    
+    RustorePushClient.available().then((value) {  
+          print("available success: ${value}");  
+    }, onError: (err) {  
+          print("available error: ${err}");  
+    });  
+    
+
+## Методы для работы с push-токеном​
+
+### Получение push-токена пользователя​
+
+предупреждение
+
+Если у пользователя нет push-токена, метод создаст и вернёт новый push-токен.
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.getToken()`, чтобы получить текущий push-токен
+пользователя.
+
+    
+    
+    RustorePushClient.getToken().then((value) {  
+          print("get token success: ${value}" );  
+    }, onError: (err) {  
+          print("get token error: ${err}" );  
+    })  
+    
+
+### Удаление push-токена пользователя​
+
+После инициализации библиотеки вы можете использовать метод
+`RuStorePushClient.deleteToken()`, чтобы удалить текущий push-токен
+пользователя.
+
+    
+    
+    RustorePushClient.deleteToken().then(() {  
+          print( "delete success:" );  
+    }, onError: (err) {  
+          print( "delete error: ${err}" );  
+    })  
+    
+
+### События изменения push-токена​
+
+Иногда старый токен становится некорректным, он может выписываться заново.
+Чтобы узнать о том, что выписался новый токен, используйте callback
+`RustorePushClient()`.
+
+    
+    
+    RustorePushClient.onNewToken((value) {  
+          print("on new token success: ${value}");  
+    }, error: (err) {  
+          print("on new token err: ${err}");  
+    });  
+    
+
+## Методы для работы с push-уведомлениями​
+
+### Получение информации из push-уведомления​
+
+Чтобы получить информацию из push-уведомления, добавьте callback
+`RustorePushClient.onMessageReceived()`.
+
+    
+    
+    RustorePushClient.onMessageReceived((value) {  
+          print("on message received success: id=${value.messageId}, data=${value.data}, notification.body: ${value.notification?.body}");  
+    }, error: (err) {  
+          print("on message received error: ${err}");  
+    });  
+    
+
+### Удаление push-уведомления​
+
+Для удаления push-уведомления добавьте callback
+`RustorePushClient.onDeletedMessages()`.
+
+    
+    
+    RustorePushClient.onDeletedMessages(() {  
+          print( "deleted messages" );  
+    }, error: (err) {  
+          print( "on message received error: ${err}" );  
+    });  
+    
+
+## Методы работы с push-топиком​
+
+### Подписка на push-уведомления по топику​
+
+После инициализации библиотеки вы можете использовать метод
+RuStorePushClient.subscribeToTopic(your_topic_name) для подписки на топик.
+
+    
+    
+    RustorePushClient.subscribeToTopic("topicName").then((value) {  
+          //Proccess success  
+        }, onError: (err) {  
+          //Process error  
+        });  
+    
+
+### Отписка от push-уведомлений по топику​
+
+После инициализации библиотеки вы можете использовать метод
+RuStorePushClient.unsubscribeFromTopic(your_topic_name) для отписки от
+топика..
+
+    
+    
+    RustorePushClient.unsubscribeFromTopic("topicName").then((value) {  
+          //Proccess success  
+        }, onError: (err) {  
+          //Process error  
+        });  
+    
+
+## Структура уведомления​
+
+Структура полного уведомления
+
+    
+    
+    class Message {  
+      String? messageId;  
+      int priority;  
+      int ttl;  
+      String? collapseKey;  
+      Map<String?, String?> data;  
+      Notification? notification;  
+    }  
+    
+
+  * `messageId` — уникальный ID сообщения. Является идентификатором каждого сообщения.
+
+  * `priority` — возвращает значение приоритетности (на данный момент не учитывается).
+
+Сейчас заложены следующие варианты:
+
+    * `0` — `UNKNOWN`.
+    * `1` — `HIGH`.
+    * `2` — `NORMAL`.
+
+< p/>
+
+  * `ttl` — время жизни push-уведомления типа `Int` в секундах.
+
+  * `from` — поле, по которому можно понять, откуда пришло уведомление: < p/>
+
+    * Для уведомлений, отправленных в топик, в поле отображается имя топика.
+    * В других случаях — часть вашего сервисного токена.
+
+< p/>
+
+  * `collapseKey` — идентификатор группы уведомлений (на данный момент не учитывается).
+
+  * `data` — словарь, в который можно передать дополнительные данные для уведомления.
+
+  * `rawData` — словарь `data` в виде массива байтов.
+
+  * `notification` — объект уведомления.
+
+Структура объекта Notification
+
+    
+    
+    class Notification {  
+      String? title;  
+      String? body;  
+      String? channelId;  
+      String? imageUrl;  
+      String? color;  
+      String? icon;  
+      String? clickAction;  
+    }  
+    
+
+  * `title` — заголовок уведомления.
+
+  * `body` — тело уведомления
+  * `channelId` — возможность задать канал, в который отправится уведомление. Актуально для Android 8.0 и выше.
+
+  * `imageUrl` — прямая ссылка на изображение для вставки в уведомление. Изображение должно быть не более 1 Мбайт.
+
+  * `color` — цвет уведомления в HEX-формате, строкой. Например, `#0077FF`.
+
+  * `icon` — значок уведомления из `res/drawable` в формате строки, которая совпадает с названием ресурса. < p/> Например, в `res/drawable` есть значок `small_icon.xml`, который доступен в коде через `R.drawable.small_icon`. Чтобы значок отображался в уведомлении, сервер должен указать в параметре `icon` значение `small_icon`. < p/>
+
+  * `clickAction` — `intent action`, с помощью которого будет открыта активити при клике на уведомление.
+
+### Создание канала для отправки уведомления​
+
+Для канала, в который отправляется уведомление, действует следующий приоритет:
+
+  * Если в push-уведомлении есть поле `channelId`, RuStore SDK отправит уведомление в указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, но ваше приложение указало параметр с каналом в `AndroidManifest.xml`, используется указанный канал. Ваше приложение должно создать этот канал заранее.
+
+  * Если в push-уведомлении нет поля `channelId`, и канал по умолчанию не задан в `AndroidManifest.xml`, RuStore SDK создаст канал и отправит уведомление в него. В дальнейшем все уведомления без явного указания канала будут отправляться в этот канал.
+
+## См. также​
+
+  * [Отправка push-уведомлений (API)](/help/sdk/push-notifications/send-push-notifications)
+  * [Отправка push-уведомлений по топикам (API)](/help/sdk/push-notifications/topic-notifications)
+  * [Работа с сегментами пользователей (API)](/help/sdk/push-notifications/work-with-segments-push-api)
+
+]
+

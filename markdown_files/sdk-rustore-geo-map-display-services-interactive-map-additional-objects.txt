@@ -1,0 +1,57 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/map-display-services/interactive-map/additional-objects
+title: Карты и геосервисы Сервисы отображения карт Интерактивная карта Описание дополнительных объектов карты
+
+[
+
+  * [](/help/)
+  * [Карты и геосервисы](/help/sdk/rustore-geo)
+  * [Сервисы отображения карт](/help/sdk/rustore-geo/map-display-services/)
+  * [Интерактивная карта](/help/sdk/rustore-geo/map-display-services/interactive-map)
+  * Описание дополнительных объектов карты
+
+Содержание этой страницы
+
+# Описание дополнительных объектов карты
+
+## AttributionControl​
+
+Элемент управления AttributionControl представляет информацию об атрибутах
+карты (копирайтинг и так далее).
+
+`src/ui/control/attribution_control.js`
+
+Ниже представлены доступные параметры.
+
+  * `compact:boolean` — если `true`, то всегда отображается в компактном виде, если `false`, то будет всегда в полный размер, по умолчанию это работает в зависимости от размера карты (`viewport < 640 ? compact : full`).
+  * `customAttribution:string|Array<string>` — строка или строки для отображения в атрибутах карты (см. пример ниже).
+
+    
+    
+    var map = new mmrgl.Map({attributionControl: false})  
+      .addControl(new mmrgl.AttributionControl({  
+          compact: true  
+       }));  
+    js  
+    
+
+## `LngLatBoundsLike`​
+
+Объект `LngLatBounds`, массив `LngLatLike` объектов в порядке `[sw, ne]` или
+массив чисел в порядке `[west, south, east, north]`.
+
+`src/geo/lng_lat_bound.js`
+
+См. пример ниже.
+
+    
+    
+    var v1 = new mmrgl.LngLatBounds(  
+        new mmrgl.LngLat(-73.9876, 40.7661),  
+        new mmrgl.LngLat(-73.9397, 40.8002)  
+    );  
+    var v2 = new mmrgl.LngLatBounds([-73.9876, 40.7661], [-73.9397, 40.8002])  
+    var v3 = [[-73.9876, 40.7661], [-73.9397, 40.8002]];  
+    
+
+]
+

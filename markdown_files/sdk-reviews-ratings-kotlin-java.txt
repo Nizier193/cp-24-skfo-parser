@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings/kotlin-java
+title: Подключение отзывов и оценок Kotlin/Java
+
+[## [🟦 История обновлений](/help/sdk/reviews-ratings/kotlin-java/history)## [🟦
+6.0.0](/help/sdk/reviews-ratings/kotlin-java/6-0-0)## [🟦
+2.0.0](/help/sdk/reviews-ratings/kotlin-java/2-0-0), ## [🟦 История
+обновлений](/help/sdk/reviews-ratings/kotlin-java/history), ## [🟦
+6.0.0](/help/sdk/reviews-ratings/kotlin-java/6-0-0), ## [🟦
+2.0.0](/help/sdk/reviews-ratings/kotlin-java/2-0-0)]
+

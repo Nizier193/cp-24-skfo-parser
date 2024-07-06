@@ -1,0 +1,41 @@
+url: https://www.rustore.ru/help/users/authorization/login-tinkoff-id
+title: Авторизация в RuStore Как авторизоваться через Тинькофф ID
+
+[
+
+  * [](/help/)
+  * [Авторизация в RuStore](/help/users/authorization)
+  * Как авторизоваться через Тинькофф ID
+
+# Как авторизоваться через Тинькофф ID в RuStore
+
+Вы можете авторизоваться в RuStore через Тинькофф ID:
+
+  1. Нажмите ![icon](https://www.rustore.ru//help/rustore-icon.svg) на домашнем экране вашего устройства.
+  2. Нажмите «Войти».
+  3. Нажмите ![icon](https://www.rustore.ru//help/tinkoff-icon.svg), чтобы авторизоваться через приложение Тинькофф.
+  4. Войдите в приложение Тинькофф, чтобы авторизоваться в RuStore.
+
+Откроется приложение Тинькофф. Нажмите «Разрешить», чтобы авторизоваться в
+RuStore.
+
+![img](https://www.rustore.ru//help/assets/images/login-5c016c3fea206a44925ea99620816a61.webp)
+
+![img](https://www.rustore.ru//help/assets/images/e0cd3444d471a3d5d9e0899262982889-e4d47f03031dbedc205436b8240e4d07.webp)
+
+  1. Проверьте актуальность номера телефона.
+  2. Нажмите «Подтвердить».
+
+На ваш номер придет SMS с кодом подтверждения.
+
+  1. Введите код.
+  2. Нажмите «Продолжить».
+  3. Введите пароль от своего VK ID.
+  4. Нажмите «Продолжить как».
+
+![img](https://www.rustore.ru//help/assets/images/c0fd78b77dd31e3da9dfa09576f55704-74d9c75967fa9433c54866baca933b24.webp)
+
+![img](https://www.rustore.ru//help/assets/images/1a82fb6bbdf0300eb1c50e1e707e8953-dc4ddb5aaa3d4e8edcd33a3442d2aab0.webp)
+
+]
+

@@ -1,0 +1,59 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/send-draft-app-for-moderation
+title: Загрузка и публикация приложений с помощью API RuStore Отправка на модерацию черновика версии приложения
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * Отправка на модерацию черновика версии приложения
+
+Содержание этой страницы
+
+# Отправка на модерацию черновика версии приложения
+
+Метод для отправки на модерацию черновика версии приложения.
+
+предупреждение
+
+Убедитесь, что файл не содержит новых чувствительных и/или запрещённых
+разрешений. (См. [Типы
+разрешений](https://www.rustore.ru/help/developers/publishing-and-verifying-
+apps/declare-app-permissions/permission-types))
+
+## Параметры взаимодействия​
+
+`POST`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/version/{versionId}/commit?priorityUpdate={priorityUpdate}`
+
+Атрибут| Тип| Обязателен| Расположение| Описание  
+---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к Public API
+Rustore](/help/work-with-rustore-api/api-authorization-token).  
+`packageName`| string| Да| path| Имя пакета приложения.  
+`versionId`| number| Да| path| Версия приложения.  
+`priorityUpdate`| number| Нет| query| Приоритет обновления.  
+  
+Возможные значения:  
+От `0` до `5`, где `0` — минимальный, а • — максимальный.  
+По умолчанию равно `0`.  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| Детализация ошибки.
+Возможные значения:  
+• `Загрузите хотя бы один основной APK-файл с сервисом отличным от HMS` /
+`Version must have at least one main non-HMS apk-file`;  
+• `Вы не можете загрузить файлы только с Huawei Mobile Services` / `Version
+must have not only HMS apk-file`;  
+• `Вы не загрузили APK при создании черновика` / `Packages for version with id
+= Is not found`.  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+  
+]
+

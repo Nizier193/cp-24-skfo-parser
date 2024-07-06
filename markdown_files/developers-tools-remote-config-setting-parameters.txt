@@ -1,0 +1,71 @@
+url: https://www.rustore.ru/help/developers/tools/remote-config/setting-parameters
+title: Инструменты RuStore Remote Config Настройка обязательного подтверждения
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [RuStore Remote Config](/help/developers/tools/remote-config)
+  * Настройка обязательного подтверждения
+
+Содержание этой страницы
+
+# Настройка обязательного подтверждения
+
+В Remote Config можно включить обязательное подтверждение параметров/условий и
+тест вариантов в эксперименте. По умолчанию функция **отключена**.
+
+примечание
+
+Настройка доступна только для владельца приложения.
+
+## Как включить обязательное подтверждение?​
+
+  1. Откройте [Remote Config](https://remote-config.rustore.ru).
+  2. Перейдите во вкладку «Приложения».
+  3. Нажмите ![img](https://www.rustore.ru/data:image/webp;base64,UklGRnYBAABXRUJQVlA4WAoAAAAQAAAAJwAAJwAAQUxQSM8AAAABgFTbdt3mQngQHgRBEAQzqBhEDCoGDQOZgcNAEARBEATh9F+ps8wiYgL0/PTaWvX/MAD6rlhSokqNI7+FDTe+Jung68synxy5F0k6Rznm9FV3sn6duO+x16vdbI/PabIO0E0+8FVxEJQ5zU+KAnPVAU1quGQ8pBPimkaUdGGS0yRlHmsuXFKhulWyJKetyWRJ1gG6SbpR1jjQXZbbVUw+AF+jo3Ue+rExrqjl4TcnQRsjVQpzBqkSd9hklAkzN4btkF9ASkBzbfZkkqeopycAVlA4IIAAAABQBACdASooACgAPjUUiEMiISEcZgAgA0S0gCpApnIJpEmN6LuHsLyGqHkAAP7/uWf///CcrHhXz2efunlTRvAJ/SuSl1Ptq0cD8WozPhxL+Wr1u9iD/jp56DTL2EvtdWdkRbq3/syGO0T2CY1z3hf2f1b/oPhyBcmALP5OIAAAAA==) напротив нужного приложения.
+
+![](https://www.rustore.ru//help/assets/images/settings-
+ca39e3f0665c9b9e3956456d304ec6dc.webp)
+
+  5. Нажмите на переключатель у поля «Функционал подтверждения».
+
+![](https://www.rustore.ru//help/assets/images/enable-
+settings-f38acc6ae22140f77399f75f2eabcc70.webp)
+
+  6. В новом окне нажмите «Включить».
+
+![](https://www.rustore.ru//help/assets/images/enable-5a6ba1b8436e1b667f3e9e34691a578e.webp)
+
+При включённой настройке:
+
+  * после создания эксперименты переходят в статус _Pending_ и требуют обязательного теста вариантов. Только после теста вариантов эксперимент перейдет в статус _Ready to run_ и будет запущен в указанную дату старта;
+  * подтверждение параметров и условий после их создания становится обязательным.
+
+## Как отключить обязательное подтверждение?​
+
+  1. Откройте [Remote Config](https://remote-config.rustore.ru).
+  2. Перейдите во вкладку «Приложения».
+  3. Нажмите ![img](https://www.rustore.ru/data:image/webp;base64,UklGRnYBAABXRUJQVlA4WAoAAAAQAAAAJwAAJwAAQUxQSM8AAAABgFTbdt3mQngQHgRBEAQzqBhEDCoGDQOZgcNAEARBEATh9F+ps8wiYgL0/PTaWvX/MAD6rlhSokqNI7+FDTe+Jung68synxy5F0k6Rznm9FV3sn6duO+x16vdbI/PabIO0E0+8FVxEJQ5zU+KAnPVAU1quGQ8pBPimkaUdGGS0yRlHmsuXFKhulWyJKetyWRJ1gG6SbpR1jjQXZbbVUw+AF+jo3Ue+rExrqjl4TcnQRsjVQpzBqkSd9hklAkzN4btkF9ASkBzbfZkkqeopycAVlA4IIAAAABQBACdASooACgAPjUUiEMiISEcZgAgA0S0gCpApnIJpEmN6LuHsLyGqHkAAP7/uWf///CcrHhXz2efunlTRvAJ/SuSl1Ptq0cD8WozPhxL+Wr1u9iD/jp56DTL2EvtdWdkRbq3/syGO0T2CY1z3hf2f1b/oPhyBcmALP5OIAAAAA==) напротив нужного приложения.
+
+![](https://www.rustore.ru//help/assets/images/settings-
+ca39e3f0665c9b9e3956456d304ec6dc.webp)
+
+  5. Нажмите на переключатель у поля «Функционал подтверждения».
+
+![](https://www.rustore.ru//help/assets/images/enable-
+settings-f38acc6ae22140f77399f75f2eabcc70.webp)
+
+  6. В новом окне нажмите «Отключить».
+
+![](https://www.rustore.ru//help/assets/images/disable-144346f1c083bb1fd7e6d036e3e87c5b.webp)
+
+После отключения настройки:
+
+  * ранее созданные параметры и условия будут сохранены и пользователь сможет провести их по всем статусам;
+  * новые параметры и условия создаются без статусов;
+  * тест вариантов в эксперименте будет отменён;
+  * подтверждение параметров/условий не требуется.
+
+]
+

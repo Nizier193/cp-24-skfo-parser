@@ -1,0 +1,9 @@
+url: https://www.rustore.ru/help/sdk/reviews-ratings/unity
+title: Подключение отзывов и оценок Unity
+
+[## [🟦 История обновлений](/help/sdk/reviews-ratings/unity/history)## [🟦
+2.0.0](/help/sdk/reviews-ratings/unity/2-0-0)## [🟦 1.0.0](/help/sdk/reviews-
+ratings/unity/1-0-0), ## [🟦 История обновлений](/help/sdk/reviews-
+ratings/unity/history), ## [🟦 2.0.0](/help/sdk/reviews-ratings/unity/2-0-0),
+## [🟦 1.0.0](/help/sdk/reviews-ratings/unity/1-0-0)]
+

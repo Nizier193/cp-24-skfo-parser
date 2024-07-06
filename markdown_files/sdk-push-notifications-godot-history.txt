@@ -1,0 +1,39 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/godot/history
+title: Push-уведомления Godot История обновлений
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Godot](/help/sdk/push-notifications/godot)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 2.0.0​
+
+  * Версия SDK push 2.+.
+  * Пуш теперь описывается классами RuStoreRemoteMessage.gd и RuStoreNotification.gd вместо Dictionary.
+  * В класс RuStoreError добавлено поле name, которое содержит simpleName класса ошибки.
+  * Добавлены методы set_error_handling и get_error_handling для автоматической обработки ошибок.
+  * Исправлена ошибка сериализации Uri.
+
+## Версия 1.4.0​
+
+  * Версия SDK push 1.+.
+  * Инициализация через meta-data.
+  * Поддержка Godot 4.2+.
+
+## Версия 1.2.0​
+
+  * Версия SDK push 1.2.0.
+  * Добавлен функционал сегментов.
+
+## Версия 1.0.0​
+
+  * Версия SDK push 1.0.0.
+
+]
+

@@ -1,0 +1,38 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/defold/history
+title: Push-уведомления Defold История обновлений
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [Defold](/help/sdk/push-notifications/defold/)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 2.3.0​
+
+  * Версия SDK push 2.3.0.
+
+## Версия 2.2.0​
+
+  * Версия SDK push 2.2.0.
+
+## Версия 2.1.1​
+
+  * Версия SDK push 2.1.1.
+
+## Версия 2.0.0​
+
+  * Версия SDK push 2.0.0.
+
+  * Добавлена возможность работы с пушами из консоли RuStore.
+
+## Версия 1.1.0​
+
+  * Версия SDK push 1.4.0.
+
+]
+

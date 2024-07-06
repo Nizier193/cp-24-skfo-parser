@@ -1,0 +1,62 @@
+url: https://www.rustore.ru/help/developers/tools/app-tracer/android/modules/heap-dumps
+title: Инструменты Tracer Android Модули Tracer Heap Dumps
+
+[
+
+  * [](/help/)
+  * [Инструменты](/help/developers/tools/)
+  * [Tracer](/help/developers/tools/app-tracer/)
+  * [Android](/help/developers/tools/app-tracer/android)
+  * [Модули Tracer](/help/developers/tools/app-tracer/android/modules)
+  * Heap Dumps
+
+Содержание этой страницы
+
+# Heap Dumps: эффективный мониторинг и управление с Tracer SDK
+
+## Подключение зависимостей к проекту​
+
+В вашем `<project>/<app-m,odule>/build.gradle`.
+
+    
+    
+    dependencies {  
+        implementation "ru.ok.tracer:tracer-heap-dumps:0.2.7"  
+    }  
+    
+
+Более подробное описание зависимостей на странице «[Быстрый
+старт](/help/developers/tools/app-tracer/android/start/quick-start)».
+
+## Описание `HeapDumpConfiguration`​
+
+В вашем `Application.kt`.
+
+    
+    
+    class MyApplication : Application(), HasTracerConfiguration {  
+        override val tracerConfiguration: List<TracerConfiguration>  
+            get() = listOf(  
+                HeapDumpConfiguration.build {  
+                    // ваши опции  
+                },  
+            )  
+    }  
+    
+
+Ниже представлены `HeapDumpConfiguration.Builder`.
+
+  * `setEnabled` — включает/выключает сбор хипдампов при OOM. По умолчанию включён.
+
+Ниже представлено устаревшие или опасные опции
+`HeapDumpConfiguration.Builder`.
+
+  * `setProbability` — устарела и ничего не делает, будет удалена в версии 0.3.x.
+  * `setInterestingSize` — устарела и ничего не делает, будет удалена в версии 0.3.x
+
+к сведению
+
+Хипдампы отправляются ночью, когда пользователь не пользуется устройством.
+
+]
+

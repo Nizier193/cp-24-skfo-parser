@@ -1,0 +1,16 @@
+url: https://www.rustore.ru/help/users/policies/work-in-background
+title: Политики и правила RuStore Зачем разрешать RuStore работу в фоновом режиме
+
+[
+
+  * [](/help/)
+  * [Политики и правила RuStore](/help/users/policies)
+  * Зачем разрешать RuStore работу в фоновом режиме
+
+# Оптимизация опыта: Почему важно разрешить RuStore работать в фоновом режиме
+
+Это нужно, чтобы получать push-уведомления от приложений, установленных из
+RuStore.
+
+]
+

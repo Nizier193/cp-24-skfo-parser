@@ -1,0 +1,144 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-feedback-process/get-feedbacks-statuses
+title: Работа с отзывами с помощью RuStore API Получение статуса ответов на отзывы
+
+[
+
+  * [](/help/)
+  * [Работа с отзывами с помощью RuStore API](/help/work-with-rustore-api/api-feedback-process)
+  * Получение статуса ответов на отзывы
+
+Содержание этой страницы
+
+# Получение статуса ответов на отзывы
+
+Метод позволяет получить статус модерации ответов на отзывы или получить
+информацию на отдельно взятый ответ на отзыв.
+
+Ограничения:
+
+  * по умолчанию на каждой странице отображается по 20 отзывов. Вы можете отображать до 100 отзывов на странице, указав значение в параметре size;
+  * совместно использовать параметры пагинации и фильтрации по 1 ответу на отзыв — нельзя (либо пагинация с указыванием пары параметров page и size либо id).
+
+## Параметры взаимодействия​
+
+`GET`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/feedback?id={id}&page={number}&size={size}`
+
+Атрибут| Тип| Обязателен| Расположение| Описание| Пример  
+---|---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к API RuStore](/help/work-
+with-rustore-api/api-authorization-token).| N/A  
+`packageName`| string| Да| path| Наименование пакета приложения. Максимальная
+длина — 50 символов.| `com.myapp.example`  
+`id`| number| Нет| query| `id` конкретного ответа на отзыв, задаётся при
+желании получить информацию о конкретном ответе на отзыв.| `743103`  
+`page`| number| Нет| query| Номер страницы. Начинается с 0.| 0  
+`size`| number| Нет| query| Количество отзывов на странице. По умолчанию — 20
+Максимально — 100.| `743103`  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+`body{}`| object| Да| N/A| N/A  
+  
+### body​
+
+Атрибут| Тип| Обязателен| Описание| Пример  
+---|---|---|---|---  
+`id`| number| Да| `id` ответа на отзыв.| `748479`  
+`commentId`| number| Да| `id` отзыва.| `748223`  
+`text`| string| Да| Текст ответа.| `Это ответ на отзыв пользователя.`  
+`status`| string| Да| Статус ответа на отзыв.| • `PUBLISHED` — опубликован все
+ок;  
+• `MODERATION` — на модерации;  
+• `REJECTED` — отклонён модерацией;  
+• `DELETED` — удалён разработчиком или изменён.  
+`date`| string| Да| Дата и время последнего изменения| `2023-06-01
+18:10:43.043`  
+  
+## Первый пример запроса​
+
+    
+    
+    curl --location 'https://public-api.rustore.ru/public/v1/application/ru.voonsh.push/feedback?id=2177559743' \  
+    --header 'Public-Token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAtMjU2In0.YY0bCkf24Ui3oHZfNQioXAdServxx6URLQq7w3gOoVLypUx1Y8OGornxmn2tXPnysM8upmUoYxgJZ9cFtDpXt1RnOhiHVL5INZDUJPzlnnj0ERLy0UET_JpjxXRYVhKuymHsG9ayt6NmRLmi4diXvPWDsFrP7htVidNKFPtg_uhUxPI-GsL0EMCrk-n0MN_uQO75ptErnDbdKDPgy81yMfwZaWFDGXt69l24LkfijkrptRewIsXceiCkf1z0SVYZ1u9UnzUVRMRAmlmnZQCP96fzG2xttMX-iev7L_RtPhV1sszqZgqxtiL-x9gmDw_KY-TZISDKZ9K-1J2M7bwJrw.TmZgATCSpEjX7_at.yL2iCVqhNMosv9SXp4-EIfufVOGbtk8YWeKz7p4Uggntaukze_TIXoF4RFcvHqgLvB2zlN281p2qIHW6ND0wsx1fM3s03HkqFEfFmv5bRBvDeGL9cn5GLIZBz1-1JWYjDqfw8b0iykM9WeNCwbyjDCecQ3ShoGg.Kb_6AeVoPuELthVcQVmNyw'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": [  
+            {  
+                "id": "2177559743",  
+                "commentId": "2142370751",  
+                "text": "Thank you",  
+                "status": "PUBLISHED",  
+                "date": "2023-06-22T09:46:18.115+00:00"  
+            }  
+        ],  
+        "timestamp": "2023-06-22T12:46:30.193419294+03:00"  
+    }  
+    
+
+## Второй пример запрса​
+
+    
+    
+    curl --location 'https://public-api.rustore.ru/public/v1/application/ru.voonsh.push/feedback' \  
+    --header 'Public-Token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAtMjU2In0.ziOR4J-_3A36M55IMdJqxck4Lktk9GFe6vvdRFBkIICA6z4WLLUxdEyHNdMWYomBs9MkJecCaCStOQ5YtmHvFIRK8aoj4c386WwUBXmTDXN_BJg2puwuLivMJWuAhgveZpC7afZCwM6m5RgLi538BAjFV_gE8XvbSUKlhWhkEvIzgrK2zk211SRUVXaAdrWEz5NNSSrQhyEv1fiMgQNmV9Sehp8fxP7G_9HkAWVtfNvgEiTbFHMTO-qpWtdh5Ts440Du9MC7PL59IUmXts1Khx6xbuUWLQe3WHPQCBmKezpxtI-l9Ms4F-iopZy-bXzUaUMFsaQu8Jh4kFvztFenYg.UPvgd5jKQcFO-MRE.zHHu-P5GSwUTvEMae-bu337jxpq25TbftTC7oF8r0APCfUqdx55CbO-PuIeGdjN08K4IC8GsWhLmKr9mqEeV9L-Dh5QSqA6M7GsLH8LAqrR1UX0Z849pyhrOt_Pz4SJ3YeHdu-ITfTL5Ysr0kECMXWIMcE24X8U.zHXeYuxDJf-Wtl9Vn0betw'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": [  
+            {  
+                "id": "650817727",  
+                "commentId": "433821631",  
+                "text": "спасибо!",  
+                "status": "WAS_ACTIVE",  
+                "date": "2022-11-11T09:46:01.604+00:00"  
+            },  
+            {  
+                "id": "650819775",  
+                "commentId": "237725631",  
+                "text": "fuck",  
+                "status": "REJECTED",  
+                "date": "2022-11-11T09:46:12.123+00:00"  
+            },  
+            {  
+                "id": "731559615",  
+                "commentId": "433821631",  
+                "text": "спасибо",  
+                "status": "PUBLISHED",  
+                "date": "2022-11-22T09:09:57.619+00:00"  
+            },  
+            {  
+                "id": "2149775551",  
+                "commentId": "2142370751",  
+                "text": "Thank you",  
+                "status": "PUBLISHED",  
+                "date": "2023-06-15T05:17:28.906+00:00"  
+            }  
+        ],  
+        "timestamp": "2023-06-15T08:19:21.658856735+03:00"  
+    }  
+    
+
+]
+

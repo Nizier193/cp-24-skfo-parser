@@ -1,0 +1,66 @@
+url: https://www.rustore.ru/help/work-with-rustore-api/api-upload-publication-app/manual-publishing
+title: Загрузка и публикация приложений с помощью API RuStore Ручная публикация
+
+[
+
+  * [](/help/)
+  * [Загрузка и публикация приложений с помощью API RuStore](/help/work-with-rustore-api/api-upload-publication-app/)
+  * Ручная публикация
+
+Содержание этой страницы
+
+# Ручная публикация
+
+Метод позволяет опубликовать версию, прошедшую модерацию вручную.
+
+Ограничения:
+
+  * опубликовать версию можно только после прохождения модерации;
+  * опубликовать версию если тип публикации указан вручную.
+
+## Параметры взаимодействия​
+
+`POST`
+
+`https://public-
+api.rustore.ru/public/v1/application/{packageName}/version/{versionId}/publish`
+
+Атрибут| Тип| Обяз.| Расположение| Описание  
+---|---|---|---|---  
+`Public-Token`| string| Да| header| [Токен доступа к Public API
+Rustore](/help/work-with-rustore-api/api-authorization-token).  
+`packageName`| string| Да| path| Имя пакета приложения.  
+`versionId`| number| Да| path| Версия приложения.  
+  
+## Параметры ответа​
+
+Атрибут| Тип| Обяз.| Описание| Пример  
+---|---|---|---|---  
+`code`| string| Да| Код ответа.| `error`/`OK`  
+`message`| string| Нет| Расшифровка кода ответа.| N/A  
+`timestamp`| timestamptz| Да| Время ответа.|
+`2022-07-08T13:24:41.8328711+03:00`  
+  
+## Пример запроса​
+
+    
+    
+    curl --location --request POST 'https://public-api.rustore.ru/public/v1/application/com.example.pblsh_v2/version/704372/publish' \  
+    --header 'accept: application/json' \  
+    --header 'Public-Token: {YOURtoken}'  
+    
+
+## Пример ответа​
+
+    
+    
+    {  
+        "code": "OK",  
+        "message": null,  
+        "body": null,  
+        "timestamp": "2023-08-14T15:34:44.016339151+03:00"  
+    }  
+    
+
+]
+

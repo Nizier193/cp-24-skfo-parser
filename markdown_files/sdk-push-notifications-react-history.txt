@@ -1,0 +1,24 @@
+url: https://www.rustore.ru/help/sdk/push-notifications/react/history
+title: Push-уведомления React Native История обновлений
+
+[
+
+  * [](/help/)
+  * [Push-уведомления](/help/sdk/push-notifications)
+  * [React Native](/help/sdk/push-notifications/react)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 6.0.0​
+
+  * Внутреннее обновление SDK
+
+## Версия 2.1.1​
+
+  * Релизная версия.
+
+]
+

@@ -1,0 +1,1742 @@
+url: https://www.rustore.ru/help/sdk/payments/kotlin-java/5-0-0
+title: Платежи in-app и подписки Kotlin/Java 5.0.0
+
+[
+
+  * [](/help/)
+  * [Платежи in-app и подписки](/help/sdk/payments)
+  * [Kotlin/Java](/help/sdk/payments/kotlin-java)
+  * 5.0.0
+
+Содержание этой страницы
+
+# 5.0.0
+
+RuStore позволяет интегрировать платежи в мобильное приложение.
+
+подсказка
+
+Сценарий работы с платежами описан в [гайде](/help/guides/payments). Изучите
+его перед началом работы.
+
+## Пример реализации​
+
+Ознакомьтесь с приложением-примером чтобы узнать, как правильно интегрировать
+SDK платежей.
+
+  * [Kotlin](https://gitflic.ru/project/rustore/rustore-sdk-billing-example)
+  * [Java](https://gitflic.ru/project/rustore/rustore-example-java-billing)
+
+## Условия работы платежей​
+
+  * Kotlin
+  * Java
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Пользователь авторизован в RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Для приложения включена возможность покупок в [Консоли RuStore](https://console.rustore.ru/).
+
+предупреждение
+
+Сервис имеет некоторые ограничения на работу за пределами России.
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Пользователь авторизован в RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Для приложения включена возможность покупок в [Консоли RuStore](https://console.rustore.ru/).
+
+предупреждение
+
+Сервис имеет некоторые ограничения на работу за пределами России.
+
+## Подготовка к работе​
+
+  * Kotlin
+  * Java
+
+**Добавление репозитория**
+
+Подключите репозиторий, как показано в примере ниже.
+
+build.gradle
+
+    
+    
+    repositories {  
+        maven {  
+            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")  
+        }  
+    }  
+    
+
+**Подключение зависимости**
+
+Добавьте следующий код в свой конфигурационный файл для подключения
+зависимости.
+
+build.gradle
+
+    
+    
+    dependencies {  
+        implementation("ru.rustore.sdk:billingclient:5.0.0")  
+    }  
+    
+
+**Добавление репозитория**
+
+Подключите репозиторий, как показано в примере ниже.
+
+build.gradle
+
+    
+    
+    repositories {  
+        maven {  
+            url "https://artifactory-external.vkpartner.ru/artifactory/maven"  
+        }  
+    }  
+    
+
+**Подключение зависимости**
+
+Добавьте следующий код в свой конфигурационный файл для подключения
+зависимости.
+
+build.gradle
+
+    
+    
+    dependencies {  
+        implementation 'ru.rustore.sdk:billingclient:5.0.0'  
+    }  
+    
+
+## Обработка deeplink​
+
+  * Kotlin
+  * Java
+
+Для корректной работы оплаты через сторонние приложения (СБП, SberPay и др.)
+необходимо правильно реализовать обработку deeplink. Укажите в
+`AndroidManifest.xml` `intent-filter` с `scheme` вашего проекта (см. ниже).
+
+AndroidManifest.xml
+
+    
+    
+    <activity  
+        android:name=".YourBillingActivity">  
+       
+        <intent-filter>  
+            <action android:name="android.intent.action.MAIN" />  
+            <category android:name="android.intent.category.LAUNCHER" />  
+        </intent-filter>  
+       
+        <intent-filter>  
+            <action android:name="android.intent.action.VIEW" />  
+            <category android:name="android.intent.category.DEFAULT" />  
+            <category android:name="android.intent.category.BROWSABLE" />  
+            <data android:scheme="yourappscheme" />  
+        </intent-filter>  
+       
+    </activity>  
+    
+
+Здесь: `yourappscheme` — схема вашего deeplink, её можно изменить на другую.
+
+Эта схема должна совпадать со схемой deeplink, указываемой при инициализации
+библиотеки billing-клиента.
+
+Далее в `Activity`, в которую необходимо вернуться после совершения оплаты
+(ваша страница магазина), нужно добавить следующий код.
+
+    
+    
+    class YourBillingActivity: AppCompatActivity() {  
+           
+        // Previously created with RuStoreBillingClientFactory.create()  
+        private val billingClient: RuStoreBillingClient = YourDependencyInjection.getBillingClient()  
+       
+        override fun onCreate(savedInstanceState: Bundle?) {  
+            super.onCreate(savedInstanceState)  
+            if (savedInstanceState == null) {  
+                billingClient.onNewIntent(intent)  
+            }  
+        }  
+       
+        override fun onNewIntent(intent: Intent?) {  
+            super.onNewIntent(intent)      
+            billingClient.onNewIntent(intent)  
+        }  
+    }  
+    
+
+Для восстановления состояния вашего приложения при возврате с deeplink
+добавьте в `AndroidManifest.xml` `android:launchMode="singleTask"`.
+
+AndroidManifest.xml
+
+    
+    
+    <activity  
+        android:name=".YourBillingActivity"  
+        android:launchMode="singleTask"  
+        android:exported="true"  
+        android:screenOrientation="portrait"  
+        android:windowSoftInputMode="adjustResize">  
+    
+
+Для корректной работы оплаты через сторонние приложения (СБП, SberPay и др.)
+необходимо правильно реализовать обработку deeplink. Укажите в
+`AndroidManifest.xml` `intent-filter` с `scheme` вашего проекта (см. ниже).
+
+AndroidManifest.xml
+
+    
+    
+    <activity  
+        android:name=".YourBillingActivity">  
+       
+        <intent-filter>  
+            <action android:name="android.intent.action.MAIN" />  
+            <category android:name="android.intent.category.LAUNCHER" />  
+        </intent-filter>  
+       
+        <intent-filter>  
+            <action android:name="android.intent.action.VIEW" />  
+            <category android:name="android.intent.category.DEFAULT" />  
+            <category android:name="android.intent.category.BROWSABLE" />  
+            <data android:scheme="yourappscheme" />  
+        </intent-filter>  
+       
+    </activity>  
+    
+
+Здесь: `yourappscheme` — схема вашего deeplink, её можно изменить на другую.
+
+Эта схема должна совпадать со схемой deeplink, указываемой при инициализации
+библиотеки billing-клиента.
+
+Далее в `Activity`, в которую необходимо вернуться после совершения оплаты
+(ваша страница магазина), нужно добавить следующий код.
+
+    
+    
+    public class YourBillingActivityextends AppCompatActivity {  
+           
+        // Previously created with RuStoreBillingClientFactory.create();  
+        RuStoreBillingClient billingClient = YourDependencyInjection.getBillingClient();  
+           
+        @Override  
+        public void onCreate(@Nullable Bundle savedInstanceState) {  
+            super.onCreate(savedInstanceState);  
+            if (savedInstanceState == null) {  
+                billingClient.onNewIntent(getIntent());  
+            }  
+        }  
+       
+        @Override  
+        protected void onNewIntent(Intent intent) {  
+            super.onNewIntent(intent);  
+            billingClient.onNewIntent(intent);  
+        }   
+    }  
+    
+
+Для восстановления состояния вашего приложения при возврате с deeplink
+добавьте в `AndroidManifest.xml` `android:launchMode="singleTask"`.
+
+AndroidManifest.xml
+
+    
+    
+    <activity  
+        android:name=".YourBillingActivity"  
+        android:launchMode="singleTask"  
+        android:exported="true"  
+        android:screenOrientation="portrait"  
+        android:windowSoftInputMode="adjustResize">  
+    
+
+## Инициализация​
+
+Перед вызовом методов библиотеки необходимо выполнить её инициализацию.
+
+  * Kotlin
+  * Java
+
+Создайте `RuStoreBillingClient`, используя
+`RuStoreBillingClientFactory.create()`.
+
+    
+    
+    val billingClient: RuStoreBillingClient = RuStoreBillingClientFactory.create(  
+        context = app,  
+        consoleApplicationId = "111111",  
+        deeplinkScheme = "yourappscheme",  
+        // Опциональные параметры  
+        themeProvider = null,  
+        debugLogs  = false,  
+        externalPaymentLoggerFactory = null,  
+     )  
+    
+
+  * `context` — контекст Android. Может быть любым, в реализации используется `applicationContext`.
+  * `consoleApplicationId` — код приложения из консоли разработчика RuStore (пример: `<https://console.rustore.ru/apps/123456>`).
+
+Чтобы получить ID приложения, скопируйте цифры из URL-адреса страницы
+приложения в RuStore Консоли после `apps/`.
+
+примечание
+
+`ApplicationId`, указанный в `build.gradle`, должен совпадать с
+`applicationId` APK-файла, который вы публиковали в [Консоли
+RuStore](https://console.rustore.ru/sign-in).
+
+  * `deeplinkScheme` — схема deeplink, необходимая для возврата в ваше приложение после оплаты через стороннее приложение (например, SberPay или СБП). SDK генерирует свой хост к данной схеме.
+
+примечание
+
+Схема deeplink, передаваемая в `yourappscheme`, должна совпадать со схемой,
+указанной в `AndroidManifest.xml` (подробнее см. Обработка deeplink).
+
+  * `themeProvider` — интерфейс, который предоставляет тему `BillingClientTheme`. Возможны 2 реализации темы `BillingClientTheme`: светлая (`Light`) и тёмная (`Dark`). Необязательный интерфейс, по умолчанию применяется светлая тема.
+  * `externalPaymentLoggerFactory` — интерфейс, который предоставляет доступ ко внешней системе ведения журнала событий.
+  * `debugLogs` — флаг регулирующий ведение журнала событий (логи будут автоматически отключены для Release-сборок).
+
+примечание
+
+Подпись `keystore` должна совпадать с подписью, которой было подписано
+приложение, опубликованное в [Консоли
+RuStore](https://console.rustore.ru/sign-in). Убедитесь, что используемый
+`buildType` (пр. `debug`) использует такую же подпись, что и опубликованное
+приложение (пр. `release`).
+
+Создайте `RuStoreBillingClient`, используя
+`RuStoreBillingClientFactory.create()`.
+
+    
+    
+    final Context context = getContext();  
+    final String consoleApplicationId = "111111";  
+    final String deeplinkScheme = "yourappscheme";  
+       
+    // Опциональные параметры  
+    final BillingClientThemeProvider themeProvider = null;  
+    final boolean debugLogs = false;  
+    final ExternalPaymentLoggerFactory externalPaymentLoggerFactory = null;  
+       
+     RuStoreBillingClient billingClient = RuStoreBillingClientFactory.INSTANCE.create(  
+        context,  
+        consoleApplicationId,  
+        deeplinkScheme,  
+        // Опциональные параметры  
+        themeProvider,  
+        debugLogs,  
+        externalPaymentLoggerFactory  
+     );  
+    
+
+  * `context` — контекст Android. Может быть любым, в реализации используется `applicationContext`.
+  * `consoleApplicationId` — код приложения из консоли разработчика RuStore (пример: `<https://console.rustore.ru/apps/123456>`).
+
+Чтобы получить ID приложения, скопируйте цифры из URL-адреса страницы
+приложения в RuStore Консоли после `apps/`.
+
+примечание
+
+`ApplicationId`, указанный в `build.gradle`, должен совпадать с
+`applicationId` APK-файла, который вы публиковали в [Консоли
+RuStore](https://console.rustore.ru/sign-in).
+
+  * `deeplinkScheme` — схема deeplink, необходимая для возврата в ваше приложение после оплаты через стороннее приложение (например, SberPay или СБП). SDK генерирует свой хост к данной схеме.
+
+примечание
+
+Схема deeplink, передаваемая в `yourappscheme`, должна совпадать со схемой,
+указанной в `AndroidManifest.xml` (подробнее см. Обработка deeplink).
+
+  * `themeProvider` — интерфейс, который предоставляет тему `BillingClientTheme`. Возможны 2 реализации темы `BillingClientTheme`: светлая (`Light`) и тёмная (`Dark`). Необязательный интерфейс, по умолчанию применяется светлая тема.
+  * `externalPaymentLoggerFactory` — интерфейс, который предоставляет доступ ко внешней системе ведения журнала событий.
+  * `debugLogs` — флаг регулирующий ведение журнала событий (логи будут автоматически отключены для Release-сборок).
+
+примечание
+
+Подпись `keystore` должна совпадать с подписью, которой было подписано
+приложение, опубликованное в [Консоли
+RuStore](https://console.rustore.ru/sign-in). Убедитесь, что используемый
+`buildType` (пр. `debug`) использует такую же подпись, что и опубликованное
+приложение (пр. `release`).
+
+## Как работают платежи​
+
+## Проверка доступности работы с платежами​
+
+  * Kotlin
+  * Java
+
+Во время проверки доступности платежей проверяются следующие условия.
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore поддерживает функциональность платежей.
+  * Пользователь авторизован в RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Для приложения включена возможность покупок в [Консоли RuStore](https://console.rustore.ru/).
+
+Для проверки доступности платежей используйте метод
+`checkPurchasesAvailability`. Если все указанные выше условия выполняются,
+возвращается `FeatureAvailabilityResult.Available`. В противном случае
+возвращается `FeatureAvailabilityResult.Unavailable(val cause:
+RuStoreException)`, где `cause` — это ошибка о невыполненном условии.
+
+Все возможные ошибки `RuStoreException` описаны в разделе Обработка ошибок.
+Прочие ошибки возвращаются в `onFailure`.
+
+    
+    
+    RuStoreBillingClient.checkPurchasesAvailability(context)  
+        .addOnSuccessListener { result ->  
+            when (result) {  
+                FeatureAvailabilityResult.Available -> {  
+                     // Process purchases available   
+                }  
+       
+                is FeatureAvailabilityResult.Unavailable -> {  
+                    // Process purchases unavailable  
+                }  
+            }  
+        }.addOnFailureListener { throwable ->  
+            // Process unknown error  
+        }  
+    
+
+`context` — контекст Android.
+
+Во время проверки доступности платежей проверяются следующие условия.
+
+  * На устройстве пользователя установлена актуальная версия RuStore.
+  * Приложение RuStore поддерживает функциональность платежей.
+  * Пользователь авторизован в RuStore.
+  * Пользователь и приложение не должны быть заблокированы в RuStore.
+  * Для приложения включена возможность покупок в [Консоли RuStore](https://console.rustore.ru/).
+
+Для проверки доступности платежей используйте метод
+`checkPurchasesAvailability`. Если все указанные выше условия выполняются,
+возвращается `FeatureAvailabilityResult.Available`. В противном случае
+возвращается `FeatureAvailabilityResult.Unavailable(val cause:
+RuStoreException)`, где `cause` — это ошибка о невыполненном условии.
+
+Все возможные ошибки `RuStoreException` описаны в разделе Обработка ошибок.
+Прочие ошибки возвращаются в `onFailure`.
+
+    
+    
+    RuStoreBillingClientExtKt.checkPurchasesAvailability(RuStoreBillingClient.Companion, getContext())  
+            .addOnSuccessListener(result -> {  
+                if (result instanceof FeatureAvailabilityResult.Available) {  
+                    // Hanlde purchases available  
+                } else {  
+                    RuStoreException exception = ((FeatureAvailabilityResult.Unavailable) result).getCause();  
+                    // Hanlde purchases unavailable  
+                }  
+            })  
+            .addOnFailureListener(error -> {  
+                // Handle error  
+            });  
+    
+
+## Работа с SDK​
+
+### Получение списка продуктов​
+
+  * Kotlin
+  * Java
+
+Для получения списка продуктов используйте метод `getProducts`.
+
+    
+    
+    val productsUseCase: ProductsUseCase = billingClient.products  
+    productsUseCase.getProducts(productIds = listOf("id1", "id2"))  
+        .addOnSuccessListener { products: List<Product> ->  
+            // Process success  
+        }  
+        .addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+`productIds` — список идентификаторов продуктов. В нём не должно быть более
+100 позиций. Максимальная длина — 2083 символа в списке.
+
+**Метод возвращает**
+
+    
+    
+    data class Product(  
+        val productId: String,  
+        val productType: ProductType?,  
+        val productStatus: ProductStatus,  
+        val priceLabel: String?,  
+        val price: Int?,  
+        val currency: String?,  
+        val language: String?,  
+        val title: String?,  
+        val description: String?,  
+        val imageUrl: Uri?,  
+        val promoImageUrl: Uri?,  
+        val subscription: ProductSubscription?,  
+    )  
+    
+
+**Структура продукта**
+
+  * `productId` — идентификатор продукта.
+  * `productType` — тип продукта.
+  * `productStatus` — статус продукта.
+  * `priceLable` — отформатированная цена товара, включая валютный знак на языке `language`.
+  * `price` — цена в минимальных единицах (в копейках).
+  * `currency` — код валюты ISO 4217.
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+  * `title` — название продукта на языке `language`.
+  * `description` — описание на языке `language`.
+  * `imageUrl` — ссылка на картинку.
+  * `promoImageUrl` — ссылка на промокартинку.
+  * `subscription` — описание подписки, возвращается только для продуктов с типом `subscription`.
+
+**Структура подписки**
+
+    
+    
+    data class ProductSubscription(  
+        val subscriptionPeriod: SubscriptionPeriod?,  
+        val freeTrialPeriod: SubscriptionPeriod?,  
+        val gracePeriod: SubscriptionPeriod?,  
+        val introductoryPrice: String?,  
+        val introductoryPriceAmount: String?,  
+        val introductoryPricePeriod: SubscriptionPeriod?  
+    )  
+    
+
+  * `subscriptionPeriod` — период подписки.
+  * `freeTrialPeriod` — пробный период подписки.
+  * `gracePeriod` — льготный период подписки.
+  * `introductoryPrice` — отформатированная вступительная цена подписки, включая знак валюты, на языке `product:language`.
+  * `introductoryPriceAmount` — вступительная цена в минимальных единицах валюты (в копейках).
+  * `introductoryPricePeriod` — расчётный период вступительной цены.
+
+**Структура периода подписки**
+
+    
+    
+    data class SubscriptionPeriod(  
+        val years: Int,  
+        val months: Int,  
+        val days: Int,  
+    )  
+    
+
+  * `years` — количество лет.
+  * `months` — количество месяцев.
+  * `days` — количество дней.
+
+Для получения списка продуктов используйте метод `getProducts`.
+
+    
+    
+    ProductsUseCase productsUseCase = billingClient.getProducts();  
+    productsUseCase.getProducts(Arrays.asList("id1", "id2"))  
+           .addOnSuccessListener(products -> {  
+               // Process success  
+           }).addOnFailureListener(throwable ->  
+               // Process error  
+    );  
+    
+
+`productIds: List<String>` — список идентификаторов продуктов. В нём не должно
+быть более 100 позиций.
+
+**Структура продукта**
+
+    
+    
+    public Product(  
+        String productId,  
+        @Nullable  
+        ProductType productType,  
+        ProductStatus productStatus,  
+        @Nullable  
+        String priceLabel,  
+        @Nullable  
+        Integer price,  
+        @Nullable  
+        String currency,  
+        @Nullable  
+        String language,  
+        @Nullable  
+        String title,  
+        @Nullable  
+        String description,  
+        @Nullable  
+        Uri imageUrl,  
+        @Nullable  
+        Uri promoImageUrl,  
+        @Nullable  
+        ProductSubscription subscription  
+    ) {  
+        this.productId = productId;  
+        this.productType = productType;  
+        this.productStatus = productStatus;  
+        this.priceLabel = priceLabel;  
+        this.price = price;  
+        this.currency = currency;  
+        this.language = language;  
+        this.title = title;  
+        this.description = description;  
+        this.imageUrl = imageUrl;  
+        this.promoImageUrl = promoImageUrl;  
+        this.subscription = subscription;  
+    }  
+    
+
+  * `productId` — идентификатор продукта.
+  * `productType` — тип продукта.
+  * `productStatus` — статус продукта.
+  * `priceLabel` — отформатированная цена товара, включая валютный знак на языке `language`.
+  * `price` — цена в минимальных единицах (в копейках).
+  * `currency` — код валюты ISO 4217.
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+  * `title` — название продукта на языке `language`.
+  * `description` — описание на языке `language`.
+  * `imageUrl` — ссылка на картинку.
+  * `promoimageurl` — ссылка на промокартинку.
+  * `subscription` — описание подписки, возвращается только для продуктов с типом `subscription`.
+
+**Структура подписки**
+
+    
+    
+    public ProductSubscription(  
+        @Nullable  
+        SubscriptionPeriod subscriptionPeriod,  
+        @Nullable  
+        SubscriptionPeriod freeTrialPeriod,  
+        @Nullable  
+        SubscriptionPeriod gracePeriod,  
+        @Nullable  
+        String introductoryPrice,  
+        @Nullable  
+        String introductoryPriceAmount,  
+        @Nullable  
+        SubscriptionPeriod introductoryPricePeriod  
+    ) {  
+        this.subscriptionPeriod = subscriptionPeriod;  
+        this.freeTrialPeriod = freeTrialPeriod;  
+        this.gracePeriod = gracePeriod;  
+        this.introductoryPrice = introductoryPrice;  
+        this.introductoryPriceAmount = introductoryPriceAmount;  
+        this.introductoryPricePeriod = introductoryPricePeriod;  
+    }  
+    
+
+  * `subscriptionPeriod` — период подписки.
+  * `freeTrialPeriod` — пробный период подписки.
+  * `gracePeriod` — льготный период подписки.
+  * `introductoryPrice` — отформатированная вступительная цена подписки, включая знак валюты, на языке `product:language`.
+  * `introductoryPriceAmount` — вступительная цена в минимальных единицах валюты (в копейках).
+  * `introductoryPricePeriod` — расчётный период вступительной цены.
+
+**Структура периода подписки**
+
+    
+    
+    public SubscriptionPeriod(  
+        int years,  
+        int months,  
+        int days  
+    ) {  
+        this.years = years;  
+        this.months = months;  
+        this.days = days;  
+    }  
+    
+
+  * `years` — количество лет.
+  * `months` — количество месяцев.
+  * `days` — количество дней.
+
+### Покупка продукта​
+
+  * Kotlin
+  * Java
+
+Для вызова покупки продукта используйте метод `purchaseProduct`.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.purchaseProduct(  
+        productId = productId,  
+        orderId = UUID.randomUUID().toString(),  
+        quantity = 1,  
+        developerPayload = null,  
+    ).addOnSuccessListener { paymentResult: PaymentResult ->  
+        when (paymentResult) {  
+            // Process PaymentResult  
+        }  
+    }.addOnFailureListener { throwable: Throwable ->  
+        // Process error  
+    }  
+    
+
+  * `productId: String` — идентификатор продукта.
+  * `orderId: String` — уникальный идентификатор оплаты, сформированный приложением (UUID).
+  * `quantity: Int` — количество продукта.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+
+**Структура результата покупки**
+
+    
+    
+    public sealed interface PaymentResult {       
+       
+        public data class Success(  
+            val orderId: String?,  
+            val purchaseId: String,  
+            val productId: String,  
+            val invoiceId: String,  
+            val subscriptionToken: String? = null,  
+        ) : PaymentResult  
+       
+        public data class Cancelled(  
+            val purchaseId: String,  
+        ) : PaymentResult  
+       
+        public data class Failure(  
+            val purchaseId: String?,  
+            val invoiceId: String?,  
+            val orderId: String?,  
+            val quantity: Int?,  
+            val productId: String?,  
+            val errorCode: Int?,  
+        ) : PaymentResult  
+       
+        public object InvalidPaymentState : PaymentResult()  
+    }  
+    
+
+  * `Success` \- результат успешного завершения покупки цифрового товара.
+  * `Failure` \- при отправке запроса на оплату или получения статуса оплаты возникла проблема, невозможно установить статус покупки.
+  * `Cancelled` — запрос на покупку отправлен, при этом пользователь закрыл «платёжную шторку» на своём устройстве, и результат оплаты неизвестен.
+  * `InvalidPaymentState` — ошибка работы SDK платежей. Может возникнуть, в случае некорректного обратного deeplink.
+
+Для вызова покупки продукта используйте метод `purchaseProduct`.
+
+    
+    
+    purchasesUseCase.purchaseProduct(productId, null, 1, developerPayload)  
+            .addOnSuccessListener( result ->  
+                // Process PaymentResult  
+            )  
+            .addOnFailureListener(throwable ->  
+                // Process error  
+            );  
+    
+
+  * `productId: String` — идентификатор продукта.
+  * `orderId: String` — уникальный идентификатор оплаты, сформированный приложением (UUID).
+  * `quantity: Int` — количество продукта.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+
+**Структура результата покупки**
+
+    
+    
+    public interface PaymentResult {  
+        class Success implements PaymentResult {  
+            @Nullable  
+            String orderId;  
+            String purchaseId;  
+            String productId;  
+            String invoiceId;  
+            @Nullable  
+            String subscriptionToken;  
+      
+            public Success(@Nullable String orderId, String purchaseId, String productId, String invoiceId,  
+                            @Nullable String subscriptionToken) {  
+                this.orderId = orderId;  
+                this.purchaseId = purchaseId;  
+                this.productId = productId;  
+                this.invoiceId = invoiceId;  
+                this.subscriptionToken = subscriptionToken;  
+            }  
+        }  
+        class Failure implements PaymentResult {  
+            @Nullable  
+            String purchaseId;  
+            @Nullable  
+            String invoiceId;  
+            @Nullable  
+            String orderId;  
+            @Nullable  
+            Integer quantity;  
+            @Nullable  
+            String productId;  
+            @Nullable  
+            Integer errorCode;  
+      
+            public Failure(@Nullable String purchaseId, @Nullable String invoiceId, @Nullable String orderId,  
+                            @Nullable Integer quantity, @Nullable String productId, @Nullable Integer errorCode) {  
+                this.purchaseId = purchaseId;  
+                this.invoiceId = invoiceId;  
+                this.orderId = orderId;  
+                this.quantity = quantity;  
+                this.productId = productId;  
+                this.errorCode = errorCode;  
+            }  
+        }  
+      
+        class Cancelled implements PaymentResult {  
+            String purchaseId;  
+      
+            public Cancelled(String purchaseId) {  
+                this.purchaseId = purchaseId;  
+            }  
+        }  
+      
+        class InvalidPaymentState implements PaymentResult {}  
+    }  
+    
+
+  * `Success` \- результат успешного завершения покупки цифрового товара.
+  * `Failure` \- при отправке запроса на оплату или получения статуса оплаты возникла проблема, невозможно установить статус покупки.
+  * `Cancelled` — запрос на покупку отправлен, при этом пользователь закрыл «платёжную шторку» на своём устройстве, и результат оплаты неизвестен.
+  * `InvalidPaymentState` — ошибка работы SDK платежей. Может возникнуть, в случае некорректного обратного deeplink.
+
+### Получение сведений о покупке​
+
+  * Kotlin
+  * Java
+
+Для получения информации о покупке, используйте метод `getPurchaseInfo`.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.getPurchaseInfo("purchaseId")  
+         .addOnSuccessListener { purchase: Purchase ->  
+            // Process success  
+        }  
+        .addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+**Структура покупки**
+
+    
+    
+    data class Purchase(  
+        val purchaseId: String?,  
+        val productId: String,  
+        val productType: ProductType?,  
+        val invoiceId: String?,  
+        val description: String?,  
+        val language: String?,  
+        val purchaseTime: Date?,  
+        val orderId: String?,  
+        val amountLabel: String?,  
+        val amount: Int?,  
+        val currency: String?,  
+        val quantity: Int?,  
+        val purchaseState: PurchaseState?,  
+        val developerPayload: String?,  
+        val subscriptionToken: String?  
+    )  
+    
+
+  * `purchaseId` — идентификатор покупки.
+
+  * `productId` — идентификатор продукта.
+
+  * `description` — описание на языке `language`.
+
+  * `invoiceId` — идентификатор счёта.
+
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+
+  * `purchaseTime` — время покупки.
+
+  * `orderId` — уникальный идентификатор оплаты, сформированный приложением (UUID).
+
+  * `amountLable` — отформатированная цена покупки, включая валютный знак на языке `language`.
+
+  * `amount` — цена в минимальных единицах валюты.
+
+  * `currency` — код валюты ISO 4217.
+
+  * `quantity` — количество продукта.
+
+  * `purchaseState` — состояние покупки:
+
+    * `CREATED` — покупка создана;
+    * `INVOICE_CREATED` — по покупке создан счёт, ожидает оплаты;
+    * `PAID` — только покупки потребляемого товара — промежуточный статус, средства на счёте покупателя зарезервированы. Покупка ожидает подтверждения от разработчика;
+    * `CONFIRMED` — финальный статус, покупка подтверждена (для подписок и непотребляемых товаров). Средства отправлены разработчику. Повторная покупка товара блокируется магазином;
+    * `CONSUMED` — для потребляемых товаров — конечный статус, потребление покупки подтверждено. Можно производить повторную покупку товара;
+    * `CANCELLED` — покупка отменена — оплата не была произведена или был совершен возврат средств покупателю (для подписок после возврата средств покупка не переходит в `CANCELLED`);
+    * `PAUSED` — для подписок — подписка перешла в HOLD период;
+    * `TERMINATED` — подписка закрылась.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+
+  * `subscriptionToken` — токен для валидации покупки на сервере.
+
+**Статусная модель (`purchaseState`)**
+
+Статусная модель покупки потребляемых продуктов (`CONSUMABLES`)
+
+![img](https://www.rustore.ru//help/assets/images/CONSUMABLES-v0-2a8b6588b84e0fa3bd488789d2638530.webp)
+
+Статусная модель покупки непотребляемых продуктов (`NON-CONSUMABLES`)
+
+![img](https://www.rustore.ru//help/assets/images/NON-
+CONSUMABLES-v0-61bffa3e95ea1d4ba739c15b0f14b240.webp)
+
+Статусная модель покупки подписок (`SUBSCRIPTIONS`)
+
+![img](https://www.rustore.ru//help/assets/images/SUBSCRIPTIONS-v1-43f2d06cc1436bbcc173a45233020080.webp)
+
+Для получения информации о покупке, используйте метод `getPurchaseInfo`.
+
+    
+    
+    PurchasesUseCase purchasesUseCase = billingClient.getPurchases();  
+    purchasesUseCase.getPurchaseInfo("purchaseId")  
+            .addOnSuccessListener(purchase -> {  
+                // Process success  
+            }).addOnFailureListener(throwable -> {  
+               // Process error  
+            });  
+    
+
+**Структура покупки**
+
+    
+    
+    public Purchase(  
+        @Nullable  
+        String purchaseId,  
+        String productId,  
+        @Nullable  
+        ProductType productType,  
+        @Nullable  
+        String invoiceId,  
+        @Nullable  
+        String description,  
+        @Nullable  
+        String language,  
+        @Nullable  
+        Date purchaseTime,  
+        @Nullable  
+        String orderId,  
+        @Nullable  
+        String amountLabel,  
+        @Nullable  
+        Integer amount,  
+        @Nullable  
+        String currency,  
+        @Nullable  
+        Integer quantity,  
+        @Nullable  
+        PurchaseState purchaseState,  
+        @Nullable  
+        String developerPayload,  
+        @Nullable  
+        String subscriptionToken  
+    ) {  
+        this.purchaseId = purchaseId;  
+        this.productId = productId;  
+        this.productType = productType;  
+        this.invoiceId = invoiceId;  
+        this.description = description;  
+        this.language = language;  
+        this.purchaseTime = purchaseTime;  
+        this.orderId = orderId;  
+        this.amountLabel = amountLabel;  
+        this.amount = amount;  
+        this.currency = currency;  
+        this.quantity = quantity;  
+        this.purchaseState = purchaseState;  
+        this.developerPayload = developerPayload;  
+        this.subscriptionToken = subscriptionToken;  
+    }  
+    
+
+  * `purchaseId` — идентификатор покупки.
+
+  * `productId` — идентификатор продукта.
+
+  * `description` — описание на языке `language`.
+
+  * `invoiceId` — идентификатор счёта.
+
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+
+  * `purchaseTime` — время покупки.
+
+  * `orderId` — уникальный идентификатор оплаты, сформированный приложением (UUID).
+
+  * `amountLable` — отформатированная цена покупки, включая валютный знак на языке `language`.
+
+  * `amount` — цена в минимальных единицах валюты.
+
+  * `currency` — код валюты ISO 4217.
+
+  * `quantity` — количество продукта.
+
+  * `purchaseState` — состояние покупки:
+
+    * `CREATED` — покупка создана;
+    * `INVOICE_CREATED` — по покупке создан счёт, ожидает оплаты;
+    * `PAID` — только покупки потребляемого товара — промежуточный статус, средства на счёте покупателя зарезервированы. Покупка ожидает подтверж дения от разработчика;
+    * `CONFIRMED` — финальный статус, покупка подтверждена (для подписок и непотребляемых товаров). Средства отправлены разработчику. Повторная покупка товара блокируется магазином;
+    * `CONSUMED` — для потребляемых товаров — конечный статус, потребление покупки подтверждено. Можно производить повторную покупку товара;
+    * `CANCELLED` — покупка отменена — оплата не была произведена или был совершен возврат средств покупателю (для подписок после возврата средств покупка не переходит в `CANCELLED`);
+    * `PAUSED` — для подписок — подписка перешла в HOLD период.
+    * `TERMINATED` — подписка закрылась.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+
+  * `subscriptionToken` — токен для валидации покупки на сервере.
+
+**Статусная модель (`purchaseState`)**
+
+Статусная модель покупки потребляемых продуктов (`CONSUMABLES`)
+
+![img](https://www.rustore.ru//help/assets/images/CONSUMABLES-v0-2a8b6588b84e0fa3bd488789d2638530.webp)
+
+Статусная модель покупки непотребляемых про дуктов (`NON-CONSUMABLES`)
+
+![img](https://www.rustore.ru//help/assets/images/NON-
+CONSUMABLES-v0-61bffa3e95ea1d4ba739c15b0f14b240.webp)
+
+Статусная модель покупки подписок (`SUBSCRIPTIONS`)
+
+![img](https://www.rustore.ru//help/assets/images/SUBSCRIPTIONS-v1-43f2d06cc1436bbcc173a45233020080.webp)
+
+### Получение списка покупок​
+
+  * Kotlin
+  * Java
+
+Метод возвращает только покупки со статусами из таблицы ниже. Подробнее о
+других возможных состояниях покупки смотрите в разделе Получение сведений о
+покупке.
+
+Тип/Статус| `INVOICE_CREATED`| `CONFIRMED`| `PAID`| `PAUSED`  
+---|---|---|---|---  
+consumable| +| | +|   
+non-consumable| +| +| |   
+subscription| +| +| | +  
+  
+примечание
+
+Метод возвращает незавершённые состояния покупки и покупки потребляемых
+товаров, требующих обработки. Помимо этого, он показывает подтверждённые
+покупки для подписок и непотребляемых товаров — тех, которые нельзя купить
+повторно.
+
+Для получения списка покупок пользователя используйте метод `getPurchases`.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.getPurchases()  
+         .addOnSuccessListener { purchases: List<Purchase> ->  
+            // Process success  
+        }  
+        .addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+**Структура покупки**
+
+    
+    
+    data class Purchase(  
+        val purchaseId: String?,  
+        val productId: String,  
+        val productType: ProductType?,  
+        val invoiceId: String?,  
+        val description: String?,  
+        val language: String?,  
+        val purchaseTime: Date?,  
+        val orderId: String?,  
+        val amountLabel: String?,  
+        val amount: Int?,  
+        val currency: String?,  
+        val quantity: Int?,  
+        val purchaseState: PurchaseState?,  
+        val developerPayload: String?,  
+        val subscriptionToken: String?  
+    )  
+    
+
+  * `purchaseId` — идентификатор покупки.
+  * `productId` — идентификатор продукта.
+  * `productType` — тип продукта.
+  * `invoiceId` — идентификатор счёта.
+  * `description` — описание на языке `language`.
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+  * `purchaseTime` — время покупки.
+  * `orderId` — уникальный идентификатор оплаты, сформированный приложением (UUID).
+  * `amountLable` — отформатированная цена покупки, включая валютный знак на языке `language`.
+  * `amount` — цена в минимальных единицах валюты.
+  * `currency` — код валюты ISO 4217.
+  * `quantity` — количество продукта.
+  * `purchaseState` — состояние покупки.
+
+**Структура ответа сервера на запрос покупок**
+
+    
+    
+    data class PurchasesResponse(  
+        override val meta: RequestMeta?,  
+        override val code: Int,  
+        override val errorMessage: String?,  
+        override val errorDescription: String?,  
+        override val errors: List<DigitalShopGeneralError>?,  
+        val purchases: List<Purchase>?,  
+    ) : ResponseWithCode  
+    
+
+  * `meta` — дополнительная информация о запросе.
+  * `code` — код ответа.
+  * `errorMessage` — сообщение об ошибке для пользователя.
+  * `errorDescription` — расшифровка сообщения об ошибке.
+  * `errors` — список ошибок для запрошенных продуктов.
+  * `purchases` — список запрошенных покупок.
+
+Метод возвращает только покупки со статусами из таблицы ниже. Подробнее о
+других возможных состояниях покупки смотрите в разделе Получение сведений о
+покупке.
+
+Тип/Статус| `INVOICE_CREATED`| `CONFIRMED`| `PAID`| `PAUSED`  
+---|---|---|---|---  
+consumable| +| | +|   
+non-consumable| +| +| |   
+subscription| +| +| | +  
+  
+примечание
+
+Метод возвращает незавершённые состояния покупки и покупки потребляемых
+товаров, требующих обработки. Помимо этого, он показывает подтверждённые
+покупки для подписок и непотребляемых товаров — тех, которые нельзя купить
+повторно.
+
+Для получения списка покупок пользователя используйте метод `getPurchases`.
+
+    
+    
+    PurchasesUseCase purchasesUseCase = billingClient.getPurchases();  
+    purchasesUseCase.getPurchases()  
+            .addOnSuccessListener(purchases -> {  
+                // Process PaymentResult  
+            }).addOnFailureListener(throwable ->  
+               // Process error  
+            );  
+    
+
+**Структура покупки**
+
+    
+    
+    public Purchase(  
+        @Nullable  
+        String purchaseId,  
+        String productId,  
+        @Nullable  
+        ProductType productType,  
+        @Nullable  
+        String invoiceId,  
+        @Nullable  
+        String description,  
+        @Nullable  
+        String language,  
+        @Nullable  
+        Date purchaseTime,  
+        @Nullable  
+        String orderId,  
+        @Nullable  
+        String amountLabel,  
+        @Nullable  
+        Integer amount,  
+        @Nullable  
+        String currency,  
+        @Nullable  
+        Integer quantity,  
+        @Nullable  
+        PurchaseState purchaseState,  
+        @Nullable  
+        String developerPayload,  
+        @Nullable  
+        String subscriptionToken  
+    ) {  
+        this.purchaseId = purchaseId;  
+        this.productId = productId;  
+        this.productType = productType;  
+        this.invoiceId = invoiceId;  
+        this.description = description;  
+        this.language = language;  
+        this.purchaseTime = purchaseTime;  
+        this.orderId = orderId;  
+        this.amountLabel = amountLabel;  
+        this.amount = amount;  
+        this.currency = currency;  
+        this.quantity = quantity;  
+        this.purchaseState = purchaseState;  
+        this.developerPayload = developerPayload;  
+        this.subscriptionToken = subscriptionToken;  
+    }  
+    
+
+  * `purchaseId` — идентификатор покупки.
+  * `productId` — идентификатор продукта.
+  * `productType` — тип продукта.
+  * `invoiceId` — идентификатор счёта.
+  * `description` — описание на языке `language`.
+  * `language` — язык, указанный с помощью BCP 47 кодирования.
+  * `purchaseTime` — время покупки.
+  * `orderId` — уникальный идентификатор оплаты, сформированный приложением (UUID).
+  * `AmountLabel` — отформатированная цена покупки, включая валютный знак на языке `language`.
+  * `amount` — цена в минимальных единицах валюты.
+  * `currency` — код валюты ISO 4217.
+  * `quantity` — количество продукта.
+  * `purchaseState` — состояние покупки.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+  * `subscriptionToken` — токен для валидации покупки на сервере.
+
+### Валидация покупки на сервере​
+
+  * Kotlin
+  * Java
+
+Если вам необходимо произвести валидацию успешно й покупки на сервере методами
+[API RuStore](/help/work-with-rustore-api/api-subscription-payment/), вы
+можете использовать `subscriptionToken` в `PurchaseResult`, возвращаемой
+`purchaseProduct` при успешной покупке продукта.
+
+`SubscriptionToken` состоит из `invoiceId` покупки и `userId`, записанных
+через точку: `$invoiceId.$userId`.
+
+Также можно получить `subscriptionToken` в сущности `Purchase`. Сущность
+`Purchase` можно получить используя метод `getPurchases`.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.purchaseProduct(productId).addOnSuccessListener { paymentResult ->  
+        if (paymentResult is PaymentResult.Success) {  
+            val subscriptionToken = paymentResult.subscriptionToken  
+            yourApi.validate(subscriptionToken)  
+        }  
+    }  
+    
+
+Также можно получить `subscriptionToken` в сущности `Purchase`. Сущность
+`Purchase` можно получить используя метод `getPurchases`.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.getPurchases().addOnSuccessListener { purchases ->  
+        purchases.forEach { purchase ->  
+            yourApi.validate(purchase.subscriptionToken)  
+        }  
+    
+
+Если вам необходимо произвести валидацию успешной покупки на сервере методами
+[API RuStore](/help/work-with-rustore-api/api-subscription-payment/), вы
+можете использовать `subscriptionToken` в `PurchaseResult`, возвращаемой
+`purchaseProduct` при успешной покупке продукта.
+
+`SubscriptionToken` состоит из `invoiceId` покупки и `userId`, записанных
+через точку: `$invoiceId.$userId`.
+
+Также можно получить `subscriptionToken` в сущности `Purchase`. Сущность
+`Purchase` можно получить используя метод `getPurchases`.
+
+    
+    
+    PurchasesUseCase purchasesUseCase = billingClient.getPurchases();  
+    purchasesUseCase.purchaseProduct(productId).addOnSuccessListener(paymentResult -> {  
+        if (paymentResult instanceof PaymentResult.Success) {  
+            String subscriptionToken = ((PaymentResult.Success) paymentResult).getSubscriptionToken();  
+            yourApi.validate(subscriptionToken);  
+        }  
+    });  
+    
+
+Также можно получить `subscriptionToken` в сущности `Purchase`. Сущность
+`Purchase` можно получить используя метод `getPurchases`.
+
+    
+    
+    PurchasesUseCase purchasesUseCase = billingClient.getPurchases();  
+    purchasesUseCase.getPurchases().addOnSuccessListener(purchases -> {  
+        for (Purchase purchase : purchases) {  
+            yourApi.validate(purchase.getSubscriptionToken());  
+        }  
+    });  
+    
+
+### Подтверждение покупки​
+
+#### Продукты, требующие подтверждения​
+
+RuStore содержит продукты следующих типов.
+
+  * `SUBSCRIPTION` — подписка (можно купить на период времени, например: подписка в стриминговом сервисе).
+  * `NON_CONSUMABLE` — непотребляемый (можно купить один раз, например: отключение рекламы в приложении).
+  * `CONSUMABLE` — потребляемый (можно купить много раз, например: кристаллы в приложении).
+
+Подтверждения требуют только продукты типа `CONSUMABLE`, если они находятся в
+состоянии `PurchaseState.PAID`.
+
+#### Вызов метода подтверждения​
+
+  * Kotlin
+  * Java
+
+Для подтверждения покупки используйте метод `confirmPurchase`. Запрос на
+подтверждение покупки должен сопровождаться выдачей товара. После вызова
+подтверждения покупка перейдёт в статус `CONSUMED`.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.confirmPurchase(purchaseId = "purchaseId", developerPayload = null)  
+        .addOnSuccessListener {  
+            // Process success  
+        }.addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+  * `purchaseId` — идентификатор покупки.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+
+RuStore содержит продукты следующих типов.
+
+  * `SUBSCRIPTION` — подписка (можно купить на период времени, например: подписка в стриминговом сервисе).
+  * `NON_CONSUMABLE` — непотребляемый (можно купить один раз, например: отключение рекламы в приложении).
+  * `CONSUMABLE` — потребляемый (можно купить много раз, например: кристаллы в приложении).
+
+Подтверждения требуют только продукты типа `CONSUMABLE`, если они находятся в
+состоянии `PurchaseState.PAID`.
+
+**Вызов метода подтверждения**
+
+Для подтверждения покупки используйте метод `confirmPurchase`. Запрос на
+подтверждение покупки должен сопровождаться выдачей товара. После вызова
+подтверждения покупка перейдёт в статус `CONSUMED`.
+
+    
+    
+    PurchasesUseCase purchasesUseCase = billingClient.getPurchases();  
+    purchasesUseCase.confirmPurchase("purchaseId", "developerPayload")  
+            .addOnSuccessListener(unit -> {  
+                // Process success  
+            }).addOnFailureListener(throwable -> {  
+               // Process error  
+            });  
+    
+
+  * `purchaseId` — идентификатор покупки.
+  * `developerPayload` — указанная разработчиком строка, содержащая дополнительную информацию о заказе.
+
+### Отмена покупки​
+
+  * Kotlin
+  * Java
+
+Для отмены покупки используйте метод `deletePurchase`.
+
+    
+    
+    val purchasesUseCase: PurchasesUseCase = billingClient.purchases  
+    purchasesUseCase.deletePurchase(purchaseId = "purchaseId")  
+        .addOnSuccessListener {  
+            // Process success  
+        }.addOnFailureListener { throwable: Throwable ->  
+            // Process error  
+        }  
+    
+
+  * `purchaseId` — идентификатор покупки.
+
+к сведению
+
+Используйте этот метод, если у вас есть логика, завязанная на удалении
+покупки. Покупка отменяется автоматически через таймаут в 20 минут, либо при
+повторной покупке от того же клиента.
+
+**Обработка ошибок**
+
+При вызове метода `RuStoreBillingClient.purchases.purchaseProduct()`, ошибки
+обрабатываются автоматически.
+
+Для показа диалога с ошибкой пользователю используйте метод
+`resolveForBilling` (см. ниже).
+
+    
+    
+    public fun RuStoreException.resolveForBilling(context: Context)  
+    
+
+Для отмены покупки используйте метод `deletePurchase`.
+
+    
+    
+    PurchasesUseCase purchasesUseCase = billingClient.getPurchases();  
+    purchasesUseCase.deletePurchase("purchaseId")  
+            .addOnSuccessListener(unit -> {  
+                // Process success  
+            })  
+            .addOnFailureListener(throwable -> {  
+                // Process error  
+            });  
+    
+
+  * `purchaseId` — идентификатор покупки.
+
+к сведению
+
+Используйте этот метод, если у вас есть логика, завязанная на удалении
+покупки. Покупка отменяется автоматически через таймаут в 20 минут, либо при
+повторной покупке от того же клиента.
+
+**Обработка ошибок**
+
+При вызове метода `RuStoreBillingClient.purchases.purchaseProduct()`, ошибки
+обрабатываются автоматически.
+
+Для показа диалога с ошибкой пользователю используйте метод
+`resolveForBilling` (см. ниже).
+
+    
+    
+    BillingRuStoreExceptionExtKt.resolveForBilling(exception, getContext());  
+    
+
+### Обработка незавершённых платежей​
+
+Обработка незавершённых платежей производится разработчиком.
+
+Чтобы подтвердить покупку типа `CONSUMABLE` и в статусе `PAID` вызовите метод
+подтверждения покупки (см. Получение сведений о покупке).
+
+В случае с отменой покупки при использовании методов обработки платежей
+учитывайте свой внутренний процесс. У некоторых разработчиков он
+предусматривает проверки  перед потреблением или отменой покупки. В этом
+случае запросите отдельно статус такой покупки.
+
+подсказка
+
+Например, если пользователь оплатил товар, который вы по каким-то причинам не
+можете ему поставить, вызовите метод отмены покупки в статусе `PAID`, чтобы
+отменить покупку.
+
+В случаях, когда метод получения списка покупок возвращает покупку со статусом
+`INVOICE_CREATED` вы можете использовать метод отмены покупки. Например, если
+не хотите видеть покупку с такими статусами в списке покупок. Делать это самим
+не обязательно, поскольку RuStore обрабатывает отмену таких покупок на своей
+стороне.
+
+к сведению
+
+Иногда после оплаты через приложение банка (СБП, SberPay, Tinkoff Pay и др.) и
+при последующем возврате обратно в приложение статус покупки остаётся
+`INVOICE_CREATED`, при этом статус платежа — неуспешная покупка. Это связано с
+временем обработки покупки на стороне банка. Поэтому разработчику необходимо
+правильно связать логику получения списка покупок с жизненным циклом экрана.
+
+Альтернативное решение — отмена покупки в статусе `INVOICE_CREATED` только
+через взаимодействие пользователя с приложением. Например, вы можете вынести
+эту логику в отдельную кнопку.
+
+## Ведение журнала событий​
+
+  * Kotlin
+  * Java
+
+Если необходимо логировать события библиотеки платежей, добавьте в вызов
+`RuStoreBillingClientFactory.create()` параметры
+`externalPaymentLoggerFactory` и `debugLogs`. Они не обязательны для
+инициализации.
+
+    
+    
+    val billingClient: RuStoreBillingClient = RuStoreBillingClientFactory.create(  
+        context = app,  
+        consoleApplicationId = "111111",  
+        deeplinkScheme = "yourappscheme",  
+        externalPaymentLoggerFactory = { tag -> PaymentLogger(tag) },  
+        debugLogs = true  
+    )  
+       
+    class PaymentLogger(private val tag: String) : ExternalPaymentLogger {  
+        override fun d(e: Throwable?, message: () -> String) {  
+            Log.d(tag, message.invoke(), e)  
+        }  
+       
+        override fun e(e: Throwable?, message: () -> String) {  
+            Log.e(tag, message.invoke(), e)  
+        }  
+       
+        override fun i(e: Throwable?, message: () -> String) {  
+            Log.i(tag, message.invoke(), e)  
+        }  
+       
+        override fun v(e: Throwable?, message: () -> String) {  
+            Log.v(tag, message.invoke(), e)  
+        }  
+       
+        override fun w(e: Throwable?, message: () -> String) {  
+            Log.w(tag, message.invoke(), e)  
+        }  
+    }  
+    
+
+Ниже представлены параметры для включения логирования.
+
+  * `externalPaymentLoggerFactory` — интерфейс, позволяющий создать логгер, который пробрасывает логи библиотеки в приложение-хост;
+  * `debugLogs` — включить логи (логи будут автоматически отключены для Release-сборок).
+
+Здесь `PaymentLogger` — это пример реализации логирования событий платежей.
+
+Если необходимо логировать события библиотеки платежей, добавьте в вызов
+`RuStoreBillingClientFactory.create()` параметры
+`externalPaymentLoggerFactory` и `debugLogs`. Они не обязательны для
+инициализации.
+
+    
+    
+    final Context context = getContext();  
+    final String consoleApplicationId = "111111";  
+    final String deeplinkScheme = "yourappscheme";  
+    final ExternalPaymentLoggerFactory externalPaymentLoggerFactory = (tag) -> new PaymentLogger(tag);  
+    final boolean debugLogs = true;  
+    RuStoreBillingClient billingClient = RuStoreBillingClientFactory.INSTANCE.create(  
+        context,  
+        consoleApplicationId,  
+        deeplinkScheme,  
+        externalPaymentLoggerFactory,  
+        debugLogs  
+    );  
+       
+    public class PaymentLogger implements ExternalPaymentLogger {  
+       
+        private final String tag;  
+       
+        public PaymentLogger(String tag) {  
+            this.tag = tag;  
+        }  
+       
+        @Override  
+        public void d(@Nullable Throwable throwable, @NonNull Function0<String> function0) {  
+            Log.d(tag, function0.invoke());  
+        }  
+       
+        @Override  
+        public void e(@Nullable Throwable throwable, @NonNull Function0<String> function0) {  
+            Log.e(tag, function0.invoke());  
+        }  
+       
+        @Override  
+        public void i(@Nullable Throwable throwable, @NonNull Function0<String> function0) {  
+            Log.i(tag, function0.invoke());  
+        }  
+       
+        @Override  
+        public void v(@Nullable Throwable throwable, @NonNull Function0<String> function0) {  
+            Log.v(tag, function0.invoke());  
+        }  
+       
+        @Override  
+        public void w(@Nullable Throwable throwable, @NonNull Function0<String> function0) {  
+            Log.w(tag, function0.invoke());  
+        }  
+    }  
+    
+
+Ниже представлены параметры для включения логирования.
+
+  * `externalPaymentLoggerFactory` — интерфейс, позволяющий создать логгер, который пробрасывает логи библиотеки в приложение-хост;
+  * `debugLogs` — включить логи (логи будут автоматически отключены для Release-сборок).
+
+Здесь `PaymentLogger` — это пример реализации логирования событий платежей.
+
+## Смена темы интерфейса​
+
+  * Kotlin
+  * Java
+
+SDK поддерживает динамическую смены темы через интерфейс провайдера
+`BillingClientThemeProvider`.
+
+    
+    
+    val billingClient: RuStoreBillingClient = RuStoreBillingClientFactory.create(  
+        context = app,  
+        consoleApplicationId = "111111",  
+        deeplinkScheme = "yourappscheme",  
+        themeProvider? = BillingClientThemeProviderImpl(),  
+    )  
+       
+    class BillingClientThemeProviderImpl: BillingClientThemeProvider {  
+            
+        override fun provide(): BillingClientTheme {  
+            // Тут должна размещаться логика по проверке установл енной темы  
+            val darkTheme = ....  
+            if(darkTheme){  
+                BillingClientTheme.Dark  
+            } else {  
+                BillingClientTheme.Light  
+            }  
+        }  
+    }}  
+    }  
+    
+
+SDK поддерживает динамическую смены темы через интерфейс провайдера
+`BillingClientThemeProvider`.
+
+    
+    
+    final Context context = getContext();  
+    final String consoleApplicationId = "111111";  
+    final String deeplinkScheme = "yourappscheme";  
+    final BillingClientThemeProvider themeProvider = BillingClientThemeProviderImpl();  
+       
+    RuStoreBillingClient billingClient = RuStoreBillingClientFactory.INSTANCE.create(  
+        context,  
+        consoleApplicationId,  
+        deeplinkScheme,  
+        themeProvider  
+    );    
+       
+    public class BillingClientThemeProviderImpl implements BillingClientThemeProvider {  
+       
+        @NonNull  
+        @Override  
+        public BillingClientTheme provide() {  
+            // Тут должна размещаться логика по проверке установленной темы  
+            boolean darkTheme = ...;  
+            if (darkTheme) {  
+                return BillingClientTheme.Dark;  
+            } else {  
+                return BillingClientTheme.Light;  
+            }  
+        }  
+    
+
+## Обработка ошибок​
+
+  * Kotlin
+  * Java
+
+**Возможные ошибки**
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore;
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает платежи;
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore;
+  * `RuStoreRequestLimitReached` — с момента последнего отображения процесса прошло слишком мало времени;
+  * `RuStoreReviewExists` — этот пользователь уже оценил ваше приложение;
+  * `RuStoreInvalidReviewInfo` — проблемы с `ReviewInfo`;
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки.
+
+При вызове метода `RuStoreBillingClient.purchases.purchaseProduct()` ошибки
+обрабатываются автоматически.
+
+Для показа диалога с ошибкой пользователю используйте метод
+`resolveForBilling`.
+
+    
+    
+    public fun RuStoreException.resolveForBilling(context: Context)  
+    
+
+**Возможные ошибки**
+
+  * `RuStoreNotInstalledException` — на устройстве пользователя не установлен RuStore;
+  * `RuStoreOutdatedException` — версия RuStore, установленная на устройстве пользователя, не поддерживает платежи;
+  * `RuStoreUserUnauthorizedException` — пользователь не авторизован в RuStore;
+  * `RuStoreRequestLimitReached` — с момента последнего отображения процесса прошло слишком мало времени;
+  * `RuStoreReviewExists` — этот пользователь уже оценил ваше приложение;
+  * `RuStoreInvalidReviewInfo` — проблемы с `ReviewInfo`;
+  * `RuStoreException` — базовая ошибка RuStore, от которой наследуются остальные ошибки.
+
+При вызове метода `RuStoreBillingClient.purchases.purchaseProduct()` ошибки
+обрабатываются автоматически.
+
+Для показа диалога с ошибкой пользователю используйте метод
+`resolveForBilling`.
+
+    
+    
+    BillingRuStoreExceptionExtKt.resolveForBilling(exception, getContext());  
+    
+
+## Коды ошибок​
+
+Ниже представлено описание возможных ошибок в поле `errorCode`.
+
+HTTP-код| Код ошибки| Описание  
+---|---|---  
+`400`| `40001`| Параметры запроса неверны — не заполнены обязательные
+параметры/неверный формат параметров.  
+`400`| `40003`| Приложение не найдено.  
+`400`| `40004`|  Статус приложения `inactive`.  
+`400`| `40005`| Продукт не найден.  
+`400`| `40006`| Статус продукта `inactive`.  
+`400`| `40007`| Недопустимый тип продукта. Поддерживаемые типы: `consumable`,
+`non-consumable`, `subscription`.  
+`400`| `40008`| Покупка с таким `order_id` уже существует.  
+`400`| `40009`| У текущего клиента найдена покупка этого продукта со статусом
+`invoice_created`. Необходимо предложить клиенту оплатить/отменить покупку.  
+`400`| `40010`| Для типа продукта `consumable`. У текущего клиента найдена
+покупка этого продукта со статусом `paid`. Сначала требуется подтвердить
+потребление покупки на устройстве, а затем можно отправлять следующий запрос
+на покупку этого продукта.  
+`400`| `40011`| Для типа продукта `non-consumable`. У текущего клиента найдена
+покупка этого продукта со статусом `pre_confirmed`/`confirmed`. Такой продукт
+уже приобретён. Более одного раза продукт не продаётся.  
+`400`| `40012`| Для типа продукта `subscription`. У текущего клиента найдена
+покупка этого продукта со статусом `pre_confirmed`/`confirmed`. Такой продукт
+уже приобретён. Более одного раза продукт не продаётся.  
+`400`| `40013`| Для типа продукта `subscription`. При обращении в сервис
+подписок за списком продуктов `GET/products` (`serviceId`, `user_id`) данные
+не были получены.  
+`400`| `40014`| Обязательный атрибут(-ы) не пришел в запросе.  
+`400`| `40015`| Не удалось изменить статус при обновлении покупки (переход
+запрещён).  
+`400`| `40016`| При покупке подписки непотребляемого продукта указано значение
+`quantity` > `1`.  
+`400`| `40017`| Продукт удалён, новые покупки не доступны.  
+`400`| `40018`| Нельзя потреблять продукт с типом `тип продукта`.  
+`401`| `40101`| Невалидный токен.  
+`401`| `40102`| Время жизни токена истекло.  
+`403`| `40301`| Доступ к запрашиваемому ресурсу запрещён (неавторизованно).  
+`403`| `40302`| Для текущего токе на текущий вызов не авторизован (метод
+запрещён).  
+`403`| `40303`| Идентификатор приложения в запросе и токен не совпадают.  
+`403`| `40305`| Неверный тип токена.  
+`404`| `40401`| Не найдено.  
+`408`| `40801`| Истекло время ожидания уведомления, указанное в запросе.  
+`500`| `50***`| Внутренняя ошибка платежного сервиса.  
+  
+]
+

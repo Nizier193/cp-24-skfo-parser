@@ -1,0 +1,127 @@
+url: https://www.rustore.ru/help/sdk/rustore-geo/map-display-services/interactive-map/quick-start
+title: Карты и геосервисы Сервисы отображения карт Интерактивная карта Быстрый старт
+
+[
+
+  * [](/help/)
+  * [Карты и геосервисы](/help/sdk/rustore-geo)
+  * [Сервисы отображения карт](/help/sdk/rustore-geo/map-display-services/)
+  * [Интерактивная карта](/help/sdk/rustore-geo/map-display-services/interactive-map)
+  * Быстрый старт
+
+Содержание этой страницы
+
+# Быстрый старт
+
+MMR GL JS — JavaScript-библиотека, которая использует WebGL для рендеринга
+интерактивных карт.
+
+## Подключение на HTML-страницу​
+
+Необходимо добавить `<script>` и `<link>` в тэге `<head>`.
+
+    
+    
+    <head>  
+      ...  
+      <script src="https://geo.rustore.ru/sdk/js/<version>/mmr-gl.js"></script>  
+      <link href="https://geo.rustore.ru/sdk/js/<version>/mmr-gl.css" rel="stylesheet">  
+      ...  
+    </head>  
+    
+
+подсказка
+
+Рекомендуется использовать самую свежую версию SDK. Для получения последней
+версии SDK можно указать 0 или 0.0 вместо точной версии, таким образом будет
+загружена последняя актуальная версия с номером 0.x.x либо 0.0.x
+соответственно.
+
+Для инициализации карты добавьте следующий код.
+
+    
+    
+    <div id= "map" style= "width: 800px; height: 600px;" ></div>  
+    <script>  
+      mmrgl.accessToken = 'Token' ;  
+      var map = new mmrgl.Map({  
+        container: 'map' ,  
+        zoom: 8,  
+        center: [37.6165, 55.7505],  
+        style: 'mmr://api/styles/main_style.json' ,  
+        hash: true  
+      });  
+    </script>  
+    
+
+## Создание токена​
+
+Для установки `@geors/maps-sdk-js` создайте токен на
+[github](https://docs.github.com/en/packages/working-with-a-github-packages-
+registry/working-with-the-npm-registry#installing-a-package).
+
+  1. Перейдите в настройки пользователя.
+  2. Найдите кнопку **Developer settings** в самом низу слева.
+  3. Создайте **Personal access token** с доступом для чтения пакетов **(read :packages)**.
+  4. Создайте в корне проекта файл `.npmrc`.
+  5. Добавьте в созданный файл две строчки.
+
+    
+    
+    @geors:registry=https://npm.pkg.github.com  
+    //npm.pkg.github.com/:_authToken=ACCESS_TOKEN  
+    
+
+Замените `ACCESS_TOKEN` на ваш созданный.
+
+## Установка пакета​
+
+Перейдите в корень проекта к `package.json` и с помощью `npm` или `yarn`
+установите пакет
+
+npm
+
+    
+    
+    npm install @geors/maps-sdk-js  
+    
+
+yaml
+
+    
+    
+    yarn add @geors/maps-sdk-js  
+    
+
+Для инициализации карты добавьте следующий код (пример на React).
+
+    
+    
+    import mmrgl from  '@geors/maps-sdk-js' ;  
+    import { useEffect } from  'react'  
+    import '@geors/maps-sdk-js/dist/mmr-gl.css' ;  
+    export  function Map() {  
+      useEffect( () => {  
+        mmrgl.accessToken = 'accessToken' ;  
+        const map = new mmrgl.Map({  
+          container: 'map' ,  
+          zoom: 8,  
+          center: [37.6165, 55.7505],  
+          style: 'mmr://api/styles/main_style.json' ,  
+          hash: true ,  
+        })  
+        return () => {  
+          if (map) map.remove();  
+        }  
+      }  
+      return <div id= "map" style={{ width: '800px' , height: '600px' }} />  
+    }  
+    
+
+## Детальная информация​
+
+Более подробную информацию по использованию MMR GL JS SDK вы найдёте в
+настоящем разделе.
+
+]
+

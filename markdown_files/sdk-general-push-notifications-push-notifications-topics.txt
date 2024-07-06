@@ -1,0 +1,10 @@
+url: https://www.rustore.ru/help/sdk/general-push-notifications/push-notifications-topics
+title: Универсальные push-уведомления Отправка универсальных push-уведомлений по топикам
+
+[## [🟦 API](/help/sdk/general-push-notifications/push-notifications-
+topics/api)## [🟦 Примеры](/help/sdk/general-push-notifications/push-
+notifications-topics/examples), ## [🟦 API](/help/sdk/general-push-
+notifications/push-notifications-topics/api), ## [🟦
+Примеры](/help/sdk/general-push-notifications/push-notifications-
+topics/examples)]
+

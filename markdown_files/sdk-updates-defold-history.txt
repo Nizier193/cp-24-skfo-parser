@@ -1,0 +1,30 @@
+url: https://www.rustore.ru/help/sdk/updates/defold/history
+title: Обновление приложения Defold История обновлений
+
+[
+
+  * [](/help/)
+  * [Обновление приложения](/help/sdk/updates)
+  * [Defold](/help/sdk/updates/defold)
+  * История обновлений
+
+Содержание этой страницы
+
+# История обновлений
+
+## Версия 3.0​
+
+  * Версия SDK appUpdate 3.0.0.
+  * Добавлено поле `simpleName` в JSON ошибок.
+  * Обновлены методы установки обновления.
+
+## Версия 2.0​
+
+  * Версия SDK appUpdate 2.0.0.
+
+## Версия 1.0.1​
+
+  * Версия SDK appUpdate 1.0.1.
+
+]
+

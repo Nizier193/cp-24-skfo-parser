@@ -1,0 +1,12 @@
+url: https://www.rustore.ru/help/sdk/general-push-notifications
+title: Универсальные push-уведомления
+
+[## [🗃️ Kotlin](/help/sdk/general-push-notifications/kotlin)## [🗃️ Отправка
+универсальных push-уведомлений](/help/sdk/general-push-notifications/send-
+push-notifications)## [🗃️ Отправка универсальных push-уведомлений по
+топикам](/help/sdk/general-push-notifications/push-notifications-topics), ##
+[🗃️ Kotlin](/help/sdk/general-push-notifications/kotlin), ## [🗃️ Отправка
+универсальных push-уведомлений](/help/sdk/general-push-notifications/send-
+push-notifications), ## [🗃️ Отправка универсальных push-уведомлений по
+топикам](/help/sdk/general-push-notifications/push-notifications-topics)]
+
